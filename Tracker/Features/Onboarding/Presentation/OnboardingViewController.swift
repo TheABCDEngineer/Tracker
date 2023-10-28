@@ -50,8 +50,7 @@ final class OnboardingViewController: UIViewController {
             assertionFailure("Invalid Configuration when switch to TabBarController")
             return
         }
-        window.rootViewController = UIStoryboard(name: "Main", bundle: .main)
-            .instantiateViewController(withIdentifier: "TabBar")
+        window.rootViewController = TabBarController()
     }
     
     private func configureLayout() {
