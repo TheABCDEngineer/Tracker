@@ -36,13 +36,15 @@ final class TrackersViewController: UIViewController {
     }
     
     @objc
-    private func createHabit() {
-        
+    private func onCreateHabitButtonClick() {
+        eventBottomSheet.hide()
+        createEvent(event: .habit)
     }
     
     @objc
-    private func createEvent() {
-        
+    private func onCreateUnregularEventButtonClick() {
+        eventBottomSheet.hide()
+        createEvent(event: .event)
     }
     
     @objc
@@ -53,6 +55,12 @@ final class TrackersViewController: UIViewController {
     @objc
     private func applyFilter() {
         
+    }
+    
+    private func createEvent(event: TrackerType) {
+        let controller = TrackerCreatorViewController()
+        controller.trackerType = event
+        self.present(controller, animated: true)
     }
     
     private func configureLayout() {
@@ -132,7 +140,7 @@ final class TrackersViewController: UIViewController {
         let createHabitButton = UIButton.systemButton(
             with: UIImage(),
             target: nil,
-            action: #selector(createHabit)
+            action: #selector(onCreateHabitButtonClick)
         )
         createHabitButton.layer.cornerRadius = 16
         createHabitButton.backgroundColor = .ypBlack
@@ -150,7 +158,7 @@ final class TrackersViewController: UIViewController {
         let createEventButton = UIButton.systemButton(
             with: UIImage(),
             target: nil,
-            action: #selector(createEvent)
+            action: #selector(onCreateUnregularEventButtonClick)
         )
         createEventButton.layer.cornerRadius = 16
         createEventButton.backgroundColor = .ypBlack
