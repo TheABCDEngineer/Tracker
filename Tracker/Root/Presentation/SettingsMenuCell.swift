@@ -12,8 +12,8 @@ class SettingsMenuCell: UICollectionViewCell {
     
     let separator = UIView()
     
-    var onCellClick: (() -> Void)?
-    
+    var onCellClick = [() -> Void]()
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.clipsToBounds = true
@@ -38,6 +38,14 @@ class SettingsMenuCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        removeLabelsFromContextView()
+        contextView.removeFromSuperview()
+        label.removeFromSuperview()
+        subLabel.removeFromSuperview()
+        separator.removeFromSuperview()
+    }
+    
     func setupCell(_ type: SettingsMenuCellType) {
         switch type {
         case .first:
@@ -49,6 +57,15 @@ class SettingsMenuCell: UICollectionViewCell {
         case .single:
             setupSingleItem()
         }
+    }
+    
+    func updateLabels() {
+        removeLabelsFromContextView()
+        setLabelOnContexView()
+    }
+    
+    func addActionOnCellClick(_ action: @escaping () -> Void) {
+        onCellClick.append(action)
     }
     
     private func setupSingleItem() {
@@ -76,24 +93,11 @@ class SettingsMenuCell: UICollectionViewCell {
     
     private func setLabelOnContexView() {
         if let text = subLabel.text {
-            if text.isEmpty { subLabelIndent = 0 }
+            if text.isEmpty { setSingleLabelOnContextView() }
+            if !text.isEmpty { setBothLabelsOnContextView() }
         } else {
-            subLabelIndent = 0
+            setSingleLabelOnContextView()
         }
-      
-        let correctionCenterY = (subLabel.frame.height + subLabelIndent) * 2.5
-        
-        contextView.addSubView(
-            label,
-            leading: AnchorOf(contentView.leadingAnchor, 16),
-            centerY: AnchorOf(contentView.centerYAnchor, -correctionCenterY)
-        )
-        
-        contextView.addSubView(
-            subLabel,
-            top: AnchorOf(label.bottomAnchor, subLabelIndent),
-            leading: AnchorOf(label.leadingAnchor)
-        )
     }
     
     private func setContexOnSuperView(correctionTop: CGFloat = 0, correctionBottom: CGFloat = 0) {
@@ -114,9 +118,46 @@ class SettingsMenuCell: UICollectionViewCell {
             trailing: AnchorOf(contentView.trailingAnchor, -16)
         )
     }
+        
+    private func setSingleLabelOnContextView() {
+        contextView.addSubView(
+            label,
+            leading: AnchorOf(contentView.leadingAnchor, 16),
+            centerY: AnchorOf(contentView.centerYAnchor)
+        )
+    }
+    
+    private func setBothLabelsOnContextView() {
+        let separateLabelsView = UIView()
+        
+        contextView.addSubView(
+            separateLabelsView, heigth: subLabelIndent,
+            centerY: AnchorOf(contentView.centerYAnchor)
+        )
+        
+        contextView.addSubView(
+            label,
+            bottom: AnchorOf(separateLabelsView.topAnchor),
+            leading: AnchorOf(contentView.leadingAnchor, 16)
+        )
+        
+        contextView.addSubView(
+            subLabel,
+            top: AnchorOf(separateLabelsView.bottomAnchor),
+            leading: AnchorOf(label.leadingAnchor)
+        )
+    }
+    
+    private func removeLabelsFromContextView() {
+        label.removeFromSuperview()
+        subLabel.removeFromSuperview()
+    }
     
     @objc
     private func onContentViewClick() {
-        onCellClick?()
+        if onCellClick.isEmpty { return }
+        for action in onCellClick {
+            action()
+        }
     }
 }

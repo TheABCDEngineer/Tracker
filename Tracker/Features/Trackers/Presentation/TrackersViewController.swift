@@ -25,6 +25,11 @@ final class TrackersViewController: UIViewController {
         configureLayout()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        createEvent(event: .habit)
+    }
+    
     @objc
     private func addTrackerButtonClick() {
         eventBottomSheet.show()

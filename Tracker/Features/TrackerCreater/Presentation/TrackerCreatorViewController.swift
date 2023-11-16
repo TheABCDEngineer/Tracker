@@ -3,12 +3,93 @@ import UIKit
 final class TrackerCreatorViewController: UIViewController {
     var trackerType: TrackerType = .event
     
+    private let presenter = Creator.injectTrackerCreatorPresenter()
+    
     private var eventCreatorCollection: UICollectionView!
+        
+    private let applyButton = UIButton.systemButton(
+        with: UIImage(), target: nil, action: #selector(onApplyButtonClick)
+    )
+    
+    private var currentSelectedEmojiIndexPath: IndexPath?
+    
+    private var currentSelectedColorIndexPath: IndexPath?
+    
+    private var scheduleIndexPath: IndexPath?
+    
+    private var categoryIndexPath: IndexPath?
+    
+    private var titleFieldIndexPath: IndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypWhite
         configureLayout()
+        setObservers()
+        configureCreatorCollectionView()
+    }
+    
+    private func setObservers() {
+        presenter.observeAllPropertiesDidEnter { [weak self] state in
+            guard let self, let state else { return }
+            self.updateApplyButtonState(state)
+        }
+        
+        presenter.observeScheduleCreated { [weak self] scheduleString in
+            guard let self, let scheduleString else { return }
+            self.updateSublabelInSettingCell(for: scheduleIndexPath, text: scheduleString)
+        }
+        
+        presenter.observeCategoryCreated { [weak self] categoryTitle in
+            guard let self, let categoryTitle else { return }
+            self.updateSublabelInSettingCell(for: categoryIndexPath, text: categoryTitle)
+        }
+    }
+    
+    private func updateApplyButtonState(_ state: ApplyButton.State) {
+        applyButton.isUserInteractionEnabled = state.isEnabled
+        applyButton.backgroundColor = state.color
+    }
+        
+    private func updateSublabelInSettingCell(for indexPath: IndexPath?, text: String) {
+        guard let indexPath else { return }
+        guard let cell = eventCreatorCollection.cellForItem(at: indexPath) as? TrackerCreatorSettingsCell else { return }
+        cell.subLabel.text = text
+        cell.updateLabels()
+    }
+    
+    private func unfocusedTileField() {
+        guard let titleFieldIndexPath else { return }
+        guard let cell = eventCreatorCollection.cellForItem(at: titleFieldIndexPath) as? TrackerCreatorTitleCell else { return }
+        cell.unfocused()
+    }
+    
+    private func launchScheduler() {
+        let controller = SchedulerViewController()
+        controller.onSetSchedule { [weak self] schedule in
+            guard let self else { return }
+            presenter.setSchedule(schedule)
+        }
+        controller.setCurrentSchedule(presenter.schedule)
+        unfocusedTileField()
+        self.present(controller, animated: true)
+    }
+    
+    private func launchCategorySelector() {
+        let controller = CategorySetterViewController()
+        controller.onSetCategory {[weak self] category in
+            guard let self else { return }
+            presenter.setCategory(category)
+        }
+        controller.setInitCategory(presenter.category)
+        unfocusedTileField()
+        self.present(controller, animated: true)
+    }
+    
+    @objc
+    private func onApplyButtonClick() {
+        presenter.createTracker()
+        dismiss(animated: true)
     }
 }
 
@@ -16,7 +97,6 @@ final class TrackerCreatorViewController: UIViewController {
 extension TrackerCreatorViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView
     ) -> Int {
-//        return 4
         return 5
     }
 
@@ -80,7 +160,9 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
                 ) as? TrackerCreatorTitleCell else {
                     return UICollectionViewCell()
                 }
+        titleFieldIndexPath = indexPath
         cell.eventLable.text = trackerType == .habit ? "Новая привычка" : "Новое нерегулярное событие"
+        cell.setDelegate(self)
         return cell
     }
     
@@ -96,14 +178,20 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
         
         switch indexPath.item {
         case 0:
+            categoryIndexPath = indexPath
             cell.label.text = "Категория"
-            cell.subLabel.text = "Важное"
-            
             let cellType: SettingsMenuCellType = trackerType == .event ? .single : .first
             cell.initCell(cellType)
+            cell.addActionOnCellClick {
+                self.launchCategorySelector()
+            }
         case 1:
+            scheduleIndexPath = indexPath
             cell.label.text = "Расписание"
             cell.initCell(.last)
+            cell.addActionOnCellClick {
+                self.launchScheduler()
+            }
         default: break
         }
         return cell
@@ -118,7 +206,12 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
                 ) as? EmojiCell else {
                     return UICollectionViewCell()
                 }
-        cell.label.text = TrackerEmoji.items[indexPath.item]
+        cell.setEmoji(
+            TrackerEmoji.items[indexPath.item],
+            indexPath: indexPath
+        )
+        cell.setDelegate(self)
+        
         return cell
     }
 
@@ -132,7 +225,12 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
                     return UICollectionViewCell()
                 }
 
-        cell.view.backgroundColor = TrackerColors.items[indexPath.item].toUIColor()
+        cell.setColor(
+            TrackerColors.items[indexPath.item],
+            indexPath: indexPath
+        )
+        cell.setDelegate(self)
+        
         return cell
     }
 
@@ -145,8 +243,11 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
                 ) as? ButtonsCell else {
                     return UICollectionViewCell()
                 }
-
-
+        
+        cell.setDelegate(self)
+        cell.setApplyButton(applyButton)
+        cell.initCell()
+        
         return cell
     }
     
@@ -163,71 +264,41 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
 
 }
 
-//MARK: - UICollectionViewDelegateFlowLayout
-extension TrackerCreatorViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        switch indexPath.section {
-        case 0:
-            return CGSize(width: collectionView.frame.width, height: 120)
-        case 1:
-            return CGSize(width: collectionView.frame.width, height: 75)
-        case 2:
-            return CGSize(width: 52, height: 52)
-        case 3:
-            return CGSize(width: 52, height: 52)
-        case 4:
-            return CGSize(width: collectionView.frame.width, height: 60)
-        default:
-            return CGSize(width: 52, height: 52)
-        }
-        
-    }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        switch section {
-        case 0, 1, 4:
-            return 0
-        case 2:
-            return 0
-        case 3:
-            return 0
-        default:
-            return 0
-        }
-        //return 0
+//MARK: - CollectiionViewCellDelegate
+extension TrackerCreatorViewController: TrackerCreatorCVCellDelegate {
+    func setSelectedEmojiItem(_ indexPath: IndexPath) {
+        currentSelectedEmojiIndexPath = indexPath
+        presenter.setEmoji(TrackerEmoji.items[indexPath.item])
     }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        switch section {
-        case 0, 1, 4:
-            return 0
-        case 2:
-            return 4
-        case 3:
-            return 4
-        default:
-            return 4
+    
+    func reloadPreviousSelectedEmojiCell() {
+        if let currentSelectedEmojiIndexPath {
+            eventCreatorCollection.reloadItems(at: [currentSelectedEmojiIndexPath])
         }
-          //return 0
     }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        switch section {
-        case 0, 1, 4:
-            return CGSize(width: collectionView.frame.width, height: 24)
-        case 2:
-            return CGSize(width: collectionView.frame.width, height: 80)
-        case 3:
-            return CGSize(width: collectionView.frame.width, height: 80)
-        default:
-            return CGSize()
+    
+    func setSelectedColorItem(_ indexPath: IndexPath) {
+        currentSelectedColorIndexPath = indexPath
+        presenter.setColor(TrackerColors.items[indexPath.item])
+    }
+    
+    func reloadPreviousSelectedColorCell() {
+        if let currentSelectedColorIndexPath {
+            eventCreatorCollection.reloadItems(at: [currentSelectedColorIndexPath])
         }
-        //return CGSize(width: collectionView.frame.width, height: 80)
+    }
+    
+    func setTrackerTitle(_ title: String) {
+        presenter.setTrackerTitle(title)
+    }
+    
+    func onTrackerCreatingCancel() {
+        dismiss(animated: true)
     }
 }
 
-//MARK: - Configure Layout
+//MARK: - Configure
 extension TrackerCreatorViewController {
     private func configureLayout() {        
         eventCreatorCollection = UICollectionView(
@@ -243,10 +314,11 @@ extension TrackerCreatorViewController {
             trailing: AnchorOf(view.trailingAnchor, -16)
         )
         eventCreatorCollection.showsVerticalScrollIndicator = false
-        
+    }
+    
+    private func configureCreatorCollectionView() {
         eventCreatorCollection.dataSource = self
         eventCreatorCollection.delegate = self
-        
         
         eventCreatorCollection.register(
             TrackerCreatorTitleCell.self,

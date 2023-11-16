@@ -3,14 +3,29 @@ import UIKit
 final class ButtonsCell: UICollectionViewCell {
     static let Identifier = "ButtonsCell"
     
+    private var applyButton: UIButton?
+    
+    private var delegate: TrackerCreatorCVCellDelegate?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configureCancelButton()
-        configureApplyButton()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setDelegate(_ delegate: TrackerCreatorCVCellDelegate) {
+        self.delegate = delegate
+    }
+    
+    func setApplyButton(_ button: UIButton) {
+        self.applyButton = button
+    }
+    
+    func initCell() {
+        configureCancelButton()
+        configureApplyButton()
     }
     
     private func configureCancelButton() {
@@ -36,15 +51,17 @@ final class ButtonsCell: UICollectionViewCell {
     }
     
     private func configureApplyButton() {
-        let applyButton = UIButton.systemButton(
-            with: UIImage(), target: self, action: #selector(onApplyButtonClick)
-        )
+        guard let applyButton else { return }
         
         applyButton.layer.cornerRadius = 16
-        applyButton.backgroundColor = .ypGray
+        applyButton.backgroundColor = ApplyButton.inactive.color
+        //applyButton.isEnabled = ApplyButton.inactive.isEnabled
         applyButton.setTitle("Создать", for: .normal)
         applyButton.titleLabel?.font = Font.ypMedium16
-        applyButton.titleLabel?.tintColor = .ypWhite
+        //applyButton.titleLabel?.textColor = .ypWhite
+        applyButton.tintColor = .ypWhite
+        applyButton.isUserInteractionEnabled = ApplyButton.inactive.isEnabled
+        
         
         contentView.addSubView(
             applyButton,
@@ -57,11 +74,6 @@ final class ButtonsCell: UICollectionViewCell {
     
     @objc
     private func onCancelButtonClick() {
-        
-    }
-    
-    @objc
-    private func onApplyButtonClick() {
-        
+        delegate?.onTrackerCreatingCancel()
     }
 }

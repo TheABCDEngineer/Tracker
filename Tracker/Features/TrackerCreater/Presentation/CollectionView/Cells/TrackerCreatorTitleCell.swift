@@ -5,6 +5,10 @@ final class TrackerCreatorTitleCell: UICollectionViewCell {
     
     let eventLable = UILabel()
     
+    private let titleField = UITextField()
+    
+    private var delegate: TrackerCreatorCVCellDelegate?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureTitleField()
@@ -14,17 +18,36 @@ final class TrackerCreatorTitleCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setDelegate(_ delegate: TrackerCreatorCVCellDelegate) {
+        self.delegate = delegate
+    }
+    
+    func unfocused() {
+        titleField.resignFirstResponder()
+    }
+    
+    @objc
+    private func onCategoryFieldTextChange() {
+        guard let title = titleField.text else { return }
+        print(title)
+        delegate?.setTrackerTitle(title)
+    }
+    
     private func configureTitleField() {
         eventLable.backgroundColor = .clear
         eventLable.textColor = .ypBlack
         eventLable.font = Font.ypMedium16
         
-        let titleField = UITextField()
+        
         titleField.layer.cornerRadius = 16
         titleField.backgroundColor = .clear
         titleField.textColor = .ypBlack
         titleField.font = Font.ypRegular17
         titleField.placeholder = "Введите название трекера"
+        titleField.addTarget(nil,
+            action: #selector(onCategoryFieldTextChange),
+            for: .allEvents
+        )
         
         let titleFieldBackground = UIView()
         titleFieldBackground.layer.cornerRadius = titleField.layer.cornerRadius
@@ -50,7 +73,5 @@ final class TrackerCreatorTitleCell: UICollectionViewCell {
             leading: AnchorOf(titleFieldBackground.leadingAnchor, 16),
             trailing: AnchorOf(titleFieldBackground.trailingAnchor)
         )
-        
-        
     }
 }
