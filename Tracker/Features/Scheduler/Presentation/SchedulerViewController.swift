@@ -65,9 +65,9 @@ final class SchedulerViewController: UIViewController {
             forCellWithReuseIdentifier: SchedulerButtonsCell.Identifier
         )
         schedulerCollection.register(
-            LabelSupplementaryView.self,
+            TitleSupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: LabelSupplementaryView.Identifier
+            withReuseIdentifier: TitleSupplementaryView.Identifier
         )
     }
     
@@ -121,7 +121,7 @@ extension SchedulerViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: LabelSupplementaryView.Identifier, for: indexPath) as? LabelSupplementaryView else {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleSupplementaryView.Identifier, for: indexPath) as? TitleSupplementaryView else {
             return UICollectionReusableView()
         }
         header.label.text = "Расписание"

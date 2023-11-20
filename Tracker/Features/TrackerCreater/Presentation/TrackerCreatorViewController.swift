@@ -21,12 +21,19 @@ final class TrackerCreatorViewController: UIViewController {
     
     private var titleFieldIndexPath: IndexPath?
     
+    private var onTrackerCreated: ( () -> Void )?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypWhite
         configureLayout()
         setObservers()
         configureCreatorCollectionView()
+        presenter.setTrackerType(trackerType)
+    }
+    
+    func onTrackerCreated(_ completion: @escaping () -> Void) {
+        self.onTrackerCreated = completion
     }
     
     private func setObservers() {
@@ -90,6 +97,7 @@ final class TrackerCreatorViewController: UIViewController {
     private func onApplyButtonClick() {
         presenter.createTracker()
         dismiss(animated: true)
+        onTrackerCreated?()
     }
 }
 
@@ -253,7 +261,7 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
     
     private func configureHeader(title: String = "", x: CGFloat = 0, y: CGFloat = 0, collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderView.Identifier, for: indexPath) as? HeaderView else {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionTitleHeaderView.Identifier, for: indexPath) as? SectionTitleHeaderView else {
             return UICollectionReusableView()
         }
 
@@ -342,9 +350,9 @@ extension TrackerCreatorViewController {
         )
         
         eventCreatorCollection.register(
-            HeaderView.self,
+            SectionTitleHeaderView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: HeaderView.Identifier
+            withReuseIdentifier: SectionTitleHeaderView.Identifier
         )
     }
 }

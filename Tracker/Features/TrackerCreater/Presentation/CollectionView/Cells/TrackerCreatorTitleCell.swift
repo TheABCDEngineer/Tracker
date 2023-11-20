@@ -29,7 +29,6 @@ final class TrackerCreatorTitleCell: UICollectionViewCell {
     @objc
     private func onCategoryFieldTextChange() {
         guard let title = titleField.text else { return }
-        print(title)
         delegate?.setTrackerTitle(title)
     }
     
@@ -71,7 +70,7 @@ final class TrackerCreatorTitleCell: UICollectionViewCell {
             top: AnchorOf(titleFieldBackground.topAnchor),
             bottom: AnchorOf(titleFieldBackground.bottomAnchor),
             leading: AnchorOf(titleFieldBackground.leadingAnchor, 16),
-            trailing: AnchorOf(titleFieldBackground.trailingAnchor)
+            trailing: AnchorOf(titleFieldBackground.trailingAnchor, -16)
         )
     }
 }

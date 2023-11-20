@@ -9,10 +9,15 @@ final class ButtonsCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        configureCancelButton()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        applyButton?.removeFromSuperview()
     }
     
     func setDelegate(_ delegate: TrackerCreatorCVCellDelegate) {
@@ -24,7 +29,6 @@ final class ButtonsCell: UICollectionViewCell {
     }
     
     func initCell() {
-        configureCancelButton()
         configureApplyButton()
     }
     
@@ -55,10 +59,8 @@ final class ButtonsCell: UICollectionViewCell {
         
         applyButton.layer.cornerRadius = 16
         applyButton.backgroundColor = ApplyButton.inactive.color
-        //applyButton.isEnabled = ApplyButton.inactive.isEnabled
         applyButton.setTitle("Создать", for: .normal)
         applyButton.titleLabel?.font = Font.ypMedium16
-        //applyButton.titleLabel?.textColor = .ypWhite
         applyButton.tintColor = .ypWhite
         applyButton.isUserInteractionEnabled = ApplyButton.inactive.isEnabled
         

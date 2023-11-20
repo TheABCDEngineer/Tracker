@@ -4,7 +4,7 @@ protocol TrackersRepository {
     func createTracker(
         type: TrackerType,
         title: String,
-        schedule: Set<WeekDays>?,
+        schedule: Set<WeekDays>,
         emoji: String,
         color: TrackerColor
     ) -> TrackerModel?

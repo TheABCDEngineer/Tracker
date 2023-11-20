@@ -4,11 +4,13 @@ final class TrackersViewController: UIViewController {
     
     var inaccessibleViews = [ViewVisibilityProtocol]()
     
+    private let presenter = Creator.injectTrackersPresenter()
+    
     private let datePicker = UIDatePicker()
     
     private let searchingField = UISearchTextField()
     
-    private let trackersField = UICollectionView(
+    private let trackersCV = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout()
     )
@@ -19,15 +21,17 @@ final class TrackersViewController: UIViewController {
     
     private let placeholder = Placeholder()
     
+    private var trackersFieldData = [TrackersPackScreenModel]()
+    
+    private var checkedTrackerIndexPath: IndexPath?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .ypWhite
         configureLayout()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        createEvent(event: .habit)
+        configureTrackerCollectionView()
+        setObservers()
+        presenter.onViewLoaded()
     }
     
     @objc
@@ -37,7 +41,7 @@ final class TrackersViewController: UIViewController {
     
     @objc
     private func onDatePickerChoose() {
-        
+        presenter.setUserDate(datePicker.date)
     }
     
     @objc
@@ -65,9 +69,102 @@ final class TrackersViewController: UIViewController {
     private func createEvent(event: TrackerType) {
         let controller = TrackerCreatorViewController()
         controller.trackerType = event
+        controller.onTrackerCreated { [weak self] in
+            guard let self else { return }
+            self.presenter.setUserDate(self.datePicker.date)
+        }
         self.present(controller, animated: true)
     }
+        
+    private func setObservers() {
+        presenter.ObserveTrackersPacks { [weak self] data in
+            guard let self, let data else { return }
+            self.trackersFieldData = data
+            self.trackersCV.reloadData()
+  
+            placeholder.view.isHidden = !trackersFieldData.isEmpty
+        }
+        
+        presenter.ObserveModifiedTracker { [weak self] trackerModel in
+            guard let self, let trackerModel, let index = checkedTrackerIndexPath else { return }
+
+            self.trackersFieldData[index.section].trackers[index.item] = trackerModel
+ 
+            let cell = trackersCV.cellForItem(at: index) as? TrackerCell ?? TrackerCell()
+            cell.setModel(trackerModel)
+  
+        }
+    }
     
+    private func configureTrackerCollectionView() {
+        trackersCV.dataSource = self
+        trackersCV.delegate = self
+        
+        trackersCV.register(
+            TrackerCell.self,
+            forCellWithReuseIdentifier: TrackerCell.Identifier
+        )
+        
+        trackersCV.register(
+            SectionTitleHeaderView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: SectionTitleHeaderView.Identifier)
+        
+        trackersCV.register(
+            TitleSupplementaryView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+            withReuseIdentifier: TitleSupplementaryView.Identifier
+        )
+    }
+}
+
+//MARK: - TrackersCVCellDelegate
+extension TrackersViewController: TrackersCVCellDelegate {
+    func onTrackerChecked(for indexPath: IndexPath) {
+        checkedTrackerIndexPath = indexPath
+        presenter.onTrackerChecked(
+            tracker: trackersFieldData[indexPath.section].trackers[indexPath.item]
+        )
+    }
+}
+
+//MARK: - CollectionViewDataSource
+extension TrackersViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return trackersFieldData.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return trackersFieldData[section].trackers.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCell.Identifier, for: indexPath) as? TrackerCell else {
+            return UICollectionViewCell()
+        }
+        cell.setDelegate(self)
+        cell.setIndexPath(indexPath)
+        cell.setModel(trackersFieldData[indexPath.section].trackers[indexPath.item])
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath
+    ) -> UICollectionReusableView {
+        if kind == UICollectionView.elementKindSectionFooter {
+            return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleSupplementaryView.Identifier, for: indexPath) as? TitleSupplementaryView ?? UICollectionReusableView()
+        }
+        
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionTitleHeaderView.Identifier, for: indexPath) as? SectionTitleHeaderView else { return UICollectionReusableView() }
+        
+        header.configureLablePosition(x: 12, y: 16)
+        header.label.text = trackersFieldData[indexPath.section].title
+        
+        return header
+    }
+}
+
+//MARK: - configure layout
+extension TrackersViewController {
     private func configureLayout() {
         let addTrackerButton = UIButton.systemButton(
             with: UIImage(named: "Add Tracker") ?? UIImage(),
@@ -113,14 +210,15 @@ final class TrackersViewController: UIViewController {
             trailing: AnchorOf(view.trailingAnchor, -16)
         )
         
-        trackersField.backgroundColor = .clear
+        trackersCV.backgroundColor = .clear
         view.addSubView(
-            trackersField,
-            top: AnchorOf(searchingField.bottomAnchor, 8),
+            trackersCV,
+            top: AnchorOf(searchingField.bottomAnchor, -searchingField.frame.height),
             bottom: AnchorOf(view.safeAreaLayoutGuide.bottomAnchor),
             leading: AnchorOf(searchingField.leadingAnchor),
             trailing: AnchorOf(searchingField.trailingAnchor)
         )
+        trackersCV.showsVerticalScrollIndicator = false
         
         eventBottomSheet = BottomSheet(
             with: view,

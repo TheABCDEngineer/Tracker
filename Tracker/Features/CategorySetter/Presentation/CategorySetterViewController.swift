@@ -109,15 +109,15 @@ class CategorySetterViewController: UIViewController {
         )
         
         categoryCollection.register(
-            LabelSupplementaryView.self,
+            TitleSupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: LabelSupplementaryView.Identifier
+            withReuseIdentifier: TitleSupplementaryView.Identifier
         )
         
         categoryCollection.register(
-            LabelSupplementaryView.self,
+            TitleSupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-            withReuseIdentifier: LabelSupplementaryView.Identifier
+            withReuseIdentifier: TitleSupplementaryView.Identifier
         )
     }
 }
@@ -170,7 +170,7 @@ extension CategorySetterViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        guard let element = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: LabelSupplementaryView.Identifier, for: indexPath) as? LabelSupplementaryView else {
+        guard let element = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleSupplementaryView.Identifier, for: indexPath) as? TitleSupplementaryView else {
             return UICollectionReusableView()
         }
         

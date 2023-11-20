@@ -44,7 +44,6 @@ final class TrackerCreatorPresenter {
     }
     
     func setTrackerTitle(_ title: String) {
-        print("presenter setTrackerTitle - \(title)")
         self.title = title
         updateAllPropertiesDidEnterState()
     }

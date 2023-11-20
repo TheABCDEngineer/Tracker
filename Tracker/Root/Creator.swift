@@ -8,6 +8,13 @@ final class Creator {
         )
     }
     
+    static func injectTrackersPresenter() -> TrackersPresenter {
+        return TrackersPresenter(
+            recordsRepository: injectTrackerRecordsRepository(),
+            dataProcessor: injectTrackersDataProcessor()
+        )
+    }
+    
     static func injectTrackerCreatorPresenter() -> TrackerCreatorPresenter {
         return TrackerCreatorPresenter(
             trackersRepository: injectTrackersRepository(),
@@ -46,5 +53,19 @@ final class Creator {
     
     static func injectCategoryTrackersPackRepository() -> CategoryTrackerPackRepository {
         return CategoryTrackerPackRepositoryImplUserDef()
+    }
+    
+    static func injectTrackerRecordsRepository() -> TrackerRecordsRepository {
+        return TrackerRecordsRepositoryImplUserDef()
+    }
+    
+//MARK: - Services injections
+    static func injectTrackersDataProcessor() -> TrackersDataProcessorProtocol {
+        return TrackersDataProcessorImpl(
+            trackersRepository: injectTrackersRepository(),
+            categoryRepository: injectTrackerCategoryRepository(),
+            packRepository: injectCategoryTrackersPackRepository(),
+            recordsRepository: injectTrackerRecordsRepository()
+        )
     }
 }

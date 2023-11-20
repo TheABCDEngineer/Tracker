@@ -18,7 +18,7 @@ final class TrackersRepositoryImplUserDef: TrackersRepository {
         }
     }
     
-    func createTracker(type: TrackerType, title: String, schedule: Set<WeekDays>?, emoji: String, color: TrackerColor
+    func createTracker(type: TrackerType, title: String, schedule: Set<WeekDays>, emoji: String, color: TrackerColor
     ) -> TrackerModel? {
         if checkOnSimilarTitle(title) { return nil}
         
@@ -48,7 +48,7 @@ final class TrackersRepositoryImplUserDef: TrackersRepository {
             id: trackerID,
             type: type ?? tracker.type,
             title: title ?? tracker.title,
-            schedule: schedule != nil ? schedule : tracker.schedule,
+            schedule: schedule ?? tracker.schedule,
             emoji: emoji ?? tracker.emoji,
             color: color ?? tracker.color
         )
@@ -74,7 +74,7 @@ final class TrackersRepositoryImplUserDef: TrackersRepository {
     }
     
     private func checkOnSimilarTitle(_ title: String) -> Bool {
-        var trackers = loadTrackers()
+        let trackers = loadTrackers()
         if trackers.isEmpty { return false }
         
         for tracker in trackers {

@@ -30,6 +30,11 @@ final class CategoryTrackerPackRepositoryImplUserDef: CategoryTrackerPackReposit
        
         trackerIDList.remove(tracker.id)
         
+        if trackerIDList.isEmpty {
+            removePack(for: initPack.categoryID)
+            return
+        }
+        
         let requiredPack = CategoryTrackerPack(
             categoryID: initPack.categoryID,
             trackerIDList: trackerIDList
@@ -75,5 +80,18 @@ final class CategoryTrackerPackRepositoryImplUserDef: CategoryTrackerPackReposit
         }
         if isNewPack { packs.append(pack) }
         savePacks(packs)
+    }
+    
+    private func removePack(for categoryID: Int) {
+        var packs = loadPacks()
+        if packs.isEmpty { return }
+        
+        for index in 0 ... packs.count - 1 {
+            if packs[index].categoryID == categoryID {
+                packs.remove(at: index)
+                savePacks(packs)
+                break
+            }
+        }
     }
 }

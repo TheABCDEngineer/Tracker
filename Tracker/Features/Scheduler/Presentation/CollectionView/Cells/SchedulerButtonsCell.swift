@@ -15,6 +15,10 @@ class SchedulerButtonsCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        applyButton?.removeFromSuperview()
+    }
+    
     func setDelegate(_ delegate: TrackerCreatorCVCellDelegate) {
         self.delegate = delegate
     }
