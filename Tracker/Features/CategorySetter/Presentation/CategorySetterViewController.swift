@@ -58,44 +58,20 @@ class CategorySetterViewController: UIViewController {
     }
     
     private func configureLayout() {
-        view.backgroundColor = .ypWhite
-        
         categoryCollection = UICollectionView(
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout()
-        )
-        categoryCollection.backgroundColor = .clear
-        
-        view.addSubView(
-            categoryCollection,
-            top: AnchorOf(view.topAnchor),
-            bottom: AnchorOf(view.bottomAnchor),
-            leading: AnchorOf(view.leadingAnchor, 16),
-            trailing: AnchorOf(view.trailingAnchor, -16)
-        )
-        categoryCollection.showsVerticalScrollIndicator = false
-        
-        placeholder.image.image = UIImage(named: "TrackerPlaceholder")
-        placeholder.label.text = "Привычки и события можно\nобъединить по смыслу"
-        view.addSubView(
-            placeholder.view, width: 175, heigth: 125,
-            centerX: AnchorOf(view.centerXAnchor),
-            centerY: AnchorOf(view.centerYAnchor)
         )
         
         addCategoryButton = UIButton.systemButton(
             with: UIImage(), target: nil, action: #selector(onAddCategoryButtonClick)
         )
-        addCategoryButton.layer.cornerRadius = 16
-        addCategoryButton.backgroundColor = .ypBlack
-        addCategoryButton.setTitle("Добавить категорию", for: .normal)
-        addCategoryButton.tintColor = .ypWhite
-        addCategoryButton.titleLabel?.font = Font.ypMedium16
-        view.addSubView(
-            addCategoryButton, heigth: 60,
-            bottom: AnchorOf(view.bottomAnchor, -50),
-            leading: AnchorOf(view.leadingAnchor, 16),
-            trailing: AnchorOf(view.trailingAnchor, -16)
+        
+        self.view = setupLayout(
+            for: self.view,
+            categoryCollection: categoryCollection,
+            placeholder: placeholder,
+            addCategoryButton: addCategoryButton
         )
     }
     

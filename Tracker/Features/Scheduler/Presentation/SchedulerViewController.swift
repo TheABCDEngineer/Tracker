@@ -33,23 +33,15 @@ final class SchedulerViewController: UIViewController {
     }
 
     private func configureLaout() {
-        view.backgroundColor = .ypWhite
-        
         schedulerCollection = UICollectionView(
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout()
         )
-        schedulerCollection.backgroundColor = .clear
-        
-        view.addSubView(
-            schedulerCollection,
-            top: AnchorOf(view.topAnchor),
-            bottom: AnchorOf(view.bottomAnchor),
-            leading: AnchorOf(view.leadingAnchor, 16),
-            trailing: AnchorOf(view.trailingAnchor, -16)
+        self.view = setupLayout(
+            for: self.view,
+            schedulerCollection: schedulerCollection,
+            applyButton: applyButton
         )
-        schedulerCollection.showsVerticalScrollIndicator = false
-        
     }
     
     private func configureSchedulerCollectionView() {
@@ -90,6 +82,7 @@ final class SchedulerViewController: UIViewController {
     }
 }
 
+//MARK: - CellDelegate
 extension SchedulerViewController: SchedulerCellsDelegate {
     func setSelectedDay(_ day: WeekDays) {
         presenter.setSelectedDay(day)
@@ -105,6 +98,7 @@ extension SchedulerViewController: SchedulerCellsDelegate {
     }
 }
 
+//MARK: - SchedulerCollectionViewDataSource
 extension SchedulerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int
     ) -> Int {

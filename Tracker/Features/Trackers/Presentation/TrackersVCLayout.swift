@@ -16,6 +16,7 @@ extension TrackersViewController {
         filterButton: UIButton
     ) -> UIView {
         let superView = view
+        superView.backgroundColor = .ypWhite
         
         addTrackerButton.tintColor = .ypBlack
         addTrackerButton.backgroundColor = .clear
@@ -122,7 +123,7 @@ extension TrackersViewController {
         
         filterBottomSheet.backgroundColor = .ypBottomSheet
         filterBottomSheet.cornerRadius = 20
-        filterBottomSheet.startHeight = 450
+        filterBottomSheet.startHeight = 470
         
         let filterLable = UILabel()
         filterLable.backgroundColor = .clear

@@ -31,7 +31,6 @@ final class TrackersViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .ypWhite
         configureLayout()
         configureTrackerCollectionView()
         configureFilterCollectionView()
@@ -231,7 +230,7 @@ extension TrackersViewController {
         
         filterCV = UICollectionView(
             frame: .zero,
-            collectionViewLayout: FilterCVLayout.setup(width: filterBottomSheet.view.frame.width-32)
+            collectionViewLayout: FilterCVFlowLayout.setup(width: filterBottomSheet.view.frame.width-32)
         )
 
         self.view = setupLayout(

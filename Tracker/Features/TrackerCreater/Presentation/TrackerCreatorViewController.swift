@@ -25,7 +25,6 @@ final class TrackerCreatorViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .ypWhite
         configureLayout()
         setObservers()
         configureCreatorCollectionView()
@@ -313,15 +312,7 @@ extension TrackerCreatorViewController {
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout()
         )
-        eventCreatorCollection.backgroundColor = .clear
-        view.addSubView(
-            eventCreatorCollection,
-            top: AnchorOf(view.topAnchor),
-            bottom: AnchorOf(view.bottomAnchor),
-            leading: AnchorOf(view.leadingAnchor, 16),
-            trailing: AnchorOf(view.trailingAnchor, -16)
-        )
-        eventCreatorCollection.showsVerticalScrollIndicator = false
+        self.view = setupLayout(for: self.view, eventCreatorCollection: eventCreatorCollection)
     }
     
     private func configureCreatorCollectionView() {
