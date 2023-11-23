@@ -11,7 +11,8 @@ final class TrackerRecordsRepositoryImplUserDef: TrackerRecordsRepository {
         return records
     }
     
-    func getRecordByTrackerID(for trackerID: Int, from records: [TrackerRecord]) -> TrackerRecord? {
+    func getRecordByTrackerID(for trackerID: Int) -> TrackerRecord? {
+        let records = loadRecords()
         if records.isEmpty { return nil }
         
         var trackerRecord: TrackerRecord?
@@ -27,7 +28,7 @@ final class TrackerRecordsRepositoryImplUserDef: TrackerRecordsRepository {
     
     func saveRecord(for trackerID: Int, date: Date) -> TrackerRecord {
         var dates = Set<Date>()
-        if let initRecord = getRecordByTrackerID(for: trackerID, from: loadRecords()) {
+        if let initRecord = getRecordByTrackerID(for: trackerID) {
             dates = initRecord.dates
         }
         dates.insert(date)
@@ -38,7 +39,7 @@ final class TrackerRecordsRepositoryImplUserDef: TrackerRecordsRepository {
     }
     
     func removeRecord(for trackerID: Int, date: Date) {
-        guard let initRecord = getRecordByTrackerID(for: trackerID, from: loadRecords()) else { return }
+        guard let initRecord = getRecordByTrackerID(for: trackerID) else { return }
         var dates = initRecord.dates
         if dates.isEmpty { return }
         
@@ -58,6 +59,19 @@ final class TrackerRecordsRepositoryImplUserDef: TrackerRecordsRepository {
         saveRecord(updatedRecord)
     }
     
+    func removeRecords(for trackerID: Int ) {
+        var records = loadRecords()
+        if records.isEmpty { return }
+        
+        for index in 0 ... records.count - 1 {
+            if records[index].trackerID == trackerID {
+                records.remove(at: index)
+                saveRecords(records)
+                break
+            }
+        }
+    }
+    
     private func saveRecords(_ records: [TrackerRecord]) {
         repository.setJSON(codable: records, forKey: key)
     }
@@ -75,18 +89,5 @@ final class TrackerRecordsRepositoryImplUserDef: TrackerRecordsRepository {
         }
         records.append(record)
         saveRecords(records)
-    }
-    
-    private func removeRecords(for trackerID: Int ) {
-        var records = loadRecords()
-        if records.isEmpty { return }
-        
-        for index in 0 ... records.count - 1 {
-            if records[index].trackerID == trackerID {
-                records.remove(at: index)
-                saveRecords(records)
-                break
-            }
-        }
     }
 }

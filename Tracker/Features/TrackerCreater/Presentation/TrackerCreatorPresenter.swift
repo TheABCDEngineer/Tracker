@@ -4,7 +4,7 @@ final class TrackerCreatorPresenter {
     
     private let trackersRepository: TrackersRepository
     
-    private let packRepository: CategoryTrackerPackRepository
+    private let packRepository: TrackersPackRepository
     
     private var trackerType: TrackerType = .event
     
@@ -28,7 +28,7 @@ final class TrackerCreatorPresenter {
     
     init(
         trackersRepository: TrackersRepository,
-        packRepository: CategoryTrackerPackRepository
+        packRepository: TrackersPackRepository
     ) {
         self.trackersRepository = trackersRepository
         self.packRepository = packRepository
@@ -84,8 +84,7 @@ final class TrackerCreatorPresenter {
         ) else { return }
         
         packRepository.addTrackerToCategory(
-            with: tracker,
-            to: category
+            trackerID: tracker.id, categoryID: category.id
         )
     }
     

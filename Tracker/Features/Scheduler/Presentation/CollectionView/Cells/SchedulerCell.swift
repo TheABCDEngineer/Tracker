@@ -36,6 +36,7 @@ class SchedulerCell: SettingsMenuCell {
             centerY: AnchorOf(contentView.centerYAnchor)
         )
         
+        switcher.onTintColor = .ypBlue
         switcher.setOn(isActive, animated: false)
         switcher.addTarget(self, action: #selector(onSwitcherClick), for: .allEvents)
     }

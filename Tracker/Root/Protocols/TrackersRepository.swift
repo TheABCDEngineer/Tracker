@@ -19,4 +19,8 @@ protocol TrackersRepository {
         emoji: String?,
         color: TrackerColor?
     ) -> TrackerModel?
+    
+    func removeTracker(id: Int)
+    
+    func getTrackerByID(_ id: Int) -> TrackerModel?
 }

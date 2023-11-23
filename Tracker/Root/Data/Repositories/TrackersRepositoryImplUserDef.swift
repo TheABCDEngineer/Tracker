@@ -63,6 +63,33 @@ final class TrackersRepositoryImplUserDef: TrackersRepository {
         return updatedTracker
     }
     
+    func removeTracker(id: Int) {
+        var trackers = loadTrackers()
+        if trackers.isEmpty { return }
+        
+        if getTrackerByID(id) == nil { return }
+        
+        for index in 0 ... trackers.count - 1 {
+            if trackers[index].id == id {
+                trackers.remove(at: index)
+                break
+            }
+        }
+        saveTrackers(trackers)
+    }
+    
+    func getTrackerByID(_ id: Int) -> TrackerModel? {
+        let trackers = loadTrackers()
+        if trackers.isEmpty { return nil }
+        
+        for tracker in trackers {
+            if tracker.id == id {
+                return tracker
+            }
+        }
+        return nil
+    }
+    
     private func saveTracker(_ tracker: TrackerModel) {
         var trackers = loadTrackers()
         trackers.append(tracker)
@@ -81,17 +108,5 @@ final class TrackersRepositoryImplUserDef: TrackersRepository {
             if title == tracker.title { return true }
         }
         return false
-    }
-    
-    private func getTrackerByID(_ id: Int) -> TrackerModel? {
-        let trackers = loadTrackers()
-        if trackers.isEmpty { return nil }
-        
-        for tracker in trackers {
-            if tracker.id == id {
-                return tracker
-            }
-        }
-        return nil
     }
 }

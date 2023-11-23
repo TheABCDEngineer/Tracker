@@ -1,50 +1,64 @@
 import Foundation
 
-final class CategoryTrackerPackRepositoryImplUserDef: CategoryTrackerPackRepository {
+final class TrackersPackRepositoryImplUserDef: TrackersPackRepository {
     
     private let repository = UserDefaults.standard
     
     private let key = "trackersPacks"
     
-    func loadPacks() -> [CategoryTrackerPack] {
-        let packs: [CategoryTrackerPack] = repository.getJSON(forKey: key) ?? [CategoryTrackerPack]()
+    func loadPacks() -> [TrackersPack] {
+        let packs: [TrackersPack] = repository.getJSON(forKey: key) ?? [TrackersPack]()
         return packs
     }
     
-    func addTrackerToCategory(with tracker: TrackerModel, to category: TrackerCategory) {
-        let initPack = getPackByCategory(category.id)
+    func addTrackerToCategory(trackerID: Int, categoryID: Int) {
+        let initPack = getPackByCategory(categoryID)
         var trackerIDList = initPack.trackerIDList
        
-        trackerIDList.insert(tracker.id)
+        trackerIDList.insert(trackerID)
         
-        let requiredPack = CategoryTrackerPack(
+        let requiredPack = TrackersPack(
             categoryID: initPack.categoryID,
             trackerIDList: trackerIDList
         )
         savePack(requiredPack)
     }
     
-    func removeTrackerFromCategory(with tracker: TrackerModel, from category: TrackerCategory) {
-        let initPack = getPackByCategory(category.id)
+    func removeTrackerFromCategory(trackerID: Int) {
+        let packs = loadPacks()
+        if packs.isEmpty { return }
+        
+        var initPack: TrackersPack?
+        for pack in packs {
+            if pack.trackerIDList.isEmpty { continue }
+            for id in pack.trackerIDList {
+                if trackerID == id {
+                    initPack = pack
+                    break
+                }
+            }
+        }
+        guard let initPack else { return }
+        
         var trackerIDList = initPack.trackerIDList
        
-        trackerIDList.remove(tracker.id)
+        trackerIDList.remove(trackerID)
         
         if trackerIDList.isEmpty {
             removePack(for: initPack.categoryID)
             return
         }
         
-        let requiredPack = CategoryTrackerPack(
+        let updatedPack = TrackersPack(
             categoryID: initPack.categoryID,
             trackerIDList: trackerIDList
         )
-        savePack(requiredPack)
+        savePack(updatedPack)
     }
     
-    private func getPackByCategory(_ categoryID: Int) -> CategoryTrackerPack {
+    private func getPackByCategory(_ categoryID: Int) -> TrackersPack {
         let packs = loadPacks()
-        var requiredPack = CategoryTrackerPack(categoryID: categoryID, trackerIDList: [])
+        var requiredPack = TrackersPack(categoryID: categoryID, trackerIDList: [])
         
         if packs.isEmpty { return requiredPack }
         
@@ -57,11 +71,11 @@ final class CategoryTrackerPackRepositoryImplUserDef: CategoryTrackerPackReposit
         return requiredPack
     }
     
-    private func savePacks(_ packs: [CategoryTrackerPack]) {
+    private func savePacks(_ packs: [TrackersPack]) {
         repository.setJSON(codable: packs, forKey: key)
     }
     
-    private func savePack(_ pack: CategoryTrackerPack) {
+    private func savePack(_ pack: TrackersPack) {
         var packs = loadPacks()
         
         if packs.isEmpty {
