@@ -75,15 +75,17 @@ final class TrackersDataProcessorImpl: TrackersDataProcessorProtocol {
     }
     
     func fetchPacksForTrackers(for requiredTrackers: [TrackerModel]) -> [TrackersPack] {
-        var requiredPacks = [TrackersPack]()
-        let trackersPacks = packRepository.loadPacks()
-        
-        for trackersPack in trackersPacks {
-            if checkPackContainsEnyTracker(for: trackersPack, where: requiredTrackers) {
-                requiredPacks.append(trackersPack)
+        var categories = Set<Int>()
+
+        for tracker in requiredTrackers {
+            if let pack = packRepository.getPackByTrackerID(tracker.id) {
+                categories.insert(pack.categoryID)
             }
         }
-        return requiredPacks
+
+        return categories.sorted().map {
+            packRepository.getPackByCategoryID($0)
+        }
     }
     
     func fetchTitleByCategoryID(_ id: Int) -> String {
@@ -112,19 +114,6 @@ final class TrackersDataProcessorImpl: TrackersDataProcessorProtocol {
     }
  
  //MARK: - Private funcs
-    private func checkPackContainsEnyTracker(
-        for trackersPack: TrackersPack,
-        where trackers: [TrackerModel]
-    ) -> Bool {
-        for id in trackersPack.trackerIDList {
-            if trackers.isEmpty { break }
-            for tracker in trackers {
-                if tracker.id == id { return true }
-            }
-        }
-        return false
-    }
-    
     private func checkTrackerExistForDate(tracker: TrackerModel, for date: Date) -> Bool {
         if tracker.type == .event { return true }
    

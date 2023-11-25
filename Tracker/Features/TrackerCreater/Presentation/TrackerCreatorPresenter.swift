@@ -6,17 +6,21 @@ final class TrackerCreatorPresenter {
     
     private let packRepository: TrackersPackRepository
     
-    private var trackerType: TrackerType = .event
+    private let categoryRepository: TrackerCategoryRepository
     
-    private var title: String = ""
+    private var modifyingTrackerID: Int?
+    
+    private (set) var trackerType: TrackerType = .event
+    
+    private (set) var title: String = ""
     
     private (set) var category: TrackerCategory?
     
     private (set) var schedule = Set<WeekDays>()
     
-    private var emoji: String = ""
+    private (set) var emoji: String = ""
     
-    private var color: TrackerColor?
+    private (set) var color: TrackerColor?
     
     private var takenTrackerTitles = Set<String>()
     
@@ -28,15 +32,35 @@ final class TrackerCreatorPresenter {
     
     init(
         trackersRepository: TrackersRepository,
-        packRepository: TrackersPackRepository
+        packRepository: TrackersPackRepository,
+        categoryRepository: TrackerCategoryRepository
     ) {
         self.trackersRepository = trackersRepository
         self.packRepository = packRepository
+        self.categoryRepository = categoryRepository
         
         let trackers = trackersRepository.loadTrackers()
         for tracker in trackers {
             self.takenTrackerTitles.insert(tracker.title)
         }
+    }
+    
+    func setTrackerIdIfModify(_ id: Int) {
+        guard
+            let tracker = trackersRepository.getTrackerByID(id),
+            let pack = packRepository.getPackByTrackerID(id),
+            let category = categoryRepository.getCategoryById(id: pack.categoryID)
+        else { return }
+        
+        modifyingTrackerID = id
+        self.trackerType = tracker.type
+        self.title = tracker.title
+        self.category = category
+        self.schedule = tracker.schedule
+        self.emoji = tracker.emoji
+        self.color = tracker.color
+        
+        takenTrackerTitles.remove(title)
     }
     
     func setTrackerType(_ type: TrackerType) {
@@ -59,7 +83,7 @@ final class TrackerCreatorPresenter {
         self.schedule = schedule
         updateAllPropertiesDidEnterState()
         scheduleCreated.postValue(
-            convertSheduleToString(schedule)
+            convertScheduleToString(schedule)
         )
     }
     
@@ -74,6 +98,11 @@ final class TrackerCreatorPresenter {
     }
     
     func createTracker() {
+        if let modifyingTrackerID {
+            updateTracker(trackerID: modifyingTrackerID)
+            return
+        }
+        
         guard let category, let color else { return }
         guard let tracker = trackersRepository.createTracker(
             type: trackerType,
@@ -101,23 +130,7 @@ final class TrackerCreatorPresenter {
         scheduleCreated.observe(completion)
     }
     
-//MARK: - Private
-    private func updateAllPropertiesDidEnterState() {
-        var isEnter = true
-        if title.isEmpty || takenTrackerTitles.contains(title) { isEnter = false }
-        if category == nil { isEnter = false }
-        if schedule.isEmpty && trackerType == .habit { isEnter = false }
-        if emoji.isEmpty { isEnter = false }
-        if color == nil { isEnter = false }
-
-        if isEnter {
-            allPropertiesDidEnter.postValue(ApplyButton.active)
-        } else {
-            allPropertiesDidEnter.postValue(ApplyButton.inactive)
-        }
-    }
-    
-    private func convertSheduleToString(_ schedule: Set<WeekDays>) -> String {
+    func convertScheduleToString(_ schedule: Set<WeekDays>) -> String {
         if schedule.isEmpty { return "" }
         
         if schedule.count == 2
@@ -143,5 +156,44 @@ final class TrackerCreatorPresenter {
             }
         }
         return String(result.dropLast(2))
+    }
+    
+//MARK: - Private
+    private func updateAllPropertiesDidEnterState() {
+        var isEnter = true
+        if title.isEmpty || takenTrackerTitles.contains(title) { isEnter = false }
+        if category == nil { isEnter = false }
+        if schedule.isEmpty && trackerType == .habit { isEnter = false }
+        if emoji.isEmpty { isEnter = false }
+        if color == nil { isEnter = false }
+
+        if isEnter {
+            allPropertiesDidEnter.postValue(ApplyButton.active)
+        } else {
+            allPropertiesDidEnter.postValue(ApplyButton.inactive)
+        }
+    }
+    
+    private func updateTracker(trackerID: Int) {
+        guard let category else { return }
+        guard let tracker = trackersRepository.updateTracker(
+            for: trackerID,
+            type: trackerType,
+            title: title,
+            schedule: schedule,
+            emoji: emoji,
+            color: color
+        ) else { return }
+        
+        guard let pack =
+                packRepository.getPackByTrackerID(trackerID) else { return }
+        
+        if pack.categoryID == category.id { return }
+        
+        packRepository.removeTrackerFromCategory(trackerID: trackerID)
+        
+        packRepository.addTrackerToCategory(
+            trackerID: tracker.id, categoryID: category.id
+        )
     }
 }

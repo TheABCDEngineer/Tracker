@@ -17,7 +17,8 @@ final class Creator {
     static func injectTrackerCreatorPresenter() -> TrackerCreatorPresenter {
         return TrackerCreatorPresenter(
             trackersRepository: injectTrackersRepository(),
-            packRepository: injectCategoryTrackersPackRepository()
+            packRepository: injectTrackersPackRepository(),
+            categoryRepository: injectTrackerCategoryRepository()
         )
     }
     
@@ -50,7 +51,7 @@ final class Creator {
         return TrackersRepositoryImplUserDef.shared
     }
     
-    static func injectCategoryTrackersPackRepository() -> TrackersPackRepository {
+    static func injectTrackersPackRepository() -> TrackersPackRepository {
         return TrackersPackRepositoryImplUserDef()
     }
     
@@ -63,7 +64,7 @@ final class Creator {
         return TrackersDataProcessorImpl(
             trackersRepository: injectTrackersRepository(),
             categoryRepository: injectTrackerCategoryRepository(),
-            packRepository: injectCategoryTrackersPackRepository(),
+            packRepository: injectTrackersPackRepository(),
             recordsRepository: injectTrackerRecordsRepository()
         )
     }

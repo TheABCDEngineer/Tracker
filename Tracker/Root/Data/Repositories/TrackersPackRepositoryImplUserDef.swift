@@ -12,7 +12,7 @@ final class TrackersPackRepositoryImplUserDef: TrackersPackRepository {
     }
     
     func addTrackerToCategory(trackerID: Int, categoryID: Int) {
-        let initPack = getPackByCategory(categoryID)
+        let initPack = getPackByCategoryID(categoryID)
         var trackerIDList = initPack.trackerIDList
        
         trackerIDList.insert(trackerID)
@@ -25,20 +25,7 @@ final class TrackersPackRepositoryImplUserDef: TrackersPackRepository {
     }
     
     func removeTrackerFromCategory(trackerID: Int) {
-        let packs = loadPacks()
-        if packs.isEmpty { return }
-        
-        var initPack: TrackersPack?
-        for pack in packs {
-            if pack.trackerIDList.isEmpty { continue }
-            for id in pack.trackerIDList {
-                if trackerID == id {
-                    initPack = pack
-                    break
-                }
-            }
-        }
-        guard let initPack else { return }
+        guard let initPack = getPackByTrackerID(trackerID) else { return }
         
         var trackerIDList = initPack.trackerIDList
        
@@ -56,7 +43,18 @@ final class TrackersPackRepositoryImplUserDef: TrackersPackRepository {
         savePack(updatedPack)
     }
     
-    private func getPackByCategory(_ categoryID: Int) -> TrackersPack {
+    func getPackByTrackerID(_ trackerID: Int) -> TrackersPack? {
+        let packs = loadPacks()
+        
+        for pack in packs {
+            for id in pack.trackerIDList {
+                if trackerID == id { return pack }
+            }
+        }
+        return nil
+    }
+    
+    func getPackByCategoryID(_ categoryID: Int) -> TrackersPack {
         let packs = loadPacks()
         var requiredPack = TrackersPack(categoryID: categoryID, trackerIDList: [])
         

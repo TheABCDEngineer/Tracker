@@ -25,7 +25,7 @@ final class TrackersViewController: UIViewController {
     
     private var trackersFieldData = [TrackersPackScreenModel]()
     
-    private var checkedTrackerIndexPath: IndexPath?
+    private var selectedTrackerIndexPath: IndexPath?
     
     private let filterDataSource = FilterCVDataSource()
     
@@ -65,12 +65,13 @@ final class TrackersViewController: UIViewController {
         filterBottomSheet.show()
     }
     
-    private func createEvent(event: TrackerType) {
+    private func createEvent(event: TrackerType? = nil, modifyingTrackerID: Int? = nil) {
         let controller = TrackerCreatorViewController()
-        controller.trackerType = event
+        controller.setTrackerType(event)
+        controller.setTrackerIdIfModify(modifyingTrackerID)
         controller.onTrackerCreated { [weak self] in
             guard let self else { return }
-            self.presenter.setUserDate(self.datePicker.date)
+            self.presenter.updateData()
         }
         self.present(controller, animated: true)
     }
@@ -85,7 +86,7 @@ final class TrackersViewController: UIViewController {
         }
         
         presenter.ObserveModifiedTracker { [weak self] trackerModel in
-            guard let self, let trackerModel, let index = checkedTrackerIndexPath else { return }
+            guard let self, let trackerModel, let index = selectedTrackerIndexPath else { return }
 
             self.trackersFieldData[index.section].trackers[index.item] = trackerModel
  
@@ -118,6 +119,8 @@ final class TrackersViewController: UIViewController {
     
     private func configureFilterCollectionView() {
         filterCV.dataSource = filterDataSource
+        filterCV.delegate = self
+        
         filterDataSource.cellDelegate = self
         
         filterCV.register(
@@ -127,10 +130,17 @@ final class TrackersViewController: UIViewController {
     }
 }
 
+//MARK: - AlertPresenterProtocol
+extension TrackersViewController: AlertPresenterProtocol {
+    func present(alert: UIAlertController, animated: Bool) {
+        self.present(alert, animated: animated)
+    }
+}
+
 //MARK: - TrackersCVCellDelegate
 extension TrackersViewController: TrackersCVCellDelegate {
     func onTrackerChecked(for indexPath: IndexPath) {
-        checkedTrackerIndexPath = indexPath
+        selectedTrackerIndexPath = indexPath
         presenter.onTrackerChecked(
             tracker: trackersFieldData[indexPath.section].trackers[indexPath.item]
         )
@@ -154,6 +164,58 @@ extension TrackersViewController: FilterCellDelegate {
     }
 }
 
+//MARK: - UIContextMenuInteractionDelegate
+extension TrackersViewController: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(
+            identifier: nil,
+            previewProvider: nil
+        ) { actions -> UIMenu? in
+            
+            let edit = UIAction(
+                title: "Редактировать",
+                image: UIImage(systemName: "pencil")
+            ) { _ in
+                if let indexPath = self.selectedTrackerIndexPath {
+                    self.createEvent(
+                        modifyingTrackerID: self.trackersFieldData[indexPath.section].trackers[indexPath.item].id
+                    )
+                }
+            }
+
+            let remove = UIAction(
+                title: "Удалить",
+                image: UIImage(systemName: "trash.fill"),
+                attributes: .destructive
+            ) { _ in
+                guard let indexPath = self.selectedTrackerIndexPath else { return }
+                
+                AlertController.removeObject(
+                    alertPresenter: self,
+                    title: "Уверены что хотите удалить трекер?"
+                ) {
+                    self.presenter.onRemoveTracker(
+                        trackerID: self.trackersFieldData[indexPath.section].trackers[indexPath.item].id
+                    )
+                }
+            }
+            
+            return UIMenu(title: "", children: [edit, remove])
+        }
+    }
+
+}
+
+//MARK: - UICollectionViewDelegate
+extension TrackersViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath
+    ) -> Bool {
+        selectedTrackerIndexPath = indexPath
+        return true
+    }
+}
+
 //MARK: - TrackersCollectionViewDataSource
 extension TrackersViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -168,7 +230,7 @@ extension TrackersViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCell.Identifier, for: indexPath) as? TrackerCell else {
             return UICollectionViewCell()
         }
-        cell.setDelegate(self)
+        cell.setDelegates(cellDelegate: self, contextMenuDelegate: self)
         cell.setIndexPath(indexPath)
         cell.setModel(trackersFieldData[indexPath.section].trackers[indexPath.item])
         return cell

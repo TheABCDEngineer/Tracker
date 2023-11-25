@@ -22,6 +22,11 @@ final class TrackerCreatorTitleCell: UICollectionViewCell {
         self.delegate = delegate
     }
     
+    func setInitTitle(_ title: String) {
+        if title.isEmpty { return }
+        titleField.text = title
+    }
+    
     func unfocused() {
         titleField.resignFirstResponder()
     }
@@ -36,7 +41,8 @@ final class TrackerCreatorTitleCell: UICollectionViewCell {
         eventLable.backgroundColor = .clear
         eventLable.textColor = .ypBlack
         eventLable.font = Font.ypMedium16
-        
+        eventLable.lineBreakMode = .byTruncatingTail
+        eventLable.adjustsFontSizeToFitWidth = false
         
         titleField.layer.cornerRadius = 16
         titleField.backgroundColor = .clear

@@ -94,6 +94,8 @@
 		ABC4D66F2B0FAE1A002F341D /* CategorySetterVCLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC4D66E2B0FAE1A002F341D /* CategorySetterVCLayout.swift */; };
 		ABC4D6712B0FAFFC002F341D /* ShedulerVCLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC4D6702B0FAFFC002F341D /* ShedulerVCLayout.swift */; };
 		ABC4D6732B0FB223002F341D /* TrackerCreatorVCLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC4D6722B0FB223002F341D /* TrackerCreatorVCLayout.swift */; };
+		ABC4D6752B12936F002F341D /* AlertPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC4D6742B12936F002F341D /* AlertPresenterProtocol.swift */; };
+		ABC4D6772B12954D002F341D /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC4D6762B12954D002F341D /* AlertController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -186,6 +188,8 @@
 		ABC4D66E2B0FAE1A002F341D /* CategorySetterVCLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySetterVCLayout.swift; sourceTree = "<group>"; };
 		ABC4D6702B0FAFFC002F341D /* ShedulerVCLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShedulerVCLayout.swift; sourceTree = "<group>"; };
 		ABC4D6722B0FB223002F341D /* TrackerCreatorVCLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCreatorVCLayout.swift; sourceTree = "<group>"; };
+		ABC4D6742B12936F002F341D /* AlertPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenterProtocol.swift; sourceTree = "<group>"; };
+		ABC4D6762B12954D002F341D /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -511,6 +515,7 @@
 		AB5485C12AED04F9001ED0B1 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				ABC4D6742B12936F002F341D /* AlertPresenterProtocol.swift */,
 				AB5485BB2AE86968001ED0B1 /* ViewVisibilityProtocol.swift */,
 			);
 			path = Protocols;
@@ -595,6 +600,7 @@
 				AB54859B2AE3FBF5001ED0B1 /* TabBarController.swift */,
 				AB5485B72AE83D1F001ED0B1 /* BottomSheet.swift */,
 				AB5485BF2AED01F9001ED0B1 /* Placeholder.swift */,
+				ABC4D6762B12954D002F341D /* AlertController.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -793,6 +799,7 @@
 				AB3BD3312AEE8E4F00BC3BD7 /* SectionTitleHeaderView.swift in Sources */,
 				AB3BD3A62B079D0700BC3BD7 /* TrackersCVDelegateFlowLayout.swift in Sources */,
 				AB3BD32A2AED9AE800BC3BD7 /* TrackerModel.swift in Sources */,
+				ABC4D6772B12954D002F341D /* AlertController.swift in Sources */,
 				AB3BD33F2AF2B39300BC3BD7 /* TrackerCreatorSettingsCell.swift in Sources */,
 				AB3BD36B2AFE3AA900BC3BD7 /* CategorySetterViewController.swift in Sources */,
 				AB3BD3A02B06645100BC3BD7 /* DataConverter.swift in Sources */,
@@ -810,6 +817,7 @@
 				AB3BD3AB2B07B40E00BC3BD7 /* TrackersCVCellDelegate.swift in Sources */,
 				AB5485B02AE45EE3001ED0B1 /* OnboardingPresenterProtocol.swift in Sources */,
 				AB3BD3252AED970500BC3BD7 /* WeekDays.swift in Sources */,
+				ABC4D6752B12936F002F341D /* AlertPresenterProtocol.swift in Sources */,
 				AB5485B32AE588AA001ED0B1 /* TrackersViewController.swift in Sources */,
 				AB3BD37E2B03779600BC3BD7 /* UserDefaults+Extensions.swift in Sources */,
 				AB5485BC2AE86968001ED0B1 /* ViewVisibilityProtocol.swift in Sources */,

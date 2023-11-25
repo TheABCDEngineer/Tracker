@@ -61,6 +61,7 @@ final class TrackersPresenter {
     
     func onRemoveTracker(trackerID: Int) {
         dataProcessor.removeTracker(id: trackerID)
+        updateData()
     }
     
 //MARK: - Observers
@@ -75,7 +76,7 @@ final class TrackersPresenter {
 //MARK: - private funcs
     private func provideScreenData() -> [TrackersPackScreenModel] {
         var resultPackScreenModels = [TrackersPackScreenModel]()
-        var trackers = provideTrackersByFilter()
+        let trackers = provideTrackersByFilter()
         
         printData(trackers)
         
@@ -118,7 +119,7 @@ final class TrackersPresenter {
         var trackerScreenModels = [TrackerScreenModel]()
         
         if !trackersPack.trackerIDList.isEmpty || !trackers.isEmpty {
-            for trackerIDInPack in trackersPack.trackerIDList {
+            for trackerIDInPack in trackersPack.trackerIDList.sorted() {
                 for tracker in trackers {
                     if trackerIDInPack == tracker.id {
                         trackerScreenModels.append(

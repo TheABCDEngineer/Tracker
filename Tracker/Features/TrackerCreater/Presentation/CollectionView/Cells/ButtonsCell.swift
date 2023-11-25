@@ -59,7 +59,6 @@ final class ButtonsCell: UICollectionViewCell {
         
         applyButton.layer.cornerRadius = 16
         applyButton.backgroundColor = ApplyButton.inactive.color
-        applyButton.setTitle("Создать", for: .normal)
         applyButton.titleLabel?.font = Font.ypMedium16
         applyButton.tintColor = .ypWhite
         applyButton.isUserInteractionEnabled = ApplyButton.inactive.isEnabled

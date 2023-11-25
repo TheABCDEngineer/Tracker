@@ -2,9 +2,7 @@ import UIKit
 
 final class EmojiCell: UICollectionViewCell {
     static let Identifier = "EmojiCell"
-        
-    private var emoji: String?
-    
+
     private var indexPath: IndexPath?
     
     private let label = UILabel()
@@ -42,20 +40,21 @@ final class EmojiCell: UICollectionViewCell {
     }
     
     func setEmoji(_ value: String, indexPath: IndexPath) {
-        self.emoji = value
-        guard let emoji else { return }
-        label.text = emoji
-        
+        label.text = value
         self.indexPath = indexPath
     }
     
-    @objc
-    private func onCellClick() {
+    func selectCell() {
         delegate?.reloadPreviousSelectedEmojiCell()
         
         if let indexPath {
             delegate?.setSelectedEmojiItem(indexPath)
         }
         contentView.backgroundColor = .ypLightGray
+    }
+    
+    @objc
+    private func onCellClick() {
+        selectCell()
     }
 }

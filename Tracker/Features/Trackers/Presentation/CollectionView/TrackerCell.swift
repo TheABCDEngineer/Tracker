@@ -5,7 +5,7 @@ class TrackerCell: UICollectionViewCell {
     
     private var indexPath: IndexPath?
     
-    private var delegate: TrackersCVCellDelegate?
+    private var cellDelegate: TrackersCVCellDelegate?
     
     private let trackerCard = UIView()
     
@@ -28,8 +28,15 @@ class TrackerCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setDelegate(_ delegate: TrackersCVCellDelegate) {
-        self.delegate = delegate
+    func setDelegates(
+        cellDelegate: TrackersCVCellDelegate,
+        contextMenuDelegate: UIContextMenuInteractionDelegate
+    ) {
+        self.cellDelegate = cellDelegate
+        
+        trackerCard.addInteraction(
+            UIContextMenuInteraction(delegate: contextMenuDelegate)
+        )
     }
     
     func setIndexPath(_ indexPath: IndexPath) {
@@ -152,6 +159,6 @@ class TrackerCell: UICollectionViewCell {
     @objc
     private func onCheckButtonClick() {
         guard let indexPath else { return }
-        delegate?.onTrackerChecked(for: indexPath)
+        cellDelegate?.onTrackerChecked(for: indexPath)
     }
 }

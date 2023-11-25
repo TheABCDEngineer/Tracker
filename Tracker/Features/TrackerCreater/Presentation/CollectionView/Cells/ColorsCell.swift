@@ -4,9 +4,7 @@ class ColorsCell: UICollectionViewCell {
     static let Identifier = "ColorsCell"
     
     private let view = UIView()
-    
-    private var color: TrackerColor?
-    
+
     private var indexPath: IndexPath?
     
     private var delegate: TrackerCreatorCVCellDelegate?
@@ -42,22 +40,24 @@ class ColorsCell: UICollectionViewCell {
     }
     
     func setColor(_ value: TrackerColor, indexPath: IndexPath) {
-        self.color = value
-        guard let background = color?.toUIColor() else { return }
-        view.backgroundColor = background
+        view.backgroundColor = value.toUIColor()
+        contentView.layer.borderColor = value.toUIColor().withAlphaComponent(0.3).cgColor
         
         self.indexPath = indexPath
     }
     
-    @objc
-    private func onCellClick() {
+    func selectCell() {
         delegate?.reloadPreviousSelectedColorCell()
         
         if let indexPath {
             delegate?.setSelectedColorItem(indexPath)
         }
         contentView.layer.borderWidth = 4
-        contentView.layer.borderColor = color?.toUIColor().withAlphaComponent(0.3).cgColor
+    }
+    
+    @objc
+    private func onCellClick() {
+        selectCell()
     }
     
 }

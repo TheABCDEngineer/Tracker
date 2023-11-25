@@ -1,7 +1,8 @@
 import UIKit
 
 final class TrackerCreatorViewController: UIViewController {
-    var trackerType: TrackerType = .event
+ 
+    private var isModifyTracker = false
     
     private let presenter = Creator.injectTrackerCreatorPresenter()
     
@@ -28,11 +29,25 @@ final class TrackerCreatorViewController: UIViewController {
         configureLayout()
         setObservers()
         configureCreatorCollectionView()
-        presenter.setTrackerType(trackerType)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        isModifyTracker = false
     }
     
     func onTrackerCreated(_ completion: @escaping () -> Void) {
         self.onTrackerCreated = completion
+    }
+    
+    func setTrackerType(_ trackerType: TrackerType?) {
+        guard let trackerType else { return }
+        presenter.setTrackerType(trackerType)
+    }
+    
+    func setTrackerIdIfModify(_ id: Int?) {
+        guard let id else { return }
+        isModifyTracker = true
+        presenter.setTrackerIdIfModify(id)
     }
     
     private func setObservers() {
@@ -112,7 +127,7 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
         case 0:
             return 1
         case 1:
-            return trackerType == .habit ? 2 : 1
+            return presenter.trackerType == .habit ? 2 : 1
         case 2:
             return TrackerEmoji.items.count
         case 3:
@@ -168,7 +183,20 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
                     return UICollectionViewCell()
                 }
         titleFieldIndexPath = indexPath
-        cell.eventLable.text = trackerType == .habit ? "Новая привычка" : "Новое нерегулярное событие"
+        
+        var headerTitle = ""
+        if isModifyTracker {
+            headerTitle = presenter.trackerType == .habit
+                ? "Редактирование привычки"
+                : "Редактирование нерегулярного события"
+        } else {
+            headerTitle = presenter.trackerType == .habit
+                ? "Новая привычка"
+                : "Новое нерегулярное событие"
+        }
+        
+        cell.eventLable.text = headerTitle
+        cell.setInitTitle(presenter.title)
         cell.setDelegate(self)
         return cell
     }
@@ -187,17 +215,31 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
         case 0:
             categoryIndexPath = indexPath
             cell.label.text = "Категория"
-            let cellType: SettingsMenuCellType = trackerType == .event ? .single : .first
+            let cellType: SettingsMenuCellType = presenter.trackerType == .event
+                ? .single
+                : .first
             cell.initCell(cellType)
+            
             cell.addActionOnCellClick {
                 self.launchCategorySelector()
+            }
+            if isModifyTracker {
+                if let category = presenter.category {
+                    cell.subLabel.text = category.title
+                    cell.updateLabels()
+                }
             }
         case 1:
             scheduleIndexPath = indexPath
             cell.label.text = "Расписание"
             cell.initCell(.last)
+            
             cell.addActionOnCellClick {
                 self.launchScheduler()
+            }
+            if isModifyTracker {
+                cell.subLabel.text = presenter.convertScheduleToString(presenter.schedule)
+                cell.updateLabels()
             }
         default: break
         }
@@ -219,6 +261,10 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
         )
         cell.setDelegate(self)
         
+        if isModifyTracker && presenter.emoji == TrackerEmoji.items[indexPath.item] {
+            cell.selectCell()
+        }
+    
         return cell
     }
 
@@ -238,6 +284,14 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
         )
         cell.setDelegate(self)
         
+        if isModifyTracker {
+            if let color = presenter.color {
+                if color.toUIColor() == TrackerColors.items[indexPath.item].toUIColor() {
+                    cell.selectCell()
+                }
+            }
+        }
+        
         return cell
     }
 
@@ -252,7 +306,11 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
                 }
         
         cell.setDelegate(self)
+        
+        let applyButtonTitle = isModifyTracker ? "Сохранить" : "Создать"
+        applyButton.setTitle(applyButtonTitle, for: .normal)
         cell.setApplyButton(applyButton)
+        
         cell.initCell()
         
         return cell
@@ -275,12 +333,14 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
 //MARK: - CollectiionViewCellDelegate
 extension TrackerCreatorViewController: TrackerCreatorCVCellDelegate {
     func setSelectedEmojiItem(_ indexPath: IndexPath) {
+        print("setSelectedEmojiItem\nIndexPath \(indexPath)")
         currentSelectedEmojiIndexPath = indexPath
         presenter.setEmoji(TrackerEmoji.items[indexPath.item])
     }
     
     func reloadPreviousSelectedEmojiCell() {
         if let currentSelectedEmojiIndexPath {
+            print("reloadPreviousSelectedEmojiCell\nIndexPath \(currentSelectedEmojiIndexPath)")
             eventCreatorCollection.reloadItems(at: [currentSelectedEmojiIndexPath])
         }
     }
