@@ -75,17 +75,22 @@ final class TrackersDataProcessorImpl: TrackersDataProcessorProtocol {
     }
     
     func fetchPacksForTrackers(for requiredTrackers: [TrackerModel]) -> [TrackersPack] {
-        var categories = Set<Int>()
+        var categoryIdList = Set<Int>()
 
         for tracker in requiredTrackers {
             if let pack = packRepository.getPackByTrackerID(tracker.id) {
-                categories.insert(pack.categoryID)
+                categoryIdList.insert(pack.categoryID)
             }
         }
-
-        return categories.sorted().map {
-            packRepository.getPackByCategoryID($0)
+        
+        var packs = [TrackersPack]()
+        for categoryId in categoryIdList.sorted() {
+            if let pack = packRepository.getPackByCategoryID(categoryId) {
+                packs.append(pack)
+            }
         }
+        
+        return packs
     }
     
     func fetchTitleByCategoryID(_ id: Int) -> String {

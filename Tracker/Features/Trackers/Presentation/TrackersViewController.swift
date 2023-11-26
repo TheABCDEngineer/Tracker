@@ -119,8 +119,6 @@ final class TrackersViewController: UIViewController {
     
     private func configureFilterCollectionView() {
         filterCV.dataSource = filterDataSource
-        filterCV.delegate = self
-        
         filterDataSource.cellDelegate = self
         
         filterCV.register(
@@ -167,47 +165,25 @@ extension TrackersViewController: FilterCellDelegate {
 //MARK: - UIContextMenuInteractionDelegate
 extension TrackersViewController: UIContextMenuInteractionDelegate {
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint
-    ) -> UIContextMenuConfiguration? {
-        return UIContextMenuConfiguration(
-            identifier: nil,
-            previewProvider: nil
-        ) { actions -> UIMenu? in
-            
-            let edit = UIAction(
-                title: "Редактировать",
-                image: UIImage(systemName: "pencil")
-            ) { _ in
-                if let indexPath = self.selectedTrackerIndexPath {
-                    self.createEvent(
-                        modifyingTrackerID: self.trackersFieldData[indexPath.section].trackers[indexPath.item].id
-                    )
-                }
-            }
-
-            let remove = UIAction(
-                title: "Удалить",
-                image: UIImage(systemName: "trash.fill"),
-                attributes: .destructive
-            ) { _ in
+    ) -> UIContextMenuConfiguration? {        
+        return ContextMenuConfigurator.setupMenu(
+            alertPresenter: self,
+            editAction: {
                 guard let indexPath = self.selectedTrackerIndexPath else { return }
-                
-                AlertController.removeObject(
-                    alertPresenter: self,
-                    title: "Уверены что хотите удалить трекер?"
-                ) {
-                    self.presenter.onRemoveTracker(
-                        trackerID: self.trackersFieldData[indexPath.section].trackers[indexPath.item].id
-                    )
-                }
+                let trackerId = self.trackersFieldData[indexPath.section].trackers[indexPath.item].id
+                self.createEvent(modifyingTrackerID: trackerId)
+            },
+            removeMessage: "Уверены что хотите удалить трекер?",
+            removeAction: {
+                guard let indexPath = self.selectedTrackerIndexPath else { return }
+                let trackerId = self.trackersFieldData[indexPath.section].trackers[indexPath.item].id
+                self.presenter.onRemoveTracker(trackerID: trackerId)
             }
-            
-            return UIMenu(title: "", children: [edit, remove])
-        }
+        )
     }
-
 }
 
-//MARK: - UICollectionViewDelegate
+//MARK: - TrackersCollectionViewDelegate
 extension TrackersViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath
     ) -> Bool {
@@ -292,7 +268,8 @@ extension TrackersViewController {
         
         filterCV = UICollectionView(
             frame: .zero,
-            collectionViewLayout: FilterCVFlowLayout.setup(width: filterBottomSheet.view.frame.width-32)
+            collectionViewLayout: FilterCVFlowLayout.setup(
+                width: filterBottomSheet.view.frame.width - 32)
         )
 
         self.view = setupLayout(

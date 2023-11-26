@@ -4,7 +4,8 @@ extension CategoryCreatorViewController {
     func setupLayout(
         for view: UIView,
         applyButton: UIButton,
-        categoryField: UITextField
+        categoryField: UITextField,
+        pageTitle: String
     ) -> UIView {
         let superView = view
         superView.backgroundColor = .ypWhite
@@ -23,7 +24,7 @@ extension CategoryCreatorViewController {
         label.backgroundColor = .clear
         label.font = Font.ypMedium16
         label.textColor = .ypBlack
-        label.text = "Новая категория"
+        label.text = pageTitle//"Новая категория"
         
         superView.addSubView(
             label,

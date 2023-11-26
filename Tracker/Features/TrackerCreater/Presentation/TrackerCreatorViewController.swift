@@ -333,14 +333,12 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
 //MARK: - CollectiionViewCellDelegate
 extension TrackerCreatorViewController: TrackerCreatorCVCellDelegate {
     func setSelectedEmojiItem(_ indexPath: IndexPath) {
-        print("setSelectedEmojiItem\nIndexPath \(indexPath)")
         currentSelectedEmojiIndexPath = indexPath
         presenter.setEmoji(TrackerEmoji.items[indexPath.item])
     }
     
     func reloadPreviousSelectedEmojiCell() {
         if let currentSelectedEmojiIndexPath {
-            print("reloadPreviousSelectedEmojiCell\nIndexPath \(currentSelectedEmojiIndexPath)")
             eventCreatorCollection.reloadItems(at: [currentSelectedEmojiIndexPath])
         }
     }

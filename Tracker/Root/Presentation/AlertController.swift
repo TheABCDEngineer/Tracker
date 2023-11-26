@@ -19,4 +19,23 @@ final class AlertController {
          
         alertPresenter.present(alert: alert, animated: true)
     }
+    
+    static func showNotification(
+        alertPresenter: AlertPresenterProtocol,
+        title: String,
+        message: String,
+        _ completion: ( () -> Void )? = nil
+    ) {
+        let alert = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+         
+        alert.addAction(UIAlertAction(title: "ОК", style: .default) { _ in
+            completion?()
+        })
+         
+        alertPresenter.present(alert: alert, animated: true)
+    }
 }

@@ -5,7 +5,7 @@ class CategoryCell: SettingsMenuCell {
     
     private var category: TrackerCategory?
     
-    private var delegate: CategorySetterCellDelegate?
+    private var cellDelegate: CategorySetterCellDelegate?
     
     private let functionalIcon = UIImageView(image: UIImage(named: "PropertyDone"))
     
@@ -18,14 +18,21 @@ class CategoryCell: SettingsMenuCell {
         fatalError("init(coder:) has not been implemented")
     }
         
-    func setDelegate(_ delegate: CategorySetterCellDelegate) {
-        self.delegate = delegate
+    func setDelegates(
+        cellDelegate: CategorySetterCellDelegate,
+        contextMenuDelegate: UIContextMenuInteractionDelegate
+    ) {
+        self.cellDelegate = cellDelegate
         addActionOnCellClick {
             self.check()
             if let category = self.category {
-                self.delegate?.setChekedCategory(category)
+                self.cellDelegate?.setChekedCategory(category)
             }
         }
+        
+        contentView.addInteraction(
+            UIContextMenuInteraction(delegate: contextMenuDelegate)
+        )
     }
     
     func setCategory(_ category: TrackerCategory) {

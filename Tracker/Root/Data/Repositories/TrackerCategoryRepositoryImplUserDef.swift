@@ -58,19 +58,29 @@ final class TrackerCategoryRepositoryImplUserDef: TrackerCategoryRepository {
         return trackerCategory
     }
     
-    func updateTitle(for category: TrackerCategory, newTitle: String) -> Bool {
-        if getCategoryById(id: category.id) == nil { return false }
+    func updateTitle(for categoryID: Int, newTitle: String) -> TrackerCategory? {
+        if getCategoryById(id: categoryID) == nil { return nil }
         
-        let updatedCategory = TrackerCategory(id: category.id, title: newTitle)
+        let updatedCategory = TrackerCategory(id: categoryID, title: newTitle)
         
         for index in 0 ... categories.count-1 {
-            if categories[index].id == category.id {
-                categories.insert(updatedCategory, at: index)
+            if categories[index].id == categoryID {
+                categories[index] = updatedCategory
                 break
             }
         }
         saveCategories()
-        return true
+        return updatedCategory
+    }
+    
+    func removeCategory(id: Int) {
+        for index in 0 ... categories.count-1 {
+            if categories[index].id == id {
+                categories.remove(at: index)
+                saveCategories()
+                break
+            }
+        }
     }
     
     func getCategoryList() -> [TrackerCategory] {

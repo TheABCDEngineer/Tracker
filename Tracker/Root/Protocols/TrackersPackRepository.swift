@@ -10,5 +10,7 @@ protocol TrackersPackRepository {
     
     func getPackByTrackerID(_ trackerID: Int) -> TrackersPack?
     
-    func getPackByCategoryID(_ categoryID: Int) -> TrackersPack
+    func getPackByCategoryID(_ categoryID: Int) -> TrackersPack?
+    
+    func removePack(for categoryID: Int)
 }

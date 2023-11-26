@@ -96,6 +96,7 @@
 		ABC4D6732B0FB223002F341D /* TrackerCreatorVCLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC4D6722B0FB223002F341D /* TrackerCreatorVCLayout.swift */; };
 		ABC4D6752B12936F002F341D /* AlertPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC4D6742B12936F002F341D /* AlertPresenterProtocol.swift */; };
 		ABC4D6772B12954D002F341D /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC4D6762B12954D002F341D /* AlertController.swift */; };
+		ABC4D6792B129950002F341D /* ContextMenuConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC4D6782B129950002F341D /* ContextMenuConfigurator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -190,6 +191,7 @@
 		ABC4D6722B0FB223002F341D /* TrackerCreatorVCLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCreatorVCLayout.swift; sourceTree = "<group>"; };
 		ABC4D6742B12936F002F341D /* AlertPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenterProtocol.swift; sourceTree = "<group>"; };
 		ABC4D6762B12954D002F341D /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
+		ABC4D6782B129950002F341D /* ContextMenuConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuConfigurator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -601,6 +603,7 @@
 				AB5485B72AE83D1F001ED0B1 /* BottomSheet.swift */,
 				AB5485BF2AED01F9001ED0B1 /* Placeholder.swift */,
 				ABC4D6762B12954D002F341D /* AlertController.swift */,
+				ABC4D6782B129950002F341D /* ContextMenuConfigurator.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -799,6 +802,7 @@
 				AB3BD3312AEE8E4F00BC3BD7 /* SectionTitleHeaderView.swift in Sources */,
 				AB3BD3A62B079D0700BC3BD7 /* TrackersCVDelegateFlowLayout.swift in Sources */,
 				AB3BD32A2AED9AE800BC3BD7 /* TrackerModel.swift in Sources */,
+				ABC4D6792B129950002F341D /* ContextMenuConfigurator.swift in Sources */,
 				ABC4D6772B12954D002F341D /* AlertController.swift in Sources */,
 				AB3BD33F2AF2B39300BC3BD7 /* TrackerCreatorSettingsCell.swift in Sources */,
 				AB3BD36B2AFE3AA900BC3BD7 /* CategorySetterViewController.swift in Sources */,

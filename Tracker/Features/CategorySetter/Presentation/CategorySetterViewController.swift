@@ -12,7 +12,7 @@ class CategorySetterViewController: UIViewController {
     
     private var addCategoryButton: UIButton!
     
-    private var currentCheckedCell: IndexPath?
+    private var selectedCategoryForContextMenu: TrackerCategory?
     
     private var onSetCategory: ( (TrackerCategory) -> Void )?
     
@@ -46,7 +46,12 @@ class CategorySetterViewController: UIViewController {
     
     @objc
     private func onAddCategoryButtonClick() {
+        launchCategoryCreator()
+    }
+    
+    private func launchCategoryCreator(_ modifyingCategory: TrackerCategory? = nil) {
         let controller = CategoryCreatorViewController()
+        controller.setCategoryIfModify(modifyingCategory)
         controller.onCategoryCreated {[weak self] category in
             guard let self else { return }
             initCategory = category
@@ -118,7 +123,7 @@ extension CategorySetterViewController: UICollectionViewDataSource {
             }
         if categoryList.isEmpty { return cell }
         
-        cell.setDelegate(self)
+        cell.setDelegates(cellDelegate: self, contextMenuDelegate: self)
         cell.setCategory(categoryList[indexPath.item])
         
         if let initCategory {
@@ -163,5 +168,48 @@ extension CategorySetterViewController: CategorySetterCellDelegate {
     func setChekedCategory(_ category: TrackerCategory) {
         onSetCategory?(category)
         dismiss(animated: true)
+    }
+}
+
+//MARK: - UICollectionViewDelegate
+extension CategorySetterViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath
+    ) -> Bool {
+        selectedCategoryForContextMenu = presenter.getCategoryList()[indexPath.item]
+        return true
+    }
+}
+
+//MARK: - UIContextMenuInteractionDelegate
+extension CategorySetterViewController: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        return ContextMenuConfigurator.setupMenu(
+            alertPresenter: self,
+            editAction: {
+                guard let category = self.selectedCategoryForContextMenu else { return }
+                self.launchCategoryCreator(category)
+            },
+            removeMessage: "Эта категория точно не нужна?",
+            removeAction: {
+                guard let category = self.selectedCategoryForContextMenu else { return }
+                if self.presenter.removeCategory(categoryID: category.id) {
+                    self.categoryCollection.reloadData()
+                } else {
+                    AlertController.showNotification(
+                        alertPresenter: self,
+                        title: "Невозможно удалить категорию!",
+                        message: "Категория \(category.title) содержит трекеры.\nЧтобы удалить эту категорию сначала необходимо переместить из неё все трекеры"
+                    )
+                }
+            }
+        )
+    }
+}
+
+//MARK: - AlertPresenterProtocol
+extension CategorySetterViewController: AlertPresenterProtocol {
+    func present(alert: UIAlertController, animated: Bool) {
+        self.present(alert, animated: animated)
     }
 }

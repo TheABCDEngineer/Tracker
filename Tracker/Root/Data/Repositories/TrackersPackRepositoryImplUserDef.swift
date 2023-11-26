@@ -12,7 +12,8 @@ final class TrackersPackRepositoryImplUserDef: TrackersPackRepository {
     }
     
     func addTrackerToCategory(trackerID: Int, categoryID: Int) {
-        let initPack = getPackByCategoryID(categoryID)
+        let initPack =
+            getPackByCategoryID(categoryID) ?? TrackersPack(categoryID: categoryID, trackerIDList: [])
         var trackerIDList = initPack.trackerIDList
        
         trackerIDList.insert(trackerID)
@@ -54,11 +55,11 @@ final class TrackersPackRepositoryImplUserDef: TrackersPackRepository {
         return nil
     }
     
-    func getPackByCategoryID(_ categoryID: Int) -> TrackersPack {
+    func getPackByCategoryID(_ categoryID: Int) -> TrackersPack? {
         let packs = loadPacks()
-        var requiredPack = TrackersPack(categoryID: categoryID, trackerIDList: [])
+        if packs.isEmpty { return nil }
         
-        if packs.isEmpty { return requiredPack }
+        var requiredPack: TrackersPack?
         
         for pack in packs {
             if pack.categoryID == categoryID {
@@ -67,6 +68,19 @@ final class TrackersPackRepositoryImplUserDef: TrackersPackRepository {
             }
         }
         return requiredPack
+    }
+    
+    func removePack(for categoryID: Int) {
+        var packs = loadPacks()
+        if packs.isEmpty { return }
+        
+        for index in 0 ... packs.count - 1 {
+            if packs[index].categoryID == categoryID {
+                packs.remove(at: index)
+                savePacks(packs)
+                break
+            }
+        }
     }
     
     private func savePacks(_ packs: [TrackersPack]) {
@@ -92,18 +106,5 @@ final class TrackersPackRepositoryImplUserDef: TrackersPackRepository {
         }
         if isNewPack { packs.append(pack) }
         savePacks(packs)
-    }
-    
-    private func removePack(for categoryID: Int) {
-        var packs = loadPacks()
-        if packs.isEmpty { return }
-        
-        for index in 0 ... packs.count - 1 {
-            if packs[index].categoryID == categoryID {
-                packs.remove(at: index)
-                savePacks(packs)
-                break
-            }
-        }
     }
 }
