@@ -77,9 +77,7 @@ final class TrackersPresenter {
     private func provideScreenData() -> [TrackersPackScreenModel] {
         var resultPackScreenModels = [TrackersPackScreenModel]()
         let trackers = provideTrackersByFilter()
-        
-        printData(trackers)
-        
+
         let trackersPacks = dataProcessor.fetchPacksForTrackers(for: trackers)
         
         for trackersPack in trackersPacks {
@@ -146,26 +144,5 @@ final class TrackersPresenter {
             title: dataProcessor.fetchTitleByCategoryID(trackersPack.categoryID),
             trackers: trackerScreenModels
         )
-    }
-//логирование (будет удалено в финальном комите)
-    private func printData(_ trackers: [TrackerModel]) {
-        print("FetchingTrackers:")
-        print("FilterSettings: data - \(currentDate) filter - \(currentFilter)")
-        
-        var i = 1
-        for tracker in trackers {
-            print("---------------------- \(i) --------------------")
-            print("ID: \(tracker.id)")
-            print("Title: \(tracker.title)")
-            print("Type: \(tracker.type)")
-            if !tracker.schedule.isEmpty { print("Schedule:") }
-            
-            for day in tracker.schedule {
-                print("-> \(day.description())")
-            }
-            i += 1
-        }
-        
-        print("----------------------------------------------------")
     }
 }

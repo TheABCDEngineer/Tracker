@@ -20,8 +20,6 @@ final class TrackersDataProcessorImpl: TrackersDataProcessorProtocol {
         self.packRepository = packRepository
         self.categoryRepository = categoryRepository
         self.recordsRepository = recordsRepository
-        
-        printData()
     }
   
     func fetchAllTrackers() -> [TrackerModel] {
@@ -59,7 +57,6 @@ final class TrackersDataProcessorImpl: TrackersDataProcessorProtocol {
     func fetchTrackerCompletionForDate(trackerID: Int, where requiredDate: Date) -> Bool {
         guard let record = recordsRepository.getRecordByTrackerID(for: trackerID)
             else { return false }
-        let tracker = trackersRepository.getTrackerByID(trackerID)
         
         for recordDate in record.dates {
             if DateFormatterObj.shared.checkPairDatesOnEqual(recordDate, requiredDate) {
@@ -129,37 +126,5 @@ final class TrackersDataProcessorImpl: TrackersDataProcessorProtocol {
         if tracker.schedule.contains(requiredWeekDay) { return true }
 
         return false
-    }
-
-//логирование (будет удалено в финальном комите)
-    private func printData() {
-        print("Trackers:")
-        
-        var i = 1
-        for tracker in trackersRepository.loadTrackers() {
-            print("---------------------- \(i) --------------------")
-            print("ID: \(tracker.id)")
-            print("Title: \(tracker.title)")
-            print("Type: \(tracker.type)")
-            if !tracker.schedule.isEmpty { print("Schedule:") }
-            
-            for day in tracker.schedule {
-                print("-> \(day.description())")
-            }
-            
-            for pack in packRepository.loadPacks() {
-                for id in pack.trackerIDList {
-                    if tracker.id == id {
-                        let title = categoryRepository.getCategoryById(
-                            id: pack.categoryID
-                        )?.title
-                        print("Pack: \(title!)")
-                    }
-                }
-            }
-            
-           i += 1
-        }
-        print("___________________________________________")
     }
 }
