@@ -40,11 +40,13 @@ final class TrackersViewController: UIViewController {
     
     @objc
     private func addTrackerButtonClick() {
+        searchingField.resignFirstResponder()
         eventBottomSheet.show()
     }
     
     @objc
     private func onDatePickerChoose() {
+        searchingField.resignFirstResponder()
         presenter.setUserDate(datePicker.date)
     }
     
@@ -62,6 +64,7 @@ final class TrackersViewController: UIViewController {
     
     @objc
     private func onFilterButtonClick() {
+        searchingField.resignFirstResponder()
         filterBottomSheet.show()
     }
     
@@ -193,6 +196,7 @@ extension TrackersViewController: UIContextMenuInteractionDelegate {
 extension TrackersViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath
     ) -> Bool {
+        searchingField.resignFirstResponder()
         selectedTrackerIndexPath = indexPath
         return true
     }
