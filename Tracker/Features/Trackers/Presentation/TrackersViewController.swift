@@ -108,18 +108,18 @@ final class TrackersViewController: UIViewController {
         
         trackersCV.register(
             TrackerCell.self,
-            forCellWithReuseIdentifier: TrackerCell.Identifier
+            forCellWithReuseIdentifier: TrackerCell.identifier
         )
         
         trackersCV.register(
             SectionTitleHeaderView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: SectionTitleHeaderView.Identifier)
+            withReuseIdentifier: SectionTitleHeaderView.identifier)
         
         trackersCV.register(
             TitleSupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-            withReuseIdentifier: TitleSupplementaryView.Identifier
+            withReuseIdentifier: TitleSupplementaryView.identifier
         )
     }
     
@@ -129,7 +129,7 @@ final class TrackersViewController: UIViewController {
         
         filterCV.register(
             FilterCell.self,
-            forCellWithReuseIdentifier: FilterCell.Identifier
+            forCellWithReuseIdentifier: FilterCell.identifier
         )
     }
 }
@@ -209,7 +209,7 @@ extension TrackersViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCell.Identifier, for: indexPath) as? TrackerCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCell.identifier, for: indexPath) as? TrackerCell else {
             return UICollectionViewCell()
         }
         cell.setDelegates(cellDelegate: self, contextMenuDelegate: self)
@@ -221,10 +221,10 @@ extension TrackersViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath
     ) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionFooter {
-            return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleSupplementaryView.Identifier, for: indexPath) as? TitleSupplementaryView ?? UICollectionReusableView()
+            return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleSupplementaryView.identifier, for: indexPath) as? TitleSupplementaryView ?? UICollectionReusableView()
         }
         
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionTitleHeaderView.Identifier, for: indexPath) as? SectionTitleHeaderView else { return UICollectionReusableView() }
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionTitleHeaderView.identifier, for: indexPath) as? SectionTitleHeaderView else { return UICollectionReusableView() }
         
         header.configureLablePosition(x: 12, y: 16)
         header.label.text = trackersFieldData[indexPath.section].title

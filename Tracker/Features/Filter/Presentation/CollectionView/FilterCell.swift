@@ -1,7 +1,7 @@
 import UIKit
 
 final class FilterCell: SettingsMenuCell {
-    static let Identifier = "FilterCell"
+    static let identifier = "FilterCell"
     
     private var filterState: FilterState?
     

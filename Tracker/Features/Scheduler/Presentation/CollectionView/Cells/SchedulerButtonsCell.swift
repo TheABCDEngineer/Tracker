@@ -1,7 +1,7 @@
 import UIKit
 
 class SchedulerButtonsCell: UICollectionViewCell {
-    static let Identifier = "SchedulerButtonsCell"
+    static let identifier = "SchedulerButtonsCell"
     
     private var applyButton: UIButton?
     

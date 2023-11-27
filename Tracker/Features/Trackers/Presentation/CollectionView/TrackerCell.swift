@@ -1,7 +1,7 @@
 import UIKit
 
 class TrackerCell: UICollectionViewCell {
-    static let Identifier = "TrackerCell"
+    static let identifier = "TrackerCell"
     
     private var indexPath: IndexPath?
     

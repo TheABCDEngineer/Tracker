@@ -1,7 +1,7 @@
 import UIKit
 
 final class TrackerCreatorSettingsCell: SettingsMenuCell {
-    static let Identifier = "SettingsCell"
+    static let identifier = "SettingsCell"
     
     override init(frame: CGRect) {
         super.init(frame: frame)

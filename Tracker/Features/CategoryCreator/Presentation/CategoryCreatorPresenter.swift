@@ -21,11 +21,8 @@ final class CategoryCreatorPresenter {
     }
     
     func onUserTextChanged(_ text: String) {
-        if text.isEmpty {
-            applyButtonState.postValue(ApplyButton.inactive)
-        } else {
-            applyButtonState.postValue(ApplyButton.active)
-        }
+        let value = text.isEmpty ? ApplyButton.inactive : ApplyButton.active
+        applyButtonState.postValue(value)
     }
     
     func createCategory(_ title: String) -> TrackerCategory? {

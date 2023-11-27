@@ -1,7 +1,7 @@
 import UIKit
 
 class CategoryCell: SettingsMenuCell {
-    static let Identifier = "CategoryCell"
+    static let identifier = "CategoryCell"
     
     private var category: TrackerCategory?
     

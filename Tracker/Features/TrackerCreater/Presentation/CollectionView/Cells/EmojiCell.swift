@@ -1,7 +1,7 @@
 import UIKit
 
 final class EmojiCell: UICollectionViewCell {
-    static let Identifier = "EmojiCell"
+    static let identifier = "EmojiCell"
 
     private var indexPath: IndexPath?
     

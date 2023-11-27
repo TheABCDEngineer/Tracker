@@ -177,7 +177,7 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
     ) -> UICollectionViewCell {
         guard let
                 cell = collectionView.dequeueReusableCell(
-                            withReuseIdentifier: TrackerCreatorTitleCell.Identifier,
+                            withReuseIdentifier: TrackerCreatorTitleCell.identifier,
                             for: indexPath
                 ) as? TrackerCreatorTitleCell else {
                     return UICollectionViewCell()
@@ -205,7 +205,7 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
     ) -> UICollectionViewCell {
         guard let
                 cell = collectionView.dequeueReusableCell(
-                            withReuseIdentifier: TrackerCreatorSettingsCell.Identifier,
+                            withReuseIdentifier: TrackerCreatorSettingsCell.identifier,
                             for: indexPath
                 ) as? TrackerCreatorSettingsCell else {
                     return UICollectionViewCell()
@@ -250,7 +250,7 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
     ) -> UICollectionViewCell {
         guard let
                 cell = collectionView.dequeueReusableCell(
-                            withReuseIdentifier: EmojiCell.Identifier,
+                            withReuseIdentifier: EmojiCell.identifier,
                             for: indexPath
                 ) as? EmojiCell else {
                     return UICollectionViewCell()
@@ -272,7 +272,7 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
     ) -> UICollectionViewCell {
         guard let
                 cell = collectionView.dequeueReusableCell(
-                            withReuseIdentifier: ColorsCell.Identifier,
+                            withReuseIdentifier: ColorsCell.identifier,
                             for: indexPath
                 ) as? ColorsCell else {
                     return UICollectionViewCell()
@@ -299,7 +299,7 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
     ) -> UICollectionViewCell {
         guard let
                 cell = collectionView.dequeueReusableCell(
-                            withReuseIdentifier: ButtonsCell.Identifier,
+                            withReuseIdentifier: ButtonsCell.identifier,
                             for: indexPath
                 ) as? ButtonsCell else {
                     return UICollectionViewCell()
@@ -318,7 +318,7 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
     
     private func configureHeader(title: String = "", x: CGFloat = 0, y: CGFloat = 0, collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionTitleHeaderView.Identifier, for: indexPath) as? SectionTitleHeaderView else {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionTitleHeaderView.identifier, for: indexPath) as? SectionTitleHeaderView else {
             return UICollectionReusableView()
         }
 
@@ -379,29 +379,29 @@ extension TrackerCreatorViewController {
         
         eventCreatorCollection.register(
             TrackerCreatorTitleCell.self,
-            forCellWithReuseIdentifier: TrackerCreatorTitleCell.Identifier
+            forCellWithReuseIdentifier: TrackerCreatorTitleCell.identifier
         )
         eventCreatorCollection.register(
             TrackerCreatorSettingsCell.self,
-            forCellWithReuseIdentifier: TrackerCreatorSettingsCell.Identifier
+            forCellWithReuseIdentifier: TrackerCreatorSettingsCell.identifier
         )
         eventCreatorCollection.register(
             EmojiCell.self,
-            forCellWithReuseIdentifier: EmojiCell.Identifier
+            forCellWithReuseIdentifier: EmojiCell.identifier
         )
         eventCreatorCollection.register(
             ColorsCell.self,
-            forCellWithReuseIdentifier: ColorsCell.Identifier
+            forCellWithReuseIdentifier: ColorsCell.identifier
         )
         eventCreatorCollection.register(
             ButtonsCell.self,
-            forCellWithReuseIdentifier: ButtonsCell.Identifier
+            forCellWithReuseIdentifier: ButtonsCell.identifier
         )
         
         eventCreatorCollection.register(
             SectionTitleHeaderView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: SectionTitleHeaderView.Identifier
+            withReuseIdentifier: SectionTitleHeaderView.identifier
         )
     }
 }

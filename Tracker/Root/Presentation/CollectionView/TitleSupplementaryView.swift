@@ -1,7 +1,7 @@
 import UIKit
 
 final class TitleSupplementaryView: UICollectionReusableView {
-    static let Identifier = "SchedulerHeader"
+    static let identifier = "SchedulerHeader"
     
     let label = UILabel()
     

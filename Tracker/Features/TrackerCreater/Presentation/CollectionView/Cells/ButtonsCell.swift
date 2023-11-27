@@ -1,7 +1,7 @@
 import UIKit
 
 final class ButtonsCell: UICollectionViewCell {
-    static let Identifier = "ButtonsCell"
+    static let identifier = "ButtonsCell"
     
     private var applyButton: UIButton?
     

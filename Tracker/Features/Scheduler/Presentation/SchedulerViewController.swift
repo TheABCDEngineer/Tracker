@@ -50,16 +50,16 @@ final class SchedulerViewController: UIViewController {
         
         schedulerCollection.register(
             SchedulerCell.self,
-            forCellWithReuseIdentifier: SchedulerCell.Identifier
+            forCellWithReuseIdentifier: SchedulerCell.identifier
         )
         schedulerCollection.register(
             SchedulerButtonsCell.self,
-            forCellWithReuseIdentifier: SchedulerButtonsCell.Identifier
+            forCellWithReuseIdentifier: SchedulerButtonsCell.identifier
         )
         schedulerCollection.register(
             TitleSupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: TitleSupplementaryView.Identifier
+            withReuseIdentifier: TitleSupplementaryView.identifier
         )
     }
     
@@ -115,7 +115,7 @@ extension SchedulerViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleSupplementaryView.Identifier, for: indexPath) as? TitleSupplementaryView else {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleSupplementaryView.identifier, for: indexPath) as? TitleSupplementaryView else {
             return UICollectionReusableView()
         }
         header.label.text = "Расписание"
@@ -127,7 +127,7 @@ extension SchedulerViewController: UICollectionViewDataSource {
     ) -> UICollectionViewCell {
         guard let
                 cell = collectionView.dequeueReusableCell(
-                            withReuseIdentifier: SchedulerCell.Identifier,
+                            withReuseIdentifier: SchedulerCell.identifier,
                             for: indexPath
                 ) as? SchedulerCell else {
                     return UICollectionViewCell()
@@ -153,7 +153,7 @@ extension SchedulerViewController: UICollectionViewDataSource {
     ) -> UICollectionViewCell {
         guard let
                 cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: SchedulerButtonsCell.Identifier,
+                    withReuseIdentifier: SchedulerButtonsCell.identifier,
                     for: indexPath
                 ) as? SchedulerButtonsCell else {
                     return UICollectionViewCell()

@@ -1,7 +1,7 @@
 import UIKit
 
 class ColorsCell: UICollectionViewCell {
-    static let Identifier = "ColorsCell"
+    static let identifier = "ColorsCell"
     
     private let view = UIView()
 

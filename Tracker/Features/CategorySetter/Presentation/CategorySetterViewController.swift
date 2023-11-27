@@ -86,19 +86,19 @@ class CategorySetterViewController: UIViewController {
         
         categoryCollection.register(
             CategoryCell.self,
-            forCellWithReuseIdentifier: CategoryCell.Identifier
+            forCellWithReuseIdentifier: CategoryCell.identifier
         )
         
         categoryCollection.register(
             TitleSupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: TitleSupplementaryView.Identifier
+            withReuseIdentifier: TitleSupplementaryView.identifier
         )
         
         categoryCollection.register(
             TitleSupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-            withReuseIdentifier: TitleSupplementaryView.Identifier
+            withReuseIdentifier: TitleSupplementaryView.identifier
         )
     }
 }
@@ -116,7 +116,7 @@ extension CategorySetterViewController: UICollectionViewDataSource {
    
         guard let
             cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: CategoryCell.Identifier,
+                    withReuseIdentifier: CategoryCell.identifier,
                     for: indexPath
             ) as? CategoryCell else {
                 return UICollectionViewCell()
@@ -151,7 +151,7 @@ extension CategorySetterViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        guard let element = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleSupplementaryView.Identifier, for: indexPath) as? TitleSupplementaryView else {
+        guard let element = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleSupplementaryView.identifier, for: indexPath) as? TitleSupplementaryView else {
             return UICollectionReusableView()
         }
         

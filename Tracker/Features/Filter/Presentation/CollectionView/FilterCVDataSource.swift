@@ -16,7 +16,7 @@ extension FilterCVDataSource: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterCell.Identifier, for: indexPath) as? FilterCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterCell.identifier, for: indexPath) as? FilterCell else {
             return UICollectionViewCell()
         }
         cell.setIndexPath(indexPath)

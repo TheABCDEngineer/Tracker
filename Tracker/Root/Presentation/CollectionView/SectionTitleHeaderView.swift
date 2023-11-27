@@ -1,7 +1,7 @@
 import UIKit
 
 final class SectionTitleHeaderView: UICollectionReusableView {
-    static let Identifier = "Header"
+    static let identifier = "Header"
     
     let label = UILabel()
     

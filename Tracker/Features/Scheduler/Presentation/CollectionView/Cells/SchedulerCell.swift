@@ -1,7 +1,7 @@
 import UIKit
 
 class SchedulerCell: SettingsMenuCell {
-    static let Identifier = "SchedulerCell"
+    static let identifier = "SchedulerCell"
     
     var day: WeekDays?
     

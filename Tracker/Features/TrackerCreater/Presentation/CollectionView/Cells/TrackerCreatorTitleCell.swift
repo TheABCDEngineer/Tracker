@@ -1,7 +1,7 @@
 import UIKit
 
 final class TrackerCreatorTitleCell: UICollectionViewCell {
-    static let Identifier = "TitleCell"
+    static let identifier = "TitleCell"
     
     let eventLable = UILabel()
     
