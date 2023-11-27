@@ -8,6 +8,8 @@ final class TrackersPresenter {
     
     private var currentFilter: FilterState = .todayTrackers
     
+    private var currentRequiredTrackerSubTitle = ""
+    
     private let trackersPacksData = ObservableData<[TrackersPackScreenModel]>()
     
     private let modifiedTracker = ObservableData<TrackerScreenModel>()
@@ -31,6 +33,11 @@ final class TrackersPresenter {
     
     func setFilter(_ filter: FilterState) {
         self.currentFilter = filter
+        updateData()
+    }
+    
+    func setSearchingTrackerTitle(_ sample: String) {
+        self.currentRequiredTrackerSubTitle = sample
         updateData()
     }
     
@@ -92,22 +99,31 @@ final class TrackersPresenter {
     }
     
     private func provideTrackersByFilter() -> [TrackerModel] {
+        var trackers = [TrackerModel]()
+        
         switch currentFilter {
         case .allTrackers:
-            return dataProcessor.fetchAllTrackers()
+            trackers = dataProcessor.fetchAllTrackers()
         case .todayTrackers:
-            return dataProcessor.fetchTrackersForRequiredDate(where: currentDate)
+            trackers = dataProcessor.fetchTrackersForRequiredDate(where: currentDate)
         case .completedTrackers:
-            return dataProcessor.fetchTrackersOnRequiredDateOfCompletedState(
+            trackers = dataProcessor.fetchTrackersOnRequiredDateOfCompletedState(
                 requiredDate: currentDate,
                 isCompleted: true
             )
         case .uncompletedTrackers:
-            return dataProcessor.fetchTrackersOnRequiredDateOfCompletedState(
+            trackers = dataProcessor.fetchTrackersOnRequiredDateOfCompletedState(
                 requiredDate: currentDate,
                 isCompleted: false
             )
         }
+        
+        if currentRequiredTrackerSubTitle.isEmpty { return trackers }
+        
+        return dataProcessor.fetchTrackersWhereSubTitles(
+            from: trackers,
+            where: currentRequiredTrackerSubTitle
+        )
     }
     
     private func providePackScreenModel(

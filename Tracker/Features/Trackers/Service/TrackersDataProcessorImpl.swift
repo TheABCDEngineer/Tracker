@@ -90,6 +90,22 @@ final class TrackersDataProcessorImpl: TrackersDataProcessorProtocol {
         return packs
     }
     
+    func fetchTrackersWhereSubTitles(
+        from trackers: [TrackerModel],
+        where subTitle: String
+    ) -> [TrackerModel] {
+        if subTitle.isEmpty { return trackers }
+        
+        var requiredTrackers = [TrackerModel]()
+        
+        for tracker in trackers {
+            if tracker.title.lowercased().contains(subTitle.lowercased()) {
+                requiredTrackers.append(tracker)
+            }
+        }
+        return requiredTrackers
+    }
+    
     func fetchTitleByCategoryID(_ id: Int) -> String {
         return categoryRepository.getCategoryById(id: id)?.title ?? "Без названия"
     }

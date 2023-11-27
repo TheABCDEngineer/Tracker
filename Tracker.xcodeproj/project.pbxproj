@@ -82,6 +82,7 @@
 		ABBF3C1E2ADE9C13005AAD3F /* TrackerColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBF3C1D2ADE9C13005AAD3F /* TrackerColor.swift */; };
 		ABBF3C222AE1853A005AAD3F /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBF3C212AE1853A005AAD3F /* UIColor+Extensions.swift */; };
 		ABBF3C262AE18A92005AAD3F /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBF3C252AE18A92005AAD3F /* Fonts.swift */; };
+		ABC367892B152F56002164EB /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC367882B152F56002164EB /* String+Extensions.swift */; };
 		ABC4D65C2B0BF7C0002F341D /* FilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC4D65B2B0BF7C0002F341D /* FilterCell.swift */; };
 		ABC4D65F2B0BF908002F341D /* FilterState.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC4D65E2B0BF908002F341D /* FilterState.swift */; };
 		ABC4D6612B0BFBFE002F341D /* FilterCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC4D6602B0BFBFE002F341D /* FilterCellDelegate.swift */; };
@@ -177,6 +178,7 @@
 		ABBF3C1D2ADE9C13005AAD3F /* TrackerColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerColor.swift; sourceTree = "<group>"; };
 		ABBF3C212AE1853A005AAD3F /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		ABBF3C252AE18A92005AAD3F /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		ABC367882B152F56002164EB /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		ABC4D65B2B0BF7C0002F341D /* FilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCell.swift; sourceTree = "<group>"; };
 		ABC4D65E2B0BF908002F341D /* FilterState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterState.swift; sourceTree = "<group>"; };
 		ABC4D6602B0BFBFE002F341D /* FilterCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCellDelegate.swift; sourceTree = "<group>"; };
@@ -623,6 +625,7 @@
 				ABBF3C212AE1853A005AAD3F /* UIColor+Extensions.swift */,
 				AB5485A32AE4446A001ED0B1 /* UIView+Extensions.swift */,
 				AB3BD37D2B03779600BC3BD7 /* UserDefaults+Extensions.swift */,
+				ABC367882B152F56002164EB /* String+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -786,6 +789,7 @@
 				ABBF3C262AE18A92005AAD3F /* Fonts.swift in Sources */,
 				ABC4D6712B0FAFFC002F341D /* ShedulerVCLayout.swift in Sources */,
 				AB3BD38A2B060EBE00BC3BD7 /* TrackersPackRepository.swift in Sources */,
+				ABC367892B152F56002164EB /* String+Extensions.swift in Sources */,
 				AB3BD3552AF8D37800BC3BD7 /* SchedulerViewController.swift in Sources */,
 				AB3BD3882B06029700BC3BD7 /* TrackersRepositoryImplUserDef.swift in Sources */,
 				ABC4D6732B0FB223002F341D /* TrackerCreatorVCLayout.swift in Sources */,

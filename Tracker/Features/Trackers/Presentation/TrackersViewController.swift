@@ -65,6 +65,12 @@ final class TrackersViewController: UIViewController {
         filterBottomSheet.show()
     }
     
+    @objc
+    private func onSearchingFieldTextChange() {
+        guard let subTitle = searchingField.text else { return }
+        presenter.setSearchingTrackerTitle(subTitle)
+    }
+    
     private func createEvent(event: TrackerType? = nil, modifyingTrackerID: Int? = nil) {
         let controller = TrackerCreatorViewController()
         controller.setTrackerType(event)
@@ -271,6 +277,9 @@ extension TrackersViewController {
             collectionViewLayout: FilterCVFlowLayout.setup(
                 width: filterBottomSheet.view.frame.width - 32)
         )
+        
+        searchingField.addTarget(nil,
+            action: #selector(onSearchingFieldTextChange), for: .allEditingEvents)
 
         self.view = setupLayout(
             for: self.view,

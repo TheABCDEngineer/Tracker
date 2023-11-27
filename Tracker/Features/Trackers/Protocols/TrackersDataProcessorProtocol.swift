@@ -17,6 +17,11 @@ protocol TrackersDataProcessorProtocol {
     
     func fetchPacksForTrackers(for requiredTrackers: [TrackerModel]) -> [TrackersPack]
     
+    func fetchTrackersWhereSubTitles(
+        from trackers: [TrackerModel],
+        where subTitle: String
+    ) -> [TrackerModel]
+    
     func fetchTitleByCategoryID(_ id: Int) -> String
     
     func fetchTrackerByID(_ id: Int) -> TrackerModel?
