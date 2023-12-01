@@ -44,7 +44,7 @@ final class TrackerCreatorViewController: UIViewController {
         presenter.setTrackerType(trackerType)
     }
     
-    func setTrackerIdIfModify(_ id: Int?) {
+    func setTrackerIdIfModify(_ id: UUID?) {
         guard let id else { return }
         isModifyTracker = true
         presenter.setTrackerIdIfModify(id)

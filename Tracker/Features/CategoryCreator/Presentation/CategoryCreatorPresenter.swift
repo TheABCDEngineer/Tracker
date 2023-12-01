@@ -6,13 +6,13 @@ final class CategoryCreatorPresenter {
     
     private let applyButtonState = ObservableData<ApplyButton.State>()
     
-    private var modifyingCategoryID: Int?
+    private var modifyingCategoryID: UUID?
 
     init(categoryRepository: TrackerCategoryRepository) {
         self.categoryRepository = categoryRepository
     }
     
-    func setCategoryIDIfModify(_ categoriID: Int) {
+    func setCategoryIDIfModify(_ categoriID: UUID) {
         modifyingCategoryID = categoriID
     }
     

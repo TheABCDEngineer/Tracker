@@ -1,7 +1,7 @@
 import Foundation
 
 @objc
-final class SetOfIntegerValueTransformer: ValueTransformer {
+final class SetOfUUIDValueTransformer: ValueTransformer {
     override class func transformedValueClass() -> AnyClass {
         return NSData.self
     }
@@ -22,9 +22,9 @@ final class SetOfIntegerValueTransformer: ValueTransformer {
     
     static func register() {
             ValueTransformer.setValueTransformer(
-                SetOfIntegerValueTransformer(),
+                SetOfUUIDValueTransformer(),
                 forName: NSValueTransformerName(
-                    rawValue: String(describing: SetOfIntegerValueTransformer.self))
+                    rawValue: String(describing: SetOfUUIDValueTransformer.self))
             )
         }
 }

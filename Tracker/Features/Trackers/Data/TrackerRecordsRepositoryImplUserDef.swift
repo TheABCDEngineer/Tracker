@@ -11,7 +11,7 @@ final class TrackerRecordsRepositoryImplUserDef: TrackerRecordsRepository {
         return records
     }
     
-    func getRecordByTrackerID(for trackerID: Int) -> TrackerRecord? {
+    func getRecordByTrackerID(for trackerID: UUID) -> TrackerRecord? {
         let records = loadRecords()
         if records.isEmpty { return nil }
         
@@ -26,7 +26,7 @@ final class TrackerRecordsRepositoryImplUserDef: TrackerRecordsRepository {
         return trackerRecord
     }
     
-    func saveRecord(for trackerID: Int, date: Date) -> TrackerRecord {
+    func saveRecord(for trackerID: UUID, date: Date) -> TrackerRecord {
         var dates = Set<Date>()
         if let initRecord = getRecordByTrackerID(for: trackerID) {
             dates = initRecord.dates
@@ -38,7 +38,7 @@ final class TrackerRecordsRepositoryImplUserDef: TrackerRecordsRepository {
         return updatedRecord
     }
     
-    func removeRecord(for trackerID: Int, date: Date) {
+    func removeRecord(for trackerID: UUID, date: Date) {
         guard let initRecord = getRecordByTrackerID(for: trackerID) else { return }
         var dates = initRecord.dates
         if dates.isEmpty { return }
@@ -59,7 +59,7 @@ final class TrackerRecordsRepositoryImplUserDef: TrackerRecordsRepository {
         saveRecord(updatedRecord)
     }
     
-    func removeRecords(for trackerID: Int ) {
+    func removeRecords(for trackerID: UUID) {
         var records = loadRecords()
         if records.isEmpty { return }
         

@@ -1,6 +1,6 @@
 import Foundation
 
 struct TrackerCategory: Codable {
-    let id: Int
+    let id: UUID
     let title: String
 }

@@ -1,38 +1,22 @@
 import Foundation
 
 final class TrackerCategoryRepositoryImplUserDef: TrackerCategoryRepository {
-
-    static let shared = TrackerCategoryRepositoryImplUserDef()
     
     private let repository = UserDefaults.standard
     
     private let key = "categories"
-    
-    private var categories: [TrackerCategory]
-    
-    private var lastId: Int = -1
-    
-    init() {
-        categories = repository.getJSON(forKey: key) ?? [TrackerCategory]()
-        if categories.isEmpty { return }
         
-        for category in categories {
-            if category.id > lastId { lastId = category.id }
-        }
-    }
-    
     func createCategory(title: String) -> TrackerCategory {
         if let category = getCategoryByTitle(title: title) { return category }
         
-        lastId += 1
-        let newCategory = TrackerCategory(id: lastId, title: title)
-        categories.append(newCategory)
-        
-        saveCategories()
+        let newCategory = TrackerCategory(id: UUID(), title: title)
+
+        saveCategory(newCategory)
         return newCategory
     }
     
-    func getCategoryById(id: Int) -> TrackerCategory? {
+    func getCategoryById(id: UUID) -> TrackerCategory? {
+        let categories = loadCategories()
         if categories.isEmpty { return nil }
         
         var trackerCategory: TrackerCategory?
@@ -46,6 +30,7 @@ final class TrackerCategoryRepositoryImplUserDef: TrackerCategoryRepository {
     }
     
     func getCategoryByTitle(title: String) -> TrackerCategory? {
+        let categories = loadCategories()
         if categories.isEmpty { return nil }
         
         var trackerCategory: TrackerCategory?
@@ -58,36 +43,48 @@ final class TrackerCategoryRepositoryImplUserDef: TrackerCategoryRepository {
         return trackerCategory
     }
     
-    func updateTitle(for categoryID: Int, newTitle: String) -> TrackerCategory? {
+    func updateTitle(for categoryID: UUID, newTitle: String) -> TrackerCategory? {
         if getCategoryById(id: categoryID) == nil { return nil }
         
         let updatedCategory = TrackerCategory(id: categoryID, title: newTitle)
         
+        var categories = loadCategories()
         for index in 0 ... categories.count-1 {
             if categories[index].id == categoryID {
                 categories[index] = updatedCategory
                 break
             }
         }
-        saveCategories()
+        saveCategories(categories)
         return updatedCategory
     }
     
-    func removeCategory(id: Int) {
+    func removeCategory(id: UUID) {
+        var categories = loadCategories()
         for index in 0 ... categories.count-1 {
             if categories[index].id == id {
                 categories.remove(at: index)
-                saveCategories()
+                saveCategories(categories)
                 break
             }
         }
     }
     
     func getCategoryList() -> [TrackerCategory] {
-        return categories
+        return loadCategories()
     }
     
-    private func saveCategories() {
+    private func saveCategories(_ categories: [TrackerCategory]) {
         repository.setJSON(codable: categories, forKey: key)
+    }
+    
+    private func saveCategory(_ category: TrackerCategory) {
+        var categories = loadCategories()
+        categories.append(category)
+        saveCategories(categories)
+    }
+    
+    private func loadCategories() -> [TrackerCategory] {
+        return repository.getJSON(forKey: key) ?? [TrackerCategory]()
     }
 }

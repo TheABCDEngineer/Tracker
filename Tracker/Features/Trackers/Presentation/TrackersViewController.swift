@@ -74,7 +74,7 @@ final class TrackersViewController: UIViewController {
         presenter.setSearchingTrackerTitle(subTitle)
     }
     
-    private func createEvent(event: TrackerType? = nil, modifyingTrackerID: Int? = nil) {
+    private func createEvent(event: TrackerType? = nil, modifyingTrackerID: UUID? = nil) {
         let controller = TrackerCreatorViewController()
         controller.setTrackerType(event)
         controller.setTrackerIdIfModify(modifyingTrackerID)

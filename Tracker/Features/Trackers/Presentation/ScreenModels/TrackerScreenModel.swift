@@ -1,7 +1,7 @@
 import UIKit
 
 struct TrackerScreenModel {
-    let id: Int
+    let id: UUID
     let title: String
     let emoji: String
     let color: UIColor

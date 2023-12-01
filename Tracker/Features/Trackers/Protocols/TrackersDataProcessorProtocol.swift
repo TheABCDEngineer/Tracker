@@ -11,9 +11,9 @@ protocol TrackersDataProcessorProtocol {
     
     func fetchTrackersForRequiredDate(where requiredDate: Date) -> [TrackerModel]
     
-    func fetchTrackerCompletionForDate(trackerID: Int, where requiredDate: Date) -> Bool
+    func fetchTrackerCompletionForDate(trackerID: UUID, where requiredDate: Date) -> Bool
     
-    func fetchTrackerCompletionCount(trackerID: Int) -> Int
+    func fetchTrackerCompletionCount(trackerID: UUID) -> Int
     
     func fetchPacksForTrackers(for requiredTrackers: [TrackerModel]) -> [TrackersPack]
     
@@ -22,13 +22,13 @@ protocol TrackersDataProcessorProtocol {
         where subTitle: String
     ) -> [TrackerModel]
     
-    func fetchTitleByCategoryID(_ id: Int) -> String
+    func fetchTitleByCategoryID(_ id: UUID) -> String
     
-    func fetchTrackerByID(_ id: Int) -> TrackerModel?
+    func fetchTrackerByID(_ id: UUID) -> TrackerModel?
     
-    func addRecord(for trackerID: Int, date: Date) -> Int
+    func addRecord(for trackerID: UUID, date: Date) -> Int
     
-    func removeRecord(for trackerID: Int, date: Date) -> Int
+    func removeRecord(for trackerID: UUID, date: Date) -> Int
     
-    func removeTracker(id: Int)
+    func removeTracker(id: UUID)
 }

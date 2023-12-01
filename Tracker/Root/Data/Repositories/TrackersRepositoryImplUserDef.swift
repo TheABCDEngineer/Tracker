@@ -1,36 +1,24 @@
 import Foundation
 
 final class TrackersRepositoryImplUserDef: TrackersRepository {
-    static let shared = TrackersRepositoryImplUserDef()
     
     private let repository = UserDefaults.standard
     
     private let key = "trackers"
-    
-    private var lastId: Int = -1
-    
-    init() {
-        let trackers: [TrackerModel] = repository.getJSON(forKey: key) ?? [TrackerModel]()
-        if trackers.isEmpty { return }
         
-        for tracker in trackers {
-            if tracker.id > lastId { lastId = tracker.id }
-        }
-    }
-    
     func createTracker(type: TrackerType, title: String, schedule: Set<WeekDays>, emoji: String, color: TrackerColor
     ) -> TrackerModel? {
         if checkOnSimilarTitle(title) { return nil}
         
         let tracker = TrackerModel(
-            id: lastId + 1,
+            id: UUID(),
             type: type,
             title: title,
             schedule: schedule,
             emoji: emoji,
             color: color
         )
-        lastId += 1
+    
         saveTracker(tracker)
         return tracker
     }
@@ -40,7 +28,7 @@ final class TrackersRepositoryImplUserDef: TrackersRepository {
         return trackers
     }
     
-    func updateTracker(for trackerID: Int, type: TrackerType? = nil, title: String? = nil, schedule: Set<WeekDays>? = nil, emoji: String? = nil, color: TrackerColor? = nil
+    func updateTracker(for trackerID: UUID, type: TrackerType? = nil, title: String? = nil, schedule: Set<WeekDays>? = nil, emoji: String? = nil, color: TrackerColor? = nil
     ) -> TrackerModel? {
         guard let tracker = getTrackerByID(trackerID) else { return nil}
         
@@ -63,7 +51,7 @@ final class TrackersRepositoryImplUserDef: TrackersRepository {
         return updatedTracker
     }
     
-    func removeTracker(id: Int) {
+    func removeTracker(id: UUID) {
         var trackers = loadTrackers()
         if trackers.isEmpty { return }
         
@@ -78,7 +66,7 @@ final class TrackersRepositoryImplUserDef: TrackersRepository {
         saveTrackers(trackers)
     }
     
-    func getTrackerByID(_ id: Int) -> TrackerModel? {
+    func getTrackerByID(_ id: UUID) -> TrackerModel? {
         let trackers = loadTrackers()
         if trackers.isEmpty { return nil }
         

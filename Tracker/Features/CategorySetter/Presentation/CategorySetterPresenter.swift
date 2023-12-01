@@ -28,7 +28,7 @@ final class CategorySetterPresenter {
         return categoryRepository.getCategoryList()
     }
     
-    func removeCategory(categoryID: Int) -> Bool {
+    func removeCategory(categoryID: UUID) -> Bool {
         if let pack = trackerPackRepository.getPackByCategoryID(categoryID) {
             if !pack.trackerIDList.isEmpty { return false }
         }

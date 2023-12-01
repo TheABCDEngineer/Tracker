@@ -46,11 +46,11 @@ final class Creator {
     }
     
     static func injectTrackerCategoryRepository() -> TrackerCategoryRepository {
-        return TrackerCategoryRepositoryImplUserDef.shared
+        return TrackerCategoryRepositoryImplUserDef()
     }
     
     static func injectTrackersRepository() -> TrackersRepository {
-        return TrackersRepositoryImplUserDef.shared
+        return TrackersRepositoryImplUserDef()
     }
     
     static func injectTrackersPackRepository() -> TrackersPackRepository {
@@ -80,7 +80,7 @@ final class Creator {
         TrackerTypeValueTransformer.register()
         ScheduleValueTransformer.register()
         ColorValueTransformer.register()
-        SetOfIntegerValueTransformer.register()
+        SetOfUUIDValueTransformer.register()
         SetOfDatesValueTransformer.register()
     }
 }

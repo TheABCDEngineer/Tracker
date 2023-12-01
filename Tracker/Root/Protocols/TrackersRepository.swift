@@ -12,7 +12,7 @@ protocol TrackersRepository {
     func loadTrackers() -> [TrackerModel]
     
     func updateTracker(
-        for trackerID: Int,
+        for trackerID: UUID,
         type: TrackerType?,
         title: String?,
         schedule: Set<WeekDays>?,
@@ -20,7 +20,7 @@ protocol TrackersRepository {
         color: TrackerColor?
     ) -> TrackerModel?
     
-    func removeTracker(id: Int)
+    func removeTracker(id: UUID)
     
-    func getTrackerByID(_ id: Int) -> TrackerModel?
+    func getTrackerByID(_ id: UUID) -> TrackerModel?
 }

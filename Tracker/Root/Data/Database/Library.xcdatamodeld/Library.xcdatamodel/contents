@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22F66" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="TrackerCategoryCoreData" representedClassName="TrackerCategoryCoreData" syncable="YES" codeGenerationType="class">
-        <attribute name="id" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="title" attributeType="String"/>
-    </entity>
-    <entity name="TrackerCoreData" representedClassName="TrackerCoreData" syncable="YES" codeGenerationType="class">
-        <attribute name="color" attributeType="Transformable" valueTransformerName="ColorValueTransformer"/>
-        <attribute name="emoji" attributeType="String"/>
-        <attribute name="id" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="shedule" attributeType="Transformable" valueTransformerName="ScheduleValueTransformer"/>
-        <attribute name="title" attributeType="String"/>
-        <attribute name="type" attributeType="Transformable" valueTransformerName="TrackerTypeValueTransformer"/>
     </entity>
     <entity name="TrackerPackCoreData" representedClassName="TrackerPackCoreData" syncable="YES" codeGenerationType="class">
-        <attribute name="categoryID" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="categoryID" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="trackerIDList" attributeType="Transformable" valueTransformerName="SetOfIntegerValueTransformer"/>
     </entity>
     <entity name="TrackerRecordCoreData" representedClassName="TrackerRecordCoreData" syncable="YES" codeGenerationType="class">
         <attribute name="dates" attributeType="Transformable" valueTransformerName="SetOfDatesValueTransformer"/>
-        <attribute name="trackerID" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="trackerID" attributeType="UUID" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="TrackersCoreData" representedClassName="TrackersCoreData" syncable="YES" codeGenerationType="class">
+        <attribute name="color" attributeType="Transformable" valueTransformerName="ColorValueTransformer"/>
+        <attribute name="emoji" attributeType="String"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="shedule" attributeType="Transformable" valueTransformerName="ScheduleValueTransformer"/>
+        <attribute name="title" attributeType="String"/>
+        <attribute name="type" attributeType="Transformable" valueTransformerName="TrackerTypeValueTransformer"/>
     </entity>
 </model>

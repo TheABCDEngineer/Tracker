@@ -1,7 +1,7 @@
 import UIKit
 
 struct TrackerModel: Codable {
-    let id: Int
+    let id: UUID
     let type: TrackerType
     let title: String
     let schedule: Set<WeekDays>

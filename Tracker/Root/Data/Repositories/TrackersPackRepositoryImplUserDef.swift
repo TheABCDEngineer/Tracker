@@ -11,7 +11,7 @@ final class TrackersPackRepositoryImplUserDef: TrackersPackRepository {
         return packs
     }
     
-    func addTrackerToCategory(trackerID: Int, categoryID: Int) {
+    func addTrackerToCategory(trackerID: UUID, categoryID: UUID) {
         let initPack =
             getPackByCategoryID(categoryID) ?? TrackersPack(categoryID: categoryID, trackerIDList: [])
         var trackerIDList = initPack.trackerIDList
@@ -25,7 +25,7 @@ final class TrackersPackRepositoryImplUserDef: TrackersPackRepository {
         savePack(requiredPack)
     }
     
-    func removeTrackerFromCategory(trackerID: Int) {
+    func removeTrackerFromCategory(trackerID: UUID) {
         guard let initPack = getPackByTrackerID(trackerID) else { return }
         
         var trackerIDList = initPack.trackerIDList
@@ -44,7 +44,7 @@ final class TrackersPackRepositoryImplUserDef: TrackersPackRepository {
         savePack(updatedPack)
     }
     
-    func getPackByTrackerID(_ trackerID: Int) -> TrackersPack? {
+    func getPackByTrackerID(_ trackerID: UUID) -> TrackersPack? {
         let packs = loadPacks()
         
         for pack in packs {
@@ -55,7 +55,7 @@ final class TrackersPackRepositoryImplUserDef: TrackersPackRepository {
         return nil
     }
     
-    func getPackByCategoryID(_ categoryID: Int) -> TrackersPack? {
+    func getPackByCategoryID(_ categoryID: UUID) -> TrackersPack? {
         let packs = loadPacks()
         if packs.isEmpty { return nil }
         
@@ -70,7 +70,7 @@ final class TrackersPackRepositoryImplUserDef: TrackersPackRepository {
         return requiredPack
     }
     
-    func removePack(for categoryID: Int) {
+    func removePack(for categoryID: UUID) {
         var packs = loadPacks()
         if packs.isEmpty { return }
         
