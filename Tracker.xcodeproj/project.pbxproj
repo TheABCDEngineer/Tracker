@@ -83,6 +83,14 @@
 		ABBF3C222AE1853A005AAD3F /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBF3C212AE1853A005AAD3F /* UIColor+Extensions.swift */; };
 		ABBF3C262AE18A92005AAD3F /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBF3C252AE18A92005AAD3F /* Fonts.swift */; };
 		ABC367892B152F56002164EB /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC367882B152F56002164EB /* String+Extensions.swift */; };
+		ABC3678D2B19E0D4002164EB /* Library.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = ABC3678B2B19E0D4002164EB /* Library.xcdatamodeld */; };
+		ABC367902B19E516002164EB /* TrackerTypeValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC3678F2B19E516002164EB /* TrackerTypeValueTransformer.swift */; };
+		ABC367922B19EB4F002164EB /* ScheduleValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC367912B19EB4F002164EB /* ScheduleValueTransformer.swift */; };
+		ABC367942B19EC87002164EB /* ColorValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC367932B19EC87002164EB /* ColorValueTransformer.swift */; };
+		ABC367962B19EE73002164EB /* SetOfIntegerValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC367952B19EE73002164EB /* SetOfIntegerValueTransformer.swift */; };
+		ABC367982B19F0C9002164EB /* SetOfDatesValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC367972B19F0C9002164EB /* SetOfDatesValueTransformer.swift */; };
+		ABC3679A2B19FBB9002164EB /* TrackersRepositoryImplCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC367992B19FBB9002164EB /* TrackersRepositoryImplCoreData.swift */; };
+		ABC3679C2B19FEB2002164EB /* IDHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC3679B2B19FEB2002164EB /* IDHolder.swift */; };
 		ABC4D65C2B0BF7C0002F341D /* FilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC4D65B2B0BF7C0002F341D /* FilterCell.swift */; };
 		ABC4D65F2B0BF908002F341D /* FilterState.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC4D65E2B0BF908002F341D /* FilterState.swift */; };
 		ABC4D6612B0BFBFE002F341D /* FilterCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC4D6602B0BFBFE002F341D /* FilterCellDelegate.swift */; };
@@ -179,6 +187,14 @@
 		ABBF3C212AE1853A005AAD3F /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		ABBF3C252AE18A92005AAD3F /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		ABC367882B152F56002164EB /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		ABC3678C2B19E0D4002164EB /* Library.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Library.xcdatamodel; sourceTree = "<group>"; };
+		ABC3678F2B19E516002164EB /* TrackerTypeValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTypeValueTransformer.swift; sourceTree = "<group>"; };
+		ABC367912B19EB4F002164EB /* ScheduleValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleValueTransformer.swift; sourceTree = "<group>"; };
+		ABC367932B19EC87002164EB /* ColorValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorValueTransformer.swift; sourceTree = "<group>"; };
+		ABC367952B19EE73002164EB /* SetOfIntegerValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetOfIntegerValueTransformer.swift; sourceTree = "<group>"; };
+		ABC367972B19F0C9002164EB /* SetOfDatesValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetOfDatesValueTransformer.swift; sourceTree = "<group>"; };
+		ABC367992B19FBB9002164EB /* TrackersRepositoryImplCoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersRepositoryImplCoreData.swift; sourceTree = "<group>"; };
+		ABC3679B2B19FEB2002164EB /* IDHolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDHolder.swift; sourceTree = "<group>"; };
 		ABC4D65B2B0BF7C0002F341D /* FilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCell.swift; sourceTree = "<group>"; };
 		ABC4D65E2B0BF908002F341D /* FilterState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterState.swift; sourceTree = "<group>"; };
 		ABC4D6602B0BFBFE002F341D /* FilterCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCellDelegate.swift; sourceTree = "<group>"; };
@@ -405,6 +421,7 @@
 				AB3BD32E2AED9FEE00BC3BD7 /* TrackerCategoryRepositoryImplUserDef.swift */,
 				AB3BD3872B06029700BC3BD7 /* TrackersRepositoryImplUserDef.swift */,
 				AB3BD38B2B060F9400BC3BD7 /* TrackersPackRepositoryImplUserDef.swift */,
+				ABC367992B19FBB9002164EB /* TrackersRepositoryImplCoreData.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -509,9 +526,11 @@
 		AB5485B42AE5B175001ED0B1 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				ABC3678A2B19E03A002164EB /* Database */,
 				AB3BD3862B06026600BC3BD7 /* Repositories */,
 				AB5485B52AE5B1DD001ED0B1 /* ObservableData.swift */,
 				AB3BD3A12B075D5D00BC3BD7 /* DateFormatterObj.swift */,
+				ABC3679B2B19FEB2002164EB /* IDHolder.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -670,6 +689,27 @@
 			path = Presentation;
 			sourceTree = "<group>";
 		};
+		ABC3678A2B19E03A002164EB /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				ABC3678E2B19E47C002164EB /* ValueTransformers */,
+				ABC3678B2B19E0D4002164EB /* Library.xcdatamodeld */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		ABC3678E2B19E47C002164EB /* ValueTransformers */ = {
+			isa = PBXGroup;
+			children = (
+				ABC3678F2B19E516002164EB /* TrackerTypeValueTransformer.swift */,
+				ABC367912B19EB4F002164EB /* ScheduleValueTransformer.swift */,
+				ABC367932B19EC87002164EB /* ColorValueTransformer.swift */,
+				ABC367952B19EE73002164EB /* SetOfIntegerValueTransformer.swift */,
+				ABC367972B19F0C9002164EB /* SetOfDatesValueTransformer.swift */,
+			);
+			path = ValueTransformers;
+			sourceTree = "<group>";
+		};
 		ABC4D6582B0BF737002F341D /* Filter */ = {
 			isa = PBXGroup;
 			children = (
@@ -788,11 +828,13 @@
 				ABBF3C062ADDCEA7005AAD3F /* AppDelegate.swift in Sources */,
 				ABBF3C262AE18A92005AAD3F /* Fonts.swift in Sources */,
 				ABC4D6712B0FAFFC002F341D /* ShedulerVCLayout.swift in Sources */,
+				ABC367922B19EB4F002164EB /* ScheduleValueTransformer.swift in Sources */,
 				AB3BD38A2B060EBE00BC3BD7 /* TrackersPackRepository.swift in Sources */,
 				ABC367892B152F56002164EB /* String+Extensions.swift in Sources */,
 				AB3BD3552AF8D37800BC3BD7 /* SchedulerViewController.swift in Sources */,
 				AB3BD3882B06029700BC3BD7 /* TrackersRepositoryImplUserDef.swift in Sources */,
 				ABC4D6732B0FB223002F341D /* TrackerCreatorVCLayout.swift in Sources */,
+				ABC3679A2B19FBB9002164EB /* TrackersRepositoryImplCoreData.swift in Sources */,
 				AB3BD3772B01032F00BC3BD7 /* CategorySetterCVDelegateFlowLayout.swift in Sources */,
 				AB3BD3A22B075D5D00BC3BD7 /* DateFormatterObj.swift in Sources */,
 				AB3BD31C2AED8CA100BC3BD7 /* EmojiCell.swift in Sources */,
@@ -803,6 +845,7 @@
 				AB3BD3A92B07AE1C00BC3BD7 /* TrackerCell.swift in Sources */,
 				AB3BD3582AF8D8E200BC3BD7 /* SchedulerCell.swift in Sources */,
 				AB3BD33B2AEFB8A600BC3BD7 /* TrackerCreatorTitleCell.swift in Sources */,
+				ABC367962B19EE73002164EB /* SetOfIntegerValueTransformer.swift in Sources */,
 				AB3BD3312AEE8E4F00BC3BD7 /* SectionTitleHeaderView.swift in Sources */,
 				AB3BD3A62B079D0700BC3BD7 /* TrackersCVDelegateFlowLayout.swift in Sources */,
 				AB3BD32A2AED9AE800BC3BD7 /* TrackerModel.swift in Sources */,
@@ -821,15 +864,18 @@
 				AB3BD35D2AF8DF0C00BC3BD7 /* SchedulerCellsDelegate.swift in Sources */,
 				AB3BD3472AF3CC8E00BC3BD7 /* TrackerCategory.swift in Sources */,
 				AB3BD37A2B01484000BC3BD7 /* CategoryCreatorViewController.swift in Sources */,
+				ABC367942B19EC87002164EB /* ColorValueTransformer.swift in Sources */,
 				AB3BD3662AFCE09000BC3BD7 /* TitleSupplementaryView.swift in Sources */,
 				AB3BD3AB2B07B40E00BC3BD7 /* TrackersCVCellDelegate.swift in Sources */,
 				AB5485B02AE45EE3001ED0B1 /* OnboardingPresenterProtocol.swift in Sources */,
 				AB3BD3252AED970500BC3BD7 /* WeekDays.swift in Sources */,
+				ABC3679C2B19FEB2002164EB /* IDHolder.swift in Sources */,
 				ABC4D6752B12936F002F341D /* AlertPresenterProtocol.swift in Sources */,
 				AB5485B32AE588AA001ED0B1 /* TrackersViewController.swift in Sources */,
 				AB3BD37E2B03779600BC3BD7 /* UserDefaults+Extensions.swift in Sources */,
 				AB5485BC2AE86968001ED0B1 /* ViewVisibilityProtocol.swift in Sources */,
 				AB3BD3852B06006A00BC3BD7 /* TrackersRepository.swift in Sources */,
+				ABC3678D2B19E0D4002164EB /* Library.xcdatamodeld in Sources */,
 				AB3BD32F2AED9FEE00BC3BD7 /* TrackerCategoryRepositoryImplUserDef.swift in Sources */,
 				AB3BD3422AF2B52600BC3BD7 /* SettingsMenuCellType.swift in Sources */,
 				AB3BD3132AED18C900BC3BD7 /* TrackerType.swift in Sources */,
@@ -850,11 +896,13 @@
 				AB3BD3752B00FD5600BC3BD7 /* CategorySetterCellDelegate.swift in Sources */,
 				AB5485A42AE4446A001ED0B1 /* UIView+Extensions.swift in Sources */,
 				AB3BD3802B05FE3900BC3BD7 /* TrackerRecord.swift in Sources */,
+				ABC367902B19E516002164EB /* TrackerTypeValueTransformer.swift in Sources */,
 				AB3BD3642AFC1E6F00BC3BD7 /* SchedulerCVDelegateFlowLayot.swift in Sources */,
 				ABC4D66D2B0FABC1002F341D /* CategoryCreatorVCLayout.swift in Sources */,
 				AB3BD34F2AF6E10500BC3BD7 /* CollectionViewDelegateFlowLayout.swift in Sources */,
 				AB3BD34D2AF6DA6200BC3BD7 /* ApplyButtonState.swift in Sources */,
 				AB3BD3272AED9A6700BC3BD7 /* TrackerEmoji.swift in Sources */,
+				ABC367982B19F0C9002164EB /* SetOfDatesValueTransformer.swift in Sources */,
 				AB5485B62AE5B1DD001ED0B1 /* ObservableData.swift in Sources */,
 				ABC4D6612B0BFBFE002F341D /* FilterCellDelegate.swift in Sources */,
 				AB3BD39B2B065E5800BC3BD7 /* TrackersDataProcessorProtocol.swift in Sources */,
@@ -1082,6 +1130,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		ABC3678B2B19E0D4002164EB /* Library.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				ABC3678C2B19E0D4002164EB /* Library.xcdatamodel */,
+			);
+			currentVersion = ABC3678C2B19E0D4002164EB /* Library.xcdatamodel */;
+			path = Library.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = ABBF3BFA2ADDCEA7005AAD3F /* Project object */;
 }

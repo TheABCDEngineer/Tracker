@@ -1,4 +1,5 @@
-import Foundation
+import UIKit
+import CoreData
 
 final class Creator {
 //MARK: - Presenters injections
@@ -68,5 +69,18 @@ final class Creator {
             packRepository: injectTrackersPackRepository(),
             recordsRepository: injectTrackerRecordsRepository()
         )
+    }
+    
+    static func injectCoreDataContext() -> NSManagedObjectContext {
+        return (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    }
+    
+//MARK: - Value Transformers registration
+    static func registrateValueTransformers() {
+        TrackerTypeValueTransformer.register()
+        ScheduleValueTransformer.register()
+        ColorValueTransformer.register()
+        SetOfIntegerValueTransformer.register()
+        SetOfDatesValueTransformer.register()
     }
 }
