@@ -87,7 +87,7 @@
 		ABC367902B19E516002164EB /* TrackerTypeValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC3678F2B19E516002164EB /* TrackerTypeValueTransformer.swift */; };
 		ABC367922B19EB4F002164EB /* ScheduleValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC367912B19EB4F002164EB /* ScheduleValueTransformer.swift */; };
 		ABC367942B19EC87002164EB /* ColorValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC367932B19EC87002164EB /* ColorValueTransformer.swift */; };
-		ABC367962B19EE73002164EB /* SetOfIntegerValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC367952B19EE73002164EB /* SetOfIntegerValueTransformer.swift */; };
+		ABC367962B19EE73002164EB /* SetOfUUIDValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC367952B19EE73002164EB /* SetOfUUIDValueTransformer.swift */; };
 		ABC367982B19F0C9002164EB /* SetOfDatesValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC367972B19F0C9002164EB /* SetOfDatesValueTransformer.swift */; };
 		ABC3679A2B19FBB9002164EB /* TrackersRepositoryImplCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC367992B19FBB9002164EB /* TrackersRepositoryImplCoreData.swift */; };
 		ABC3679C2B19FEB2002164EB /* IDHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC3679B2B19FEB2002164EB /* IDHolder.swift */; };
@@ -191,7 +191,7 @@
 		ABC3678F2B19E516002164EB /* TrackerTypeValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTypeValueTransformer.swift; sourceTree = "<group>"; };
 		ABC367912B19EB4F002164EB /* ScheduleValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleValueTransformer.swift; sourceTree = "<group>"; };
 		ABC367932B19EC87002164EB /* ColorValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorValueTransformer.swift; sourceTree = "<group>"; };
-		ABC367952B19EE73002164EB /* SetOfIntegerValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetOfIntegerValueTransformer.swift; sourceTree = "<group>"; };
+		ABC367952B19EE73002164EB /* SetOfUUIDValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetOfUUIDValueTransformer.swift; sourceTree = "<group>"; };
 		ABC367972B19F0C9002164EB /* SetOfDatesValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetOfDatesValueTransformer.swift; sourceTree = "<group>"; };
 		ABC367992B19FBB9002164EB /* TrackersRepositoryImplCoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersRepositoryImplCoreData.swift; sourceTree = "<group>"; };
 		ABC3679B2B19FEB2002164EB /* IDHolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDHolder.swift; sourceTree = "<group>"; };
@@ -704,7 +704,7 @@
 				ABC3678F2B19E516002164EB /* TrackerTypeValueTransformer.swift */,
 				ABC367912B19EB4F002164EB /* ScheduleValueTransformer.swift */,
 				ABC367932B19EC87002164EB /* ColorValueTransformer.swift */,
-				ABC367952B19EE73002164EB /* SetOfIntegerValueTransformer.swift */,
+				ABC367952B19EE73002164EB /* SetOfUUIDValueTransformer.swift */,
 				ABC367972B19F0C9002164EB /* SetOfDatesValueTransformer.swift */,
 			);
 			path = ValueTransformers;
@@ -845,7 +845,7 @@
 				AB3BD3A92B07AE1C00BC3BD7 /* TrackerCell.swift in Sources */,
 				AB3BD3582AF8D8E200BC3BD7 /* SchedulerCell.swift in Sources */,
 				AB3BD33B2AEFB8A600BC3BD7 /* TrackerCreatorTitleCell.swift in Sources */,
-				ABC367962B19EE73002164EB /* SetOfIntegerValueTransformer.swift in Sources */,
+				ABC367962B19EE73002164EB /* SetOfUUIDValueTransformer.swift in Sources */,
 				AB3BD3312AEE8E4F00BC3BD7 /* SectionTitleHeaderView.swift in Sources */,
 				AB3BD3A62B079D0700BC3BD7 /* TrackersCVDelegateFlowLayout.swift in Sources */,
 				AB3BD32A2AED9AE800BC3BD7 /* TrackerModel.swift in Sources */,
