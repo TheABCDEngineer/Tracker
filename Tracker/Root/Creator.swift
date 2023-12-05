@@ -46,19 +46,19 @@ final class Creator {
     }
     
     static func injectTrackerCategoryRepository() -> TrackerCategoryRepository {
-        return TrackerCategoryRepositoryImplUserDef()
+        return TrackerCategoryRepositoryImplCoreData(context: injectCoreDataContext())
     }
     
     static func injectTrackersRepository() -> TrackersRepository {
-        return TrackersRepositoryImplUserDef()
+        return TrackersRepositoryImplCoreData(context: injectCoreDataContext())
     }
     
     static func injectTrackersPackRepository() -> TrackersPackRepository {
-        return TrackersPackRepositoryImplUserDef()
+        return TrackersPackRepositoryImplCoreData(context: injectCoreDataContext())
     }
     
     static func injectTrackerRecordsRepository() -> TrackerRecordsRepository {
-        return TrackerRecordsRepositoryImplUserDef()
+        return TrackerRecordsRepositoryImplCoreData(context: injectCoreDataContext())
     }
     
 //MARK: - Services injections
@@ -71,16 +71,18 @@ final class Creator {
         )
     }
     
+//MARK: - CoreData    
     static func injectCoreDataContext() -> NSManagedObjectContext {
         return (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     }
     
-//MARK: - Value Transformers registration
-    static func registrateValueTransformers() {
-        TrackerTypeValueTransformer.register()
-        ScheduleValueTransformer.register()
-        ColorValueTransformer.register()
-        SetOfUUIDValueTransformer.register()
-        SetOfDatesValueTransformer.register()
+    static func saveCoreDataContex(_ context: NSManagedObjectContext) {
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                context.rollback()
+            }
+        }
     }
 }
