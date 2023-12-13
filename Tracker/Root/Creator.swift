@@ -29,8 +29,8 @@ final class Creator {
     
     static func injectCategorySetterPresenter() -> CategorySetterPresenter {
         return CategorySetterPresenter(
-            categoryRepository: injectTrackerCategoryRepository(),
-            trackerPackRepository: injectTrackersPackRepository()
+            trackerPackRepository: injectTrackersPackRepository(),
+            dataProvider: injectCategoryDataProvider()
         )
     }
     
@@ -68,6 +68,14 @@ final class Creator {
             categoryRepository: injectTrackerCategoryRepository(),
             packRepository: injectTrackersPackRepository(),
             recordsRepository: injectTrackerRecordsRepository()
+        )
+    }
+    
+    static func injectCategoryDataProvider() -> CategoryDataProviderProtocol {
+        return CategoryDataProvider(
+            context: injectCoreDataContext(),
+            categoryRepository: injectTrackerCategoryRepository(),
+            trackersPackRepository: injectTrackersPackRepository()
         )
     }
     

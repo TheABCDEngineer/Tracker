@@ -5,6 +5,8 @@ class CategorySetterViewController: UIViewController {
     private var initCategory: TrackerCategory?
     
     private let presenter = Creator.injectCategorySetterPresenter()
+    
+    private let dataProvoder = Creator.injectCategoryDataProvider()
 
     private var categoryCollection: UICollectionView!
     
@@ -12,9 +14,9 @@ class CategorySetterViewController: UIViewController {
     
     private var addCategoryButton: UIButton!
     
-    private var selectedCategoryForContextMenu: TrackerCategory?
+    private var selectedIndexPathForContextMenu: IndexPath?
     
-    private var onSetCategory: ( (TrackerCategory) -> Void )?
+    private var onSetCategory: ( (TrackerCategory?) -> Void )?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +24,7 @@ class CategorySetterViewController: UIViewController {
         configureCollectionView()
         setObservers()
         
+        dataProvoder.setDelegate(self)
         presenter.onViewLoaded()
     }
     
@@ -29,7 +32,7 @@ class CategorySetterViewController: UIViewController {
         self.initCategory = category
     }
     
-    func onSetCategory(_ completion: @escaping (TrackerCategory) -> Void) {
+    func onSetCategory(_ completion: @escaping (TrackerCategory?) -> Void) {
         self.onSetCategory = completion
     }
     
@@ -52,11 +55,11 @@ class CategorySetterViewController: UIViewController {
     private func launchCategoryCreator(_ modifyingCategory: TrackerCategory? = nil) {
         let controller = CategoryCreatorViewController()
         controller.setCategoryIfModify(modifyingCategory)
-        controller.onCategoryCreated {[weak self] category in
+        controller.onCreateCategoryRequest {[weak self] categoryTitle in
             guard let self else { return }
-            initCategory = category
-            self.categoryCollection.reloadData()
-            self.onSetCategory?(category)
+            let newCategory = dataProvoder.addCategory(title: categoryTitle)
+            initCategory = newCategory
+            self.onSetCategory?(newCategory)
             self.dismiss(animated: false)
         }
         self.present(controller, animated: true)
@@ -107,13 +110,13 @@ class CategorySetterViewController: UIViewController {
 extension CategorySetterViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int
     ) -> Int {
-        return presenter.getCategoryList().count
+        return dataProvoder.numberOfItems()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        let categoryList = presenter.getCategoryList()
-   
+        let itemsCount = collectionView.numberOfItems(inSection: indexPath.section)
+        
         guard let
             cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: CategoryCell.identifier,
@@ -121,18 +124,20 @@ extension CategorySetterViewController: UICollectionViewDataSource {
             ) as? CategoryCell else {
                 return UICollectionViewCell()
             }
-        if categoryList.isEmpty { return cell }
+
+        if itemsCount == 0 { return cell }
+        guard let category = dataProvoder.object(at: indexPath) else { return cell }
         
         cell.setDelegates(cellDelegate: self, contextMenuDelegate: self)
-        cell.setCategory(categoryList[indexPath.item])
+        cell.setCategory(category)
         
         if let initCategory {
-            if initCategory.id == categoryList[indexPath.item].id {
+            if initCategory.id == category.id {
                 cell.check()
             }
         }
         
-        if categoryList.count == 1 {
+        if itemsCount == 1 {
             cell.initCell(.single)
             return cell
         }
@@ -140,7 +145,7 @@ extension CategorySetterViewController: UICollectionViewDataSource {
         switch indexPath.item {
         case 0:
             cell.initCell(.first)
-        case categoryList.count - 1:
+        case itemsCount - 1:
             cell.initCell(.last)
         default:
             cell.initCell(.regular)
@@ -175,8 +180,28 @@ extension CategorySetterViewController: CategorySetterCellDelegate {
 extension CategorySetterViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath
     ) -> Bool {
-        selectedCategoryForContextMenu = presenter.getCategoryList()[indexPath.item]
+        selectedIndexPathForContextMenu = indexPath
         return true
+    }
+}
+
+//MARK: - CategoryDataProviderDelegate
+extension CategorySetterViewController: CategoryDataProviderDelegate {
+    func update(handleType: ItemHandleType,
+                indexPath: IndexPath,
+                indexPathForReconfigure: IndexPath?,
+                reconfiguredCellType: SettingsMenuCellType
+    ) {
+        categoryCollection.performBatchUpdates {
+            if handleType == .insert { categoryCollection.insertItems(at: [indexPath]) }
+            if handleType == .delete { categoryCollection.deleteItems(at: [indexPath]) }
+        }
+                
+        guard let indexPathForReconfigure else { return }
+        guard let reconfiguredCell = categoryCollection.cellForItem(at: indexPathForReconfigure) as? CategoryCell else { return }
+        
+        reconfiguredCell.prepareForReuse()
+        reconfiguredCell.initCell(reconfiguredCellType)
     }
 }
 
@@ -187,19 +212,28 @@ extension CategorySetterViewController: UIContextMenuInteractionDelegate {
         return ContextMenuConfigurator.setupMenu(
             alertPresenter: self,
             editAction: {
-                guard let category = self.selectedCategoryForContextMenu else { return }
+                guard let indexPath = self.selectedIndexPathForContextMenu else { return }
+                guard let category = self.dataProvoder.object(at: indexPath) else { return }
                 self.launchCategoryCreator(category)
             },
             removeMessage: "Эта категория точно не нужна?",
             removeAction: {
-                guard let category = self.selectedCategoryForContextMenu else { return }
-                if self.presenter.removeCategory(categoryID: category.id) {
-                    self.categoryCollection.reloadData()
+                guard let indexPath = self.selectedIndexPathForContextMenu else { return }
+                guard let deletedCategory = self.dataProvoder.object(at: indexPath) else { return }
+                if self.dataProvoder.removeCategory(at: indexPath) {
+                    if self.initCategory?.id == deletedCategory.id {
+                        self.initCategory = nil
+                        self.onSetCategory?(nil)
+                        if self.dataProvoder.numberOfItems() == 0 {
+                            self.presenter.onViewLoaded()
+                        }
+                    }
                 } else {
+                    let categoryTitle = self.dataProvoder.object(at: indexPath)?.title ?? ""
                     AlertController.showNotification(
                         alertPresenter: self,
                         title: "Невозможно удалить категорию!",
-                        message: "Категория \(category.title) содержит трекеры.\nЧтобы удалить эту категорию сначала необходимо переместить из неё все трекеры"
+                        message: "Категория \(categoryTitle) содержит трекеры.\nЧтобы удалить эту категорию сначала необходимо переместить из неё все трекеры"
                     )
                 }
             }

@@ -72,10 +72,10 @@ final class TrackerCreatorPresenter {
         updateAllPropertiesDidEnterState()
     }
     
-    func setCategory(_ category: TrackerCategory) {
+    func setCategory(_ category: TrackerCategory?) {
         self.category = category
         updateAllPropertiesDidEnterState()
-        categoryCreated.postValue(category.title)
+        categoryCreated.postValue(category?.title)
     }
     
     func setSchedule(_ schedule: Set<WeekDays>) {

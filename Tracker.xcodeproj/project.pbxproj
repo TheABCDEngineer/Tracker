@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		AB1CBEB32B1F288C001C3300 /* TrackerRecordsRepositoryImplCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1CBEB22B1F288C001C3300 /* TrackerRecordsRepositoryImplCoreData.swift */; };
+		AB1CBEB62B222A7F001C3300 /* CategoryDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1CBEB52B222A7F001C3300 /* CategoryDataProvider.swift */; };
+		AB1CBEB82B223963001C3300 /* CategoryDataProviderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1CBEB72B223963001C3300 /* CategoryDataProviderDelegate.swift */; };
+		AB1CBEBA2B223B2D001C3300 /* CategoryDataProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1CBEB92B223B2D001C3300 /* CategoryDataProviderProtocol.swift */; };
 		AB3BD3132AED18C900BC3BD7 /* TrackerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BD3122AED18C900BC3BD7 /* TrackerType.swift */; };
 		AB3BD31C2AED8CA100BC3BD7 /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BD31B2AED8CA100BC3BD7 /* EmojiCell.swift */; };
 		AB3BD3232AED91A300BC3BD7 /* TrackerCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BD3222AED91A300BC3BD7 /* TrackerCreatorViewController.swift */; };
@@ -104,6 +107,9 @@
 
 /* Begin PBXFileReference section */
 		AB1CBEB22B1F288C001C3300 /* TrackerRecordsRepositoryImplCoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecordsRepositoryImplCoreData.swift; sourceTree = "<group>"; };
+		AB1CBEB52B222A7F001C3300 /* CategoryDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDataProvider.swift; sourceTree = "<group>"; };
+		AB1CBEB72B223963001C3300 /* CategoryDataProviderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDataProviderDelegate.swift; sourceTree = "<group>"; };
+		AB1CBEB92B223B2D001C3300 /* CategoryDataProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDataProviderProtocol.swift; sourceTree = "<group>"; };
 		AB3BD3122AED18C900BC3BD7 /* TrackerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerType.swift; sourceTree = "<group>"; };
 		AB3BD31B2AED8CA100BC3BD7 /* EmojiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
 		AB3BD3222AED91A300BC3BD7 /* TrackerCreatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCreatorViewController.swift; sourceTree = "<group>"; };
@@ -211,6 +217,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AB1CBEB42B222A5E001C3300 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				AB1CBEB52B222A7F001C3300 /* CategoryDataProvider.swift */,
+				AB1CBEB72B223963001C3300 /* CategoryDataProviderDelegate.swift */,
+				AB1CBEB92B223B2D001C3300 /* CategoryDataProviderProtocol.swift */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
 		AB3BD30D2AED16F400BC3BD7 /* TrackerCreater */ = {
 			isa = PBXGroup;
 			children = (
@@ -341,6 +357,7 @@
 		AB3BD3672AFE39B300BC3BD7 /* CategorySetter */ = {
 			isa = PBXGroup;
 			children = (
+				AB1CBEB42B222A5E001C3300 /* Domain */,
 				AB3BD3682AFE3A2E00BC3BD7 /* Presentation */,
 			);
 			path = CategorySetter;
@@ -814,6 +831,7 @@
 				AB5485AE2AE45C95001ED0B1 /* OnboardingRepositoryImplUserDefaults.swift in Sources */,
 				AB5485A82AE45B1E001ED0B1 /* OnboardingPresenter.swift in Sources */,
 				ABC367A02B1CDB7F002164EB /* TrackerCategoryRepositoryImplCoreData.swift in Sources */,
+				AB1CBEBA2B223B2D001C3300 /* CategoryDataProviderProtocol.swift in Sources */,
 				AB3BD3912B0642CC00BC3BD7 /* TrackerScreenModel.swift in Sources */,
 				ABBF3C082ADDCEA7005AAD3F /* SceneDelegate.swift in Sources */,
 				AB3BD3A92B07AE1C00BC3BD7 /* TrackerCell.swift in Sources */,
@@ -826,6 +844,7 @@
 				ABC4D6792B129950002F341D /* ContextMenuConfigurator.swift in Sources */,
 				ABC4D6772B12954D002F341D /* AlertController.swift in Sources */,
 				AB3BD33F2AF2B39300BC3BD7 /* TrackerCreatorSettingsCell.swift in Sources */,
+				AB1CBEB82B223963001C3300 /* CategoryDataProviderDelegate.swift in Sources */,
 				AB3BD36B2AFE3AA900BC3BD7 /* CategorySetterViewController.swift in Sources */,
 				AB3BD3A02B06645100BC3BD7 /* DataConverter.swift in Sources */,
 				ABC4D66F2B0FAE1A002F341D /* CategorySetterVCLayout.swift in Sources */,
@@ -847,6 +866,7 @@
 				AB3BD37E2B03779600BC3BD7 /* UserDefaults+Extensions.swift in Sources */,
 				AB5485BC2AE86968001ED0B1 /* ViewVisibilityProtocol.swift in Sources */,
 				AB3BD3852B06006A00BC3BD7 /* TrackersRepository.swift in Sources */,
+				AB1CBEB62B222A7F001C3300 /* CategoryDataProvider.swift in Sources */,
 				ABC3678D2B19E0D4002164EB /* Library.xcdatamodeld in Sources */,
 				AB3BD3422AF2B52600BC3BD7 /* SettingsMenuCellType.swift in Sources */,
 				AB3BD3132AED18C900BC3BD7 /* TrackerType.swift in Sources */,
