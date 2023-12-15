@@ -1,6 +1,6 @@
 import Foundation
 
-final class OnboardingPreseter: OnboardingPresenterProtocol {
+final class OnboardingViewModel: OnboardingViewModelProtocol {
     private let onboardingStatusRepository: OnboardingRepository
     
     init(onboardingStatusRepository: OnboardingRepository) {

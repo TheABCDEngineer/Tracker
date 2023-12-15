@@ -1,6 +1,6 @@
 import Foundation
 
-final class TrackersPresenter {
+final class TrackersViewModel {
      
     private let dataProcessor: TrackersDataProcessorProtocol
     

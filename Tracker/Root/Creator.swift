@@ -2,40 +2,40 @@ import UIKit
 import CoreData
 
 final class Creator {
-//MARK: - Presenters injections
-    static func injectOnboardingPresenter() -> OnboardingPresenterProtocol {
-        return OnboardingPreseter(
+//MARK: - ViewModels injections
+    static func injectOnboardingViewModel() -> OnboardingViewModelProtocol {
+        return OnboardingViewModel(
             onboardingStatusRepository: injectOnboardingRepository()
         )
     }
     
-    static func injectTrackersPresenter() -> TrackersPresenter {
-        return TrackersPresenter(
+    static func injectTrackersViewModel() -> TrackersViewModel {
+        return TrackersViewModel(
             dataProcessor: injectTrackersDataProcessor()
         )
     }
     
-    static func injectTrackerCreatorPresenter() -> TrackerCreatorPresenter {
-        return TrackerCreatorPresenter(
+    static func injectTrackerCreatorViewModel() -> TrackerCreatorViewModel {
+        return TrackerCreatorViewModel(
             trackersRepository: injectTrackersRepository(),
             packRepository: injectTrackersPackRepository(),
             categoryRepository: injectTrackerCategoryRepository()
         )
     }
     
-    static func injectSchedulerPresenter() -> SchedulerPresenter {
-        return SchedulerPresenter()
+    static func injectSchedulerViewModel() -> SchedulerViewModel {
+        return SchedulerViewModel()
     }
     
-    static func injectCategorySetterPresenter() -> CategorySetterPresenter {
-        return CategorySetterPresenter(
+    static func injectCategoryViewModel() -> CategorySetterViewModel {
+        return CategorySetterViewModel(
             trackerPackRepository: injectTrackersPackRepository(),
             dataProvider: injectCategoryDataProvider()
         )
     }
     
-    static func injectCategoryCreatorPresenter() -> CategoryCreatorPresenter {
-        return CategoryCreatorPresenter(
+    static func injectCategoryCreatorViewModel() -> CategoryCreatorViewModel {
+        return CategoryCreatorViewModel(
             categoryRepository: injectTrackerCategoryRepository()
         )
     }

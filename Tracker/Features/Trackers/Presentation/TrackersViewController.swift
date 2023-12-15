@@ -4,7 +4,7 @@ final class TrackersViewController: UIViewController {
     
     var inaccessibleViews = [ViewVisibilityProtocol]()
     
-    private let presenter = Creator.injectTrackersPresenter()
+    private let viewModel = Creator.injectTrackersViewModel()
     
     private let datePicker = UIDatePicker()
     
@@ -35,7 +35,7 @@ final class TrackersViewController: UIViewController {
         configureTrackerCollectionView()
         configureFilterCollectionView()
         setObservers()
-        presenter.updateData()
+        viewModel.updateData()
     }
     
     @objc
@@ -47,7 +47,7 @@ final class TrackersViewController: UIViewController {
     @objc
     private func onDatePickerChoose() {
         searchingField.resignFirstResponder()
-        presenter.setUserDate(datePicker.date)
+        viewModel.setUserDate(datePicker.date)
     }
     
     @objc
@@ -71,7 +71,7 @@ final class TrackersViewController: UIViewController {
     @objc
     private func onSearchingFieldTextChange() {
         guard let subTitle = searchingField.text else { return }
-        presenter.setSearchingTrackerTitle(subTitle)
+        viewModel.setSearchingTrackerTitle(subTitle)
     }
     
     private func createEvent(event: TrackerType? = nil, modifyingTrackerID: UUID? = nil) {
@@ -80,13 +80,13 @@ final class TrackersViewController: UIViewController {
         controller.setTrackerIdIfModify(modifyingTrackerID)
         controller.onTrackerCreated { [weak self] in
             guard let self else { return }
-            self.presenter.updateData()
+            self.viewModel.updateData()
         }
         self.present(controller, animated: true)
     }
         
     private func setObservers() {
-        presenter.ObserveTrackersPacks { [weak self] data in
+        viewModel.ObserveTrackersPacks { [weak self] data in
             guard let self, let data else { return }
             self.trackersFieldData = data
             self.trackersCV.reloadData()
@@ -94,7 +94,7 @@ final class TrackersViewController: UIViewController {
             placeholder.view.isHidden = !trackersFieldData.isEmpty
         }
         
-        presenter.ObserveModifiedTracker { [weak self] trackerModel in
+        viewModel.ObserveModifiedTracker { [weak self] trackerModel in
             guard let self, let trackerModel, let index = selectedTrackerIndexPath else { return }
 
             self.trackersFieldData[index.section].trackers[index.item] = trackerModel
@@ -148,7 +148,7 @@ extension TrackersViewController: AlertPresenterProtocol {
 extension TrackersViewController: TrackersCVCellDelegate {
     func onTrackerChecked(for indexPath: IndexPath) {
         selectedTrackerIndexPath = indexPath
-        presenter.onTrackerChecked(
+        viewModel.onTrackerChecked(
             tracker: trackersFieldData[indexPath.section].trackers[indexPath.item]
         )
     }
@@ -158,7 +158,7 @@ extension TrackersViewController: TrackersCVCellDelegate {
 extension TrackersViewController: FilterCellDelegate {
     func onFilterChoose(indexPath: IndexPath, filter: FilterState) {
         filterDataSource.currentFilterState = filter
-        presenter.setFilter(filter)
+        viewModel.setFilter(filter)
         
         if let previousSelectedCellIndexPath = filterDataSource.selectedCellIndexPath {
             if let cell = filterCV.cellForItem(at: previousSelectedCellIndexPath) as? FilterCell {
@@ -177,16 +177,18 @@ extension TrackersViewController: UIContextMenuInteractionDelegate {
     ) -> UIContextMenuConfiguration? {        
         return ContextMenuConfigurator.setupMenu(
             alertPresenter: self,
-            editAction: {
+            editAction: { [weak self] in
+                guard let self else { return }
                 guard let indexPath = self.selectedTrackerIndexPath else { return }
                 let trackerId = self.trackersFieldData[indexPath.section].trackers[indexPath.item].id
                 self.createEvent(modifyingTrackerID: trackerId)
             },
             removeMessage: "Уверены что хотите удалить трекер?",
-            removeAction: {
+            removeAction: { [weak self] in
+                guard let self else { return }
                 guard let indexPath = self.selectedTrackerIndexPath else { return }
                 let trackerId = self.trackersFieldData[indexPath.section].trackers[indexPath.item].id
-                self.presenter.onRemoveTracker(trackerID: trackerId)
+                self.viewModel.onRemoveTracker(trackerID: trackerId)
             }
         )
     }

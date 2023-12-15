@@ -4,7 +4,7 @@ final class TrackerCreatorViewController: UIViewController {
  
     private var isModifyTracker = false
     
-    private let presenter = Creator.injectTrackerCreatorPresenter()
+    private let viewModel = Creator.injectTrackerCreatorViewModel()
     
     private var eventCreatorCollection: UICollectionView!
         
@@ -41,27 +41,27 @@ final class TrackerCreatorViewController: UIViewController {
     
     func setTrackerType(_ trackerType: TrackerType?) {
         guard let trackerType else { return }
-        presenter.setTrackerType(trackerType)
+        viewModel.setTrackerType(trackerType)
     }
     
     func setTrackerIdIfModify(_ id: UUID?) {
         guard let id else { return }
         isModifyTracker = true
-        presenter.setTrackerIdIfModify(id)
+        viewModel.setTrackerIdIfModify(id)
     }
     
     private func setObservers() {
-        presenter.observeAllPropertiesDidEnter { [weak self] state in
+        viewModel.observeAllPropertiesDidEnter { [weak self] state in
             guard let self, let state else { return }
             self.updateApplyButtonState(state)
         }
         
-        presenter.observeScheduleCreated { [weak self] scheduleString in
+        viewModel.observeScheduleCreated { [weak self] scheduleString in
             guard let self, let scheduleString else { return }
             self.updateSublabelInSettingCell(for: scheduleIndexPath, text: scheduleString)
         }
         
-        presenter.observeCategoryCreated { [weak self] categoryTitle in
+        viewModel.observeCategoryCreated { [weak self] categoryTitle in
             guard let self else { return }
             self.updateSublabelInSettingCell(for: categoryIndexPath, text: categoryTitle)
         }
@@ -89,9 +89,9 @@ final class TrackerCreatorViewController: UIViewController {
         let controller = SchedulerViewController()
         controller.onSetSchedule { [weak self] schedule in
             guard let self else { return }
-            presenter.setSchedule(schedule)
+            viewModel.setSchedule(schedule)
         }
-        controller.setCurrentSchedule(presenter.schedule)
+        controller.setCurrentSchedule(viewModel.schedule)
         unfocusedTileField()
         self.present(controller, animated: true)
     }
@@ -100,16 +100,16 @@ final class TrackerCreatorViewController: UIViewController {
         let controller = CategorySetterViewController()
         controller.onSetCategory {[weak self] category in
             guard let self else { return }
-            presenter.setCategory(category)
+            viewModel.setCategory(category)
         }
-        controller.setInitCategory(presenter.category)
+        controller.setInitCategory(viewModel.category)
         unfocusedTileField()
         self.present(controller, animated: true)
     }
     
     @objc
     private func onApplyButtonClick() {
-        presenter.createTracker()
+        viewModel.createTracker()
         dismiss(animated: true)
         onTrackerCreated?()
     }
@@ -127,7 +127,7 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
         case 0:
             return 1
         case 1:
-            return presenter.trackerType == .habit ? 2 : 1
+            return viewModel.trackerType == .habit ? 2 : 1
         case 2:
             return TrackerEmoji.items.count
         case 3:
@@ -186,17 +186,17 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
         
         var headerTitle = ""
         if isModifyTracker {
-            headerTitle = presenter.trackerType == .habit
+            headerTitle = viewModel.trackerType == .habit
                 ? "Редактирование привычки"
                 : "Редактирование нерегулярного события"
         } else {
-            headerTitle = presenter.trackerType == .habit
+            headerTitle = viewModel.trackerType == .habit
                 ? "Новая привычка"
                 : "Новое нерегулярное событие"
         }
         
         cell.eventLable.text = headerTitle
-        cell.setInitTitle(presenter.title)
+        cell.setInitTitle(viewModel.title)
         cell.setDelegate(self)
         return cell
     }
@@ -215,7 +215,7 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
         case 0:
             categoryIndexPath = indexPath
             cell.label.text = "Категория"
-            let cellType: SettingsMenuCellType = presenter.trackerType == .event
+            let cellType: SettingsMenuCellType = viewModel.trackerType == .event
                 ? .single
                 : .first
             cell.initCell(cellType)
@@ -224,7 +224,7 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
                 self.launchCategorySelector()
             }
             if isModifyTracker {
-                if let category = presenter.category {
+                if let category = viewModel.category {
                     cell.subLabel.text = category.title
                     cell.updateLabels()
                 }
@@ -238,7 +238,7 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
                 self.launchScheduler()
             }
             if isModifyTracker {
-                cell.subLabel.text = presenter.convertScheduleToString(presenter.schedule)
+                cell.subLabel.text = viewModel.convertScheduleToString(viewModel.schedule)
                 cell.updateLabels()
             }
         default: break
@@ -261,7 +261,7 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
         )
         cell.setDelegate(self)
         
-        if isModifyTracker && presenter.emoji == TrackerEmoji.items[indexPath.item] {
+        if isModifyTracker && viewModel.emoji == TrackerEmoji.items[indexPath.item] {
             cell.selectCell()
         }
     
@@ -285,7 +285,7 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
         cell.setDelegate(self)
         
         if isModifyTracker {
-            if let color = presenter.color {
+            if let color = viewModel.color {
                 if color.toUIColor() == TrackerColors.items[indexPath.item].toUIColor() {
                     cell.selectCell()
                 }
@@ -334,7 +334,7 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
 extension TrackerCreatorViewController: TrackerCreatorCVCellDelegate {
     func setSelectedEmojiItem(_ indexPath: IndexPath) {
         currentSelectedEmojiIndexPath = indexPath
-        presenter.setEmoji(TrackerEmoji.items[indexPath.item])
+        viewModel.setEmoji(TrackerEmoji.items[indexPath.item])
     }
     
     func reloadPreviousSelectedEmojiCell() {
@@ -345,7 +345,7 @@ extension TrackerCreatorViewController: TrackerCreatorCVCellDelegate {
     
     func setSelectedColorItem(_ indexPath: IndexPath) {
         currentSelectedColorIndexPath = indexPath
-        presenter.setColor(TrackerColors.items[indexPath.item])
+        viewModel.setColor(TrackerColors.items[indexPath.item])
     }
     
     func reloadPreviousSelectedColorCell() {
@@ -355,7 +355,7 @@ extension TrackerCreatorViewController: TrackerCreatorCVCellDelegate {
     }
     
     func setTrackerTitle(_ title: String) {
-        presenter.setTrackerTitle(title)
+        viewModel.setTrackerTitle(title)
     }
     
     func onTrackerCreatingCancel() {

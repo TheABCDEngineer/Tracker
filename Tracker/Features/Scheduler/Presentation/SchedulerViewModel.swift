@@ -1,6 +1,6 @@
 import Foundation
 
-final class SchedulerPresenter {
+final class SchedulerViewModel {
     
     private (set) var schedule = Set<WeekDays>()
     

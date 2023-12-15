@@ -1,6 +1,6 @@
 import Foundation
 
-final class TrackerCreatorPresenter {
+final class TrackerCreatorViewModel {
     
     private let trackersRepository: TrackersRepository
     

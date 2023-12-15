@@ -2,7 +2,7 @@ import UIKit
 
 class CategoryCreatorViewController: UIViewController {
     
-    private let presenter = Creator.injectCategoryCreatorPresenter()
+    private let viewModel = Creator.injectCategoryCreatorViewModel()
     
     private var moodifyingCategoryTitle = ""
     
@@ -29,7 +29,7 @@ class CategoryCreatorViewController: UIViewController {
             categoryField: categoryField,
             pageTitle: pageTitle
         )
-        presenter.observeApplyButtonState { [weak self] state in
+        viewModel.observeApplyButtonState { [weak self] state in
             guard let self, let state else { return }
             self.updateApplyButtonState(state)
         }
@@ -42,7 +42,7 @@ class CategoryCreatorViewController: UIViewController {
     func setCategoryIfModify(_ category: TrackerCategory?) {
         guard let category else { return }
         moodifyingCategoryTitle = category.title
-        presenter.setCategoryIDIfModify(category.id)
+        viewModel.setCategoryIDIfModify(category.id)
     }
     
     func onCreateCategoryRequest(_ completion: @escaping (String) -> Void) {
@@ -67,6 +67,6 @@ class CategoryCreatorViewController: UIViewController {
     @objc
     private func onCategoryFieldTextChange() {
         guard let text = categoryField.text else { return }
-        presenter.onUserTextChanged(text)
+        viewModel.onUserTextChanged(text)
     }
 }
