@@ -2,37 +2,36 @@ import Foundation
 
 final class CategorySetterPresenter {
     
-    private let categoryRepository: TrackerCategoryRepository
+    private let dataProvider: CategoryDataProviderProtocol
     
     private let trackerPackRepository: TrackersPackRepository
     
     private let screenState = ObservableData<CategorySetterScreen.State>()
     
     init(
-        categoryRepository: TrackerCategoryRepository,
-        trackerPackRepository: TrackersPackRepository
+        trackerPackRepository: TrackersPackRepository,
+        dataProvider: CategoryDataProviderProtocol
     ) {
-        self.categoryRepository = categoryRepository
         self.trackerPackRepository = trackerPackRepository
+        self.dataProvider = dataProvider
     }
     
     func onViewLoaded() {
-        if categoryRepository.getCategoryList().isEmpty {
+        if dataProvider.numberOfItems() == 0 {
             screenState.postValue(CategorySetterScreen.noEnyCategories)
         } else {
             screenState.postValue(CategorySetterScreen.someCategories)
         }
     }
     
-    func getCategoryList() -> [TrackerCategory] {
-        return categoryRepository.getCategoryList()
+    func getCategoriesCount() -> Int {
+        return dataProvider.numberOfItems()
     }
     
-    func removeCategory(categoryID: Int) -> Bool {
+    func removeCategory(categoryID: UUID) -> Bool {
         if let pack = trackerPackRepository.getPackByCategoryID(categoryID) {
             if !pack.trackerIDList.isEmpty { return false }
         }
-        categoryRepository.removeCategory(id: categoryID)
         trackerPackRepository.removePack(for: categoryID)
         return true
     }

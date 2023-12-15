@@ -1,6 +1,6 @@
 import Foundation
 
 struct TrackerRecord: Codable {
-    let trackerID: Int
+    let trackerID: UUID
     let dates: Set<Date>
 }

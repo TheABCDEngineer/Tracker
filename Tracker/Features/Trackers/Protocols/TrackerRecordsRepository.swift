@@ -4,11 +4,11 @@ protocol TrackerRecordsRepository {
     
     func loadRecords() -> [TrackerRecord]
     
-    func getRecordByTrackerID(for trackerID: Int) -> TrackerRecord?
+    func getRecordByTrackerID(for trackerID: UUID) -> TrackerRecord?
     
-    func saveRecord(for trackerID: Int, date: Date) -> TrackerRecord
+    func saveRecord(for trackerID: UUID, date: Date) -> TrackerRecord
     
-    func removeRecord(for trackerID: Int, date: Date)
+    func removeRecord(for trackerID: UUID, date: Date)
     
-    func removeRecords(for trackerID: Int)
+    func removeRecords(for trackerID: UUID)
 }

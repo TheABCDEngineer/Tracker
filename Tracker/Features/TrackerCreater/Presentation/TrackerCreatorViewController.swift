@@ -44,7 +44,7 @@ final class TrackerCreatorViewController: UIViewController {
         presenter.setTrackerType(trackerType)
     }
     
-    func setTrackerIdIfModify(_ id: Int?) {
+    func setTrackerIdIfModify(_ id: UUID?) {
         guard let id else { return }
         isModifyTracker = true
         presenter.setTrackerIdIfModify(id)
@@ -62,7 +62,7 @@ final class TrackerCreatorViewController: UIViewController {
         }
         
         presenter.observeCategoryCreated { [weak self] categoryTitle in
-            guard let self, let categoryTitle else { return }
+            guard let self else { return }
             self.updateSublabelInSettingCell(for: categoryIndexPath, text: categoryTitle)
         }
     }
@@ -72,7 +72,7 @@ final class TrackerCreatorViewController: UIViewController {
         applyButton.backgroundColor = state.color
     }
         
-    private func updateSublabelInSettingCell(for indexPath: IndexPath?, text: String) {
+    private func updateSublabelInSettingCell(for indexPath: IndexPath?, text: String?) {
         guard let indexPath else { return }
         guard let cell = eventCreatorCollection.cellForItem(at: indexPath) as? TrackerCreatorSettingsCell else { return }
         cell.subLabel.text = text

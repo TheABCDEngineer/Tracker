@@ -54,7 +54,7 @@ final class TrackersDataProcessorImpl: TrackersDataProcessorProtocol {
         return requiredTrackers
     }
     
-    func fetchTrackerCompletionForDate(trackerID: Int, where requiredDate: Date) -> Bool {
+    func fetchTrackerCompletionForDate(trackerID: UUID, where requiredDate: Date) -> Bool {
         guard let record = recordsRepository.getRecordByTrackerID(for: trackerID)
             else { return false }
         
@@ -66,13 +66,13 @@ final class TrackersDataProcessorImpl: TrackersDataProcessorProtocol {
         return false
     }
     
-    func fetchTrackerCompletionCount(trackerID: Int) -> Int {
+    func fetchTrackerCompletionCount(trackerID: UUID) -> Int {
         let record = recordsRepository.getRecordByTrackerID(for: trackerID)
         return record?.dates.count ?? 0
     }
     
     func fetchPacksForTrackers(for requiredTrackers: [TrackerModel]) -> [TrackersPack] {
-        var categoryIdList = Set<Int>()
+        var categoryIdList = Set<UUID>()
 
         for tracker in requiredTrackers {
             if let pack = packRepository.getPackByTrackerID(tracker.id) {
@@ -81,7 +81,7 @@ final class TrackersDataProcessorImpl: TrackersDataProcessorProtocol {
         }
         
         var packs = [TrackersPack]()
-        for categoryId in categoryIdList.sorted() {
+        for categoryId in categoryIdList {
             if let pack = packRepository.getPackByCategoryID(categoryId) {
                 packs.append(pack)
             }
@@ -106,26 +106,26 @@ final class TrackersDataProcessorImpl: TrackersDataProcessorProtocol {
         return requiredTrackers
     }
     
-    func fetchTitleByCategoryID(_ id: Int) -> String {
+    func fetchTitleByCategoryID(_ id: UUID) -> String {
         return categoryRepository.getCategoryById(id: id)?.title ?? "Без названия"
     }
     
-    func fetchTrackerByID(_ id: Int) -> TrackerModel? {
+    func fetchTrackerByID(_ id: UUID) -> TrackerModel? {
         return trackersRepository.getTrackerByID(id)
     }
     
-    func addRecord(for trackerID: Int, date: Date) -> Int {
+    func addRecord(for trackerID: UUID, date: Date) -> Int {
         let record = recordsRepository.saveRecord(for: trackerID, date: date)
         return record.dates.count
     }
     
-    func removeRecord(for trackerID: Int, date: Date) -> Int {
+    func removeRecord(for trackerID: UUID, date: Date) -> Int {
         recordsRepository.removeRecord(for: trackerID, date: date)
         let record = recordsRepository.getRecordByTrackerID(for: trackerID)
         return record?.dates.count ?? 0
     }
     
-    func removeTracker(id: Int) {
+    func removeTracker(id: UUID) {
         recordsRepository.removeRecords(for: id)
         packRepository.removeTrackerFromCategory(trackerID: id)
         trackersRepository.removeTracker(id: id)

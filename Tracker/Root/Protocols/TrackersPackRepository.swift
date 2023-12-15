@@ -4,13 +4,13 @@ protocol TrackersPackRepository {
     
     func loadPacks() -> [TrackersPack]
     
-    func addTrackerToCategory(trackerID: Int, categoryID: Int)
+    func addTrackerToCategory(trackerID: UUID, categoryID: UUID)
     
-    func removeTrackerFromCategory(trackerID: Int)
+    func removeTrackerFromCategory(trackerID: UUID)
     
-    func getPackByTrackerID(_ trackerID: Int) -> TrackersPack?
+    func getPackByTrackerID(_ trackerID: UUID) -> TrackersPack?
     
-    func getPackByCategoryID(_ categoryID: Int) -> TrackersPack?
+    func getPackByCategoryID(_ categoryID: UUID) -> TrackersPack?
     
-    func removePack(for categoryID: Int)
+    func removePack(for categoryID: UUID)
 }

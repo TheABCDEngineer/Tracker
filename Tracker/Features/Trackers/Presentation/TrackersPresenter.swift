@@ -66,7 +66,7 @@ final class TrackersPresenter {
         )
     }
     
-    func onRemoveTracker(trackerID: Int) {
+    func onRemoveTracker(trackerID: UUID) {
         dataProcessor.removeTracker(id: trackerID)
         updateData()
     }
@@ -133,7 +133,7 @@ final class TrackersPresenter {
         var trackerScreenModels = [TrackerScreenModel]()
         
         if !trackersPack.trackerIDList.isEmpty || !trackers.isEmpty {
-            for trackerIDInPack in trackersPack.trackerIDList.sorted() {
+            for trackerIDInPack in trackersPack.trackerIDList {
                 for tracker in trackers {
                     if trackerIDInPack == tracker.id {
                         trackerScreenModels.append(

@@ -12,7 +12,7 @@ class CategoryCreatorViewController: UIViewController {
     
     private let categoryField = UITextField()
     
-    private var onCategoryCreated: ( (TrackerCategory) -> Void )?
+    private var onCreateCategoryRequest: ( (String) -> Void )?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,8 +45,8 @@ class CategoryCreatorViewController: UIViewController {
         presenter.setCategoryIDIfModify(category.id)
     }
     
-    func onCategoryCreated(_ completion: @escaping (TrackerCategory) -> Void) {
-        self.onCategoryCreated = completion
+    func onCreateCategoryRequest(_ completion: @escaping (String) -> Void) {
+        self.onCreateCategoryRequest = completion
     }
     
     private func updateApplyButtonState(_ state: ApplyButton.State) {
@@ -56,12 +56,12 @@ class CategoryCreatorViewController: UIViewController {
     
     @objc
     private func onApplyButtonClick() {
-        guard let title = categoryField.text else { return }
-        guard let category = presenter.createCategory(title) else { return }
-        guard let onCategoryCreated else { return }
+        guard let title = categoryField.text,
+              let onCreateCategoryRequest
+        else { return }
         
         dismiss(animated: false)
-        onCategoryCreated(category)
+        onCreateCategoryRequest(title)
     }
     
     @objc

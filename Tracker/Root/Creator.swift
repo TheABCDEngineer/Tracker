@@ -1,4 +1,5 @@
-import Foundation
+import UIKit
+import CoreData
 
 final class Creator {
 //MARK: - Presenters injections
@@ -28,8 +29,8 @@ final class Creator {
     
     static func injectCategorySetterPresenter() -> CategorySetterPresenter {
         return CategorySetterPresenter(
-            categoryRepository: injectTrackerCategoryRepository(),
-            trackerPackRepository: injectTrackersPackRepository()
+            trackerPackRepository: injectTrackersPackRepository(),
+            dataProvider: injectCategoryDataProvider()
         )
     }
     
@@ -45,19 +46,19 @@ final class Creator {
     }
     
     static func injectTrackerCategoryRepository() -> TrackerCategoryRepository {
-        return TrackerCategoryRepositoryImplUserDef.shared
+        return TrackerCategoryRepositoryImplCoreData(context: injectCoreDataContext())
     }
     
     static func injectTrackersRepository() -> TrackersRepository {
-        return TrackersRepositoryImplUserDef.shared
+        return TrackersRepositoryImplCoreData(context: injectCoreDataContext())
     }
     
     static func injectTrackersPackRepository() -> TrackersPackRepository {
-        return TrackersPackRepositoryImplUserDef()
+        return TrackersPackRepositoryImplCoreData(context: injectCoreDataContext())
     }
     
     static func injectTrackerRecordsRepository() -> TrackerRecordsRepository {
-        return TrackerRecordsRepositoryImplUserDef()
+        return TrackerRecordsRepositoryImplCoreData(context: injectCoreDataContext())
     }
     
 //MARK: - Services injections
@@ -68,5 +69,28 @@ final class Creator {
             packRepository: injectTrackersPackRepository(),
             recordsRepository: injectTrackerRecordsRepository()
         )
+    }
+    
+    static func injectCategoryDataProvider() -> CategoryDataProviderProtocol {
+        return CategoryDataProvider(
+            context: injectCoreDataContext(),
+            categoryRepository: injectTrackerCategoryRepository(),
+            trackersPackRepository: injectTrackersPackRepository()
+        )
+    }
+    
+//MARK: - CoreData    
+    static func injectCoreDataContext() -> NSManagedObjectContext {
+        return (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    }
+    
+    static func saveCoreDataContex(_ context: NSManagedObjectContext) {
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                context.rollback()
+            }
+        }
     }
 }

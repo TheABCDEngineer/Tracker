@@ -8,7 +8,7 @@ final class TrackerCreatorPresenter {
     
     private let categoryRepository: TrackerCategoryRepository
     
-    private var modifyingTrackerID: Int?
+    private var modifyingTrackerID: UUID?
     
     private (set) var trackerType: TrackerType = .event
     
@@ -45,7 +45,7 @@ final class TrackerCreatorPresenter {
         }
     }
     
-    func setTrackerIdIfModify(_ id: Int) {
+    func setTrackerIdIfModify(_ id: UUID) {
         guard
             let tracker = trackersRepository.getTrackerByID(id),
             let pack = packRepository.getPackByTrackerID(id),
@@ -72,10 +72,10 @@ final class TrackerCreatorPresenter {
         updateAllPropertiesDidEnterState()
     }
     
-    func setCategory(_ category: TrackerCategory) {
+    func setCategory(_ category: TrackerCategory?) {
         self.category = category
         updateAllPropertiesDidEnterState()
-        categoryCreated.postValue(category.title)
+        categoryCreated.postValue(category?.title)
     }
     
     func setSchedule(_ schedule: Set<WeekDays>) {
@@ -174,7 +174,7 @@ final class TrackerCreatorPresenter {
         }
     }
     
-    private func updateTracker(trackerID: Int) {
+    private func updateTracker(trackerID: UUID) {
         guard let category else { return }
         guard let tracker = trackersRepository.updateTracker(
             for: trackerID,
