@@ -1,14 +1,14 @@
 import UIKit
 
 final class OnboardingViewController: UIViewController {
-    private let presenter = Creator.injectOnboardingPresenter()
+    private let viewModel = Creator.injectOnboardingViewModel()
     private var backgroundView: UIImageView!
     private var messageView: UILabel!
     private var pageGroup: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if presenter.getDismissedStatus() { switchToMainController() }
+        if viewModel.getDismissedStatus() { switchToMainController() }
         configureLayout()
         updateScreenState(with: OnboardingState.page1)
         configureSwipes(direction: .left)
@@ -17,7 +17,7 @@ final class OnboardingViewController: UIViewController {
     
     @objc
     private func onButtonClick() {
-        presenter.saveDismissedStatus(true)
+        viewModel.saveDismissedStatus(true)
         switchToMainController()
     }
     
