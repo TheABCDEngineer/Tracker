@@ -211,13 +211,15 @@ extension CategorySetterViewController: UIContextMenuInteractionDelegate {
     ) -> UIContextMenuConfiguration? {
         return ContextMenuConfigurator.setupMenu(
             alertPresenter: self,
-            editAction: {
+            editAction: { [weak self] in
+                guard let self else { return }
                 guard let indexPath = self.selectedIndexPathForContextMenu else { return }
                 guard let category = self.dataProvoder.object(at: indexPath) else { return }
                 self.launchCategoryCreator(category)
             },
             removeMessage: "Эта категория точно не нужна?",
-            removeAction: {
+            removeAction: { [weak self] in
+                guard let self else { return }
                 guard let indexPath = self.selectedIndexPathForContextMenu else { return }
                 guard let deletedCategory = self.dataProvoder.object(at: indexPath) else { return }
                 if self.dataProvoder.removeCategory(at: indexPath) {

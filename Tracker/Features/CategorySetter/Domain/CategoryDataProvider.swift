@@ -47,7 +47,7 @@ final class CategoryDataProvider: NSObject, CategoryDataProviderProtocol {
     }
     
     func numberOfItems() -> Int {
-        let numberOfItems = fetchedResultsController.sections?[0].numberOfObjects ?? 0
+        let numberOfItems = fetchedResultsController.sections?.first?.numberOfObjects ?? 0
         return numberOfItems
     }
     
