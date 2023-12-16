@@ -1,48 +1,29 @@
 import UIKit
 
-final class OnboardingViewController: UIViewController {
+final class OnboardingViewController: UIPageViewController {
     private let viewModel = Creator.injectOnboardingViewModel()
-    private var backgroundView: UIImageView!
-    private var messageView: UILabel!
-    private var pageGroup: UIImageView!
+    private var pages = [OnboardingPageViewController]()
+    private let pageControl = UIPageControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        dataSource = self
+        delegate = self
+        
         if viewModel.getDismissedStatus() { switchToMainController() }
-        configureLayout()
-        updateScreenState(with: OnboardingState.page1)
-        configureSwipes(direction: .left)
-        configureSwipes(direction: .right)
+        
+        configurePages()
+        
+        if let first = pages.first {
+            setViewControllers([first], direction: .forward, animated: true, completion: nil)
+        }
+        configureParentLayout()
     }
     
     @objc
     private func onButtonClick() {
         viewModel.saveDismissedStatus(true)
         switchToMainController()
-    }
-    
-    @objc
-    private func handleSwipe(_ gesture: UISwipeGestureRecognizer) {
-        switch gesture.direction {
-        case .left:
-            updateScreenState(with: OnboardingState.page2)
-        case .right:
-            updateScreenState(with: OnboardingState.page1)
-        default:
-            return
-        }
-    }
-    
-    private func configureSwipes(direction: UISwipeGestureRecognizer.Direction) {
-        let swipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe))
-        swipe.direction = direction
-        view.addGestureRecognizer(swipe)
-    }
-    
-    private func updateScreenState(with state: OnboardingState.State) {
-        backgroundView.image = state.background
-        messageView.text = state.message
-        pageGroup.image = state.pageGroup
     }
     
     private func switchToMainController() {
@@ -52,17 +33,63 @@ final class OnboardingViewController: UIViewController {
         }
         window.rootViewController = TabBarController()
     }
+}
+
+// MARK: - UIPageViewControllerDataSource
+extension OnboardingViewController: UIPageViewControllerDataSource {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController
+    ) -> UIViewController? {
+        guard let viewControllerIndex = pages.firstIndex(of: viewController as! OnboardingPageViewController)
+        else {
+            return nil
+        }
+                
+        let previousIndex = viewControllerIndex - 1
+                
+        guard previousIndex >= 0 else { return nil }
+                
+        return pages[previousIndex]
+    }
     
-    private func configureLayout() {
-        backgroundView = UIImageView()
-        view.addSubView(
-            backgroundView,
-            top: AnchorOf(view.topAnchor),
-            bottom: AnchorOf(view.bottomAnchor),
-            leading: AnchorOf(view.leadingAnchor),
-            trailing: AnchorOf(view.trailingAnchor)
-        )
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController
+    ) -> UIViewController? {
+        guard let viewControllerIndex = pages.firstIndex(of: viewController as! OnboardingPageViewController)
+        else {
+            return nil
+        }
         
+        let nextIndex = viewControllerIndex + 1
+                
+        guard nextIndex < pages.count else { return nil }
+                
+        return pages[nextIndex]
+    }
+}
+
+//MARK: - UIPageViewControllerDelegate
+extension OnboardingViewController: UIPageViewControllerDelegate {
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool
+    ) {
+        if let currentViewController = pageViewController.viewControllers?.first as? OnboardingPageViewController,
+           let currentIndex = pages.firstIndex(of: currentViewController) {
+                pageControl.currentPage = currentIndex
+        }
+    }
+}
+
+// MARK: - Config
+extension OnboardingViewController {
+    private func configurePages() {
+        let page1 = OnboardingPageViewController()
+        page1.setScreenState(with: OnboardingState.page1)
+        
+        let page2 = OnboardingPageViewController()
+        page2.setScreenState(with: OnboardingState.page2)
+        
+        pages.append(contentsOf: [page1, page2])
+    }
+    
+    private func configureParentLayout() {
         let button = UIButton.systemButton(
             with: UIImage(),
             target: nil,
@@ -78,21 +105,12 @@ final class OnboardingViewController: UIViewController {
             centerX: AnchorOf(view.centerXAnchor)
         )
         
-        messageView = UILabel()
-        messageView.textColor = .black
-        messageView.font = Font.ypBold32
-        messageView.numberOfLines = 2
-        messageView.textAlignment = .center
+        pageControl.numberOfPages = pages.count
+        pageControl.currentPage = 0
+        pageControl.currentPageIndicatorTintColor = .ypBlack
+        pageControl.pageIndicatorTintColor = .ypBlack.withAlphaComponent(0.3)
         view.addSubView(
-            messageView,
-            bottom: AnchorOf(button.topAnchor, -160),
-            leading: AnchorOf(view.leadingAnchor, 16),
-            trailing: AnchorOf(view.trailingAnchor, -16)
-        )
-        
-        pageGroup = UIImageView()
-        view.addSubView(
-            pageGroup,
+            pageControl,
             bottom: AnchorOf(button.topAnchor, -24),
             centerX: AnchorOf(view.centerXAnchor)
         )
