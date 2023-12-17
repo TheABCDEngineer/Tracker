@@ -36,7 +36,18 @@ final class TrackerCreatorTitleCell: UICollectionViewCell {
         guard let title = titleField.text else { return }
         delegate?.setTrackerTitle(title)
     }
-    
+}
+
+//MARK: - UITextFieldDelegate
+extension TrackerCreatorTitleCell: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        delegate?.hideKeyboard()
+        return false
+    }
+}
+ 
+//MARK: - Config
+extension TrackerCreatorTitleCell {
     private func configureTitleField() {
         eventLable.backgroundColor = .clear
         eventLable.textColor = .ypBlack
@@ -53,6 +64,7 @@ final class TrackerCreatorTitleCell: UICollectionViewCell {
             action: #selector(onCategoryFieldTextChange),
             for: .allEvents
         )
+        titleField.delegate = self
         
         let titleFieldBackground = UIView()
         titleFieldBackground.layer.cornerRadius = titleField.layer.cornerRadius

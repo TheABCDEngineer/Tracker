@@ -1,6 +1,6 @@
 import Foundation
 
-final class CategorySetterPresenter {
+final class CategorySetterViewModel {
     
     private let dataProvider: CategoryDataProviderProtocol
     

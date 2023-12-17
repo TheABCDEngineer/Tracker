@@ -19,7 +19,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
-        window?.rootViewController = OnboardingViewController()
+        window?.rootViewController = OnboardingViewController(
+            transitionStyle: .scroll,
+            navigationOrientation: .horizontal
+        )
         window?.makeKeyAndVisible()
     }
 

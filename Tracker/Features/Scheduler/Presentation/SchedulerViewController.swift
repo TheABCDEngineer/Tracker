@@ -10,13 +10,13 @@ final class SchedulerViewController: UIViewController {
     
     private var onSetSchedule: ( (Set<WeekDays>) -> Void )?
     
-    private let presenter = Creator.injectSchedulerPresenter()
+    private let viewModel = Creator.injectSchedulerViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureLaout()
         configureSchedulerCollectionView()
-        if presenter.initSchedule.isEmpty {
+        if viewModel.initSchedule.isEmpty {
             configureObservers()
             applyButton.backgroundColor = ApplyButton.inactive.color
             applyButton.isUserInteractionEnabled = ApplyButton.inactive.isEnabled
@@ -29,7 +29,7 @@ final class SchedulerViewController: UIViewController {
     
     func setCurrentSchedule(_ schedule: Set<WeekDays>) {
         configureObservers()
-        presenter.setSchedule(schedule)
+        viewModel.setSchedule(schedule)
     }
 
     private func configureLaout() {
@@ -64,7 +64,7 @@ final class SchedulerViewController: UIViewController {
     }
     
     private func configureObservers() {
-        presenter.observeScheduleState { [weak self] state in
+        viewModel.observeScheduleState { [weak self] state in
             guard let self, let state else { return }
             self.updateApplyButtonState(state)
         }
@@ -77,7 +77,7 @@ final class SchedulerViewController: UIViewController {
     
     @objc
     private func onApplyButtonClick() {
-        onSetSchedule?(presenter.schedule)
+        onSetSchedule?(viewModel.schedule)
         dismiss(animated: true)
     }
 }
@@ -85,15 +85,15 @@ final class SchedulerViewController: UIViewController {
 //MARK: - CellDelegate
 extension SchedulerViewController: SchedulerCellsDelegate {
     func setSelectedDay(_ day: WeekDays) {
-        presenter.setSelectedDay(day)
+        viewModel.setSelectedDay(day)
     }
     
     func removeUnselectedDay(_ day: WeekDays) {
-        presenter.removeUnselectedDay(day)
+        viewModel.removeUnselectedDay(day)
     }
     
     func setSchedule() {
-        onSetSchedule?(presenter.schedule)
+        onSetSchedule?(viewModel.schedule)
         dismiss(animated: true)
     }
 }
@@ -135,7 +135,7 @@ extension SchedulerViewController: UICollectionViewDataSource {
        
         cell.setDelegate(self)
         cell.day = WeekDays(rawValue: indexPath.item)
-        cell.isActive = presenter.initSchedule[indexPath.item] != nil ? true : false
+        cell.isActive = viewModel.initSchedule[indexPath.item] != nil ? true : false
         
         switch indexPath.item {
         case 0:

@@ -1,6 +1,6 @@
 import Foundation
 
-protocol OnboardingPresenterProtocol {
+protocol OnboardingViewModelProtocol {
     func getDismissedStatus() -> Bool
     func saveDismissedStatus(_ isDismissed: Bool)
 }

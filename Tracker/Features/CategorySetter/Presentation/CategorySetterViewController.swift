@@ -4,7 +4,7 @@ class CategorySetterViewController: UIViewController {
     
     private var initCategory: TrackerCategory?
     
-    private let presenter = Creator.injectCategorySetterPresenter()
+    private let viewModel = Creator.injectCategoryViewModel()
     
     private let dataProvoder = Creator.injectCategoryDataProvider()
 
@@ -25,7 +25,7 @@ class CategorySetterViewController: UIViewController {
         setObservers()
         
         dataProvoder.setDelegate(self)
-        presenter.onViewLoaded()
+        viewModel.onViewLoaded()
     }
     
     func setInitCategory(_ category: TrackerCategory?) {
@@ -41,7 +41,7 @@ class CategorySetterViewController: UIViewController {
     }
     
     private func setObservers() {
-        presenter.observeScreenState {[weak self] state in
+        viewModel.observeScreenState {[weak self] state in
             guard let self, let state else { return }
             updateScreenState(state)
         }
@@ -227,7 +227,7 @@ extension CategorySetterViewController: UIContextMenuInteractionDelegate {
                         self.initCategory = nil
                         self.onSetCategory?(nil)
                         if self.dataProvoder.numberOfItems() == 0 {
-                            self.presenter.onViewLoaded()
+                            self.viewModel.onViewLoaded()
                         }
                     }
                 } else {

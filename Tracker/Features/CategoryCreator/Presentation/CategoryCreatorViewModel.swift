@@ -1,6 +1,6 @@
 import Foundation
 
-final class CategoryCreatorPresenter {
+final class CategoryCreatorViewModel {
     
     private let categoryRepository: TrackerCategoryRepository
     

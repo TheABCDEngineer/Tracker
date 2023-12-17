@@ -1,6 +1,6 @@
 import Foundation
 
-final class OnboardingPreseter: OnboardingPresenterProtocol {
+final class OnboardingViewModel: OnboardingViewModelProtocol {
     private let onboardingStatusRepository: OnboardingRepository
     
     init(onboardingStatusRepository: OnboardingRepository) {
@@ -14,6 +14,4 @@ final class OnboardingPreseter: OnboardingPresenterProtocol {
     func saveDismissedStatus(_ isDismissed: Bool) {
         onboardingStatusRepository.putStatus(isDismissed)
     }
-    
-    
 }
