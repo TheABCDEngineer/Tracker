@@ -13,4 +13,6 @@ protocol TrackerCreatorCVCellDelegate {
     func setTrackerTitle(_ title: String)
     
     func onTrackerCreatingCancel()
+    
+    func hideKeyboard()
 }

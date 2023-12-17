@@ -14,6 +14,4 @@ final class OnboardingViewModel: OnboardingViewModelProtocol {
     func saveDismissedStatus(_ isDismissed: Bool) {
         onboardingStatusRepository.putStatus(isDismissed)
     }
-    
-    
 }

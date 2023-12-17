@@ -137,6 +137,14 @@ final class TrackersViewController: UIViewController {
     }
 }
 
+//MARK: - UITextFieldDelegate
+extension TrackersViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
+}
+
 //MARK: - AlertPresenterProtocol
 extension TrackersViewController: AlertPresenterProtocol {
     func present(alert: UIAlertController, animated: Bool) {
@@ -286,6 +294,8 @@ extension TrackersViewController {
         
         searchingField.addTarget(nil,
             action: #selector(onSearchingFieldTextChange), for: .allEditingEvents)
+        
+        searchingField.delegate = self
 
         self.view = setupLayout(
             for: self.view,

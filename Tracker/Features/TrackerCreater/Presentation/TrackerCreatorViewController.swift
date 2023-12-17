@@ -361,6 +361,10 @@ extension TrackerCreatorViewController: TrackerCreatorCVCellDelegate {
     func onTrackerCreatingCancel() {
         dismiss(animated: true)
     }
+    
+    func hideKeyboard() {
+        view.endEditing(true)
+    }
 }
 
 //MARK: - Configure

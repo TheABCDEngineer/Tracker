@@ -17,6 +17,7 @@ class CategoryCreatorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        categoryField.delegate = self
         categoryField.text = moodifyingCategoryTitle
         
         let pageTitle = moodifyingCategoryTitle.isEmpty
@@ -68,5 +69,13 @@ class CategoryCreatorViewController: UIViewController {
     private func onCategoryFieldTextChange() {
         guard let text = categoryField.text else { return }
         viewModel.onUserTextChanged(text)
+    }
+}
+
+//MARK: - UITextFieldDelegate
+extension CategoryCreatorViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
 }
