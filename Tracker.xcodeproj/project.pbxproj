@@ -12,6 +12,9 @@
 		AB1CBEB82B223963001C3300 /* CategoryDataProviderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1CBEB72B223963001C3300 /* CategoryDataProviderDelegate.swift */; };
 		AB1CBEBA2B223B2D001C3300 /* CategoryDataProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1CBEB92B223B2D001C3300 /* CategoryDataProviderProtocol.swift */; };
 		AB39A4712B2C5EE7007F6534 /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB39A4702B2C5EE7007F6534 /* OnboardingPageViewController.swift */; };
+		AB39A4732B30D52B007F6534 /* PinnedTrackersRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB39A4722B30D52B007F6534 /* PinnedTrackersRepository.swift */; };
+		AB39A4752B30D629007F6534 /* PinnedTrackersRepositoryImplUserDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB39A4742B30D629007F6534 /* PinnedTrackersRepositoryImplUserDef.swift */; };
+		AB39A47C2B360598007F6534 /* TrackersPlaceholderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB39A47B2B360598007F6534 /* TrackersPlaceholderState.swift */; };
 		AB3BD3132AED18C900BC3BD7 /* TrackerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BD3122AED18C900BC3BD7 /* TrackerType.swift */; };
 		AB3BD31C2AED8CA100BC3BD7 /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BD31B2AED8CA100BC3BD7 /* EmojiCell.swift */; };
 		AB3BD3232AED91A300BC3BD7 /* TrackerCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BD3222AED91A300BC3BD7 /* TrackerCreatorViewController.swift */; };
@@ -112,6 +115,9 @@
 		AB1CBEB72B223963001C3300 /* CategoryDataProviderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDataProviderDelegate.swift; sourceTree = "<group>"; };
 		AB1CBEB92B223B2D001C3300 /* CategoryDataProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDataProviderProtocol.swift; sourceTree = "<group>"; };
 		AB39A4702B2C5EE7007F6534 /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
+		AB39A4722B30D52B007F6534 /* PinnedTrackersRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedTrackersRepository.swift; sourceTree = "<group>"; };
+		AB39A4742B30D629007F6534 /* PinnedTrackersRepositoryImplUserDef.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedTrackersRepositoryImplUserDef.swift; sourceTree = "<group>"; };
+		AB39A47B2B360598007F6534 /* TrackersPlaceholderState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersPlaceholderState.swift; sourceTree = "<group>"; };
 		AB3BD3122AED18C900BC3BD7 /* TrackerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerType.swift; sourceTree = "<group>"; };
 		AB3BD31B2AED8CA100BC3BD7 /* EmojiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
 		AB3BD3222AED91A300BC3BD7 /* TrackerCreatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCreatorViewController.swift; sourceTree = "<group>"; };
@@ -227,6 +233,14 @@
 				AB1CBEB92B223B2D001C3300 /* CategoryDataProviderProtocol.swift */,
 			);
 			path = Domain;
+			sourceTree = "<group>";
+		};
+		AB39A47A2B360562007F6534 /* States */ = {
+			isa = PBXGroup;
+			children = (
+				AB39A47B2B360598007F6534 /* TrackersPlaceholderState.swift */,
+			);
+			path = States;
 			sourceTree = "<group>";
 		};
 		AB3BD30D2AED16F400BC3BD7 /* TrackerCreater */ = {
@@ -447,6 +461,7 @@
 			children = (
 				AB3BD3942B06516100BC3BD7 /* TrackerRecordsRepository.swift */,
 				AB3BD39A2B065E5800BC3BD7 /* TrackersDataProcessorProtocol.swift */,
+				AB39A4722B30D52B007F6534 /* PinnedTrackersRepository.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -456,6 +471,7 @@
 			children = (
 				AB3BD39F2B06645100BC3BD7 /* DataConverter.swift */,
 				AB1CBEB22B1F288C001C3300 /* TrackerRecordsRepositoryImplCoreData.swift */,
+				AB39A4742B30D629007F6534 /* PinnedTrackersRepositoryImplUserDef.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -678,6 +694,7 @@
 		ABBF3C292AE19111005AAD3F /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				AB39A47A2B360562007F6534 /* States */,
 				AB3BD38D2B063E6900BC3BD7 /* CollectionView */,
 				AB3BD3832B05FF2000BC3BD7 /* ScreenModels */,
 				AB5485B22AE588AA001ED0B1 /* TrackersViewController.swift */,
@@ -812,6 +829,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB3BD36F2AFFA75A00BC3BD7 /* CategorySetterScreen.swift in Sources */,
+				AB39A4752B30D629007F6534 /* PinnedTrackersRepositoryImplUserDef.swift in Sources */,
 				ABBF3C1E2ADE9C13005AAD3F /* TrackerColor.swift in Sources */,
 				AB54859C2AE3FBF5001ED0B1 /* TabBarController.swift in Sources */,
 				AB5485A22AE41F2E001ED0B1 /* OndoardingState.swift in Sources */,
@@ -825,6 +843,7 @@
 				ABC367A22B1CE9AF002164EB /* TrackersPackRepositoryImplCoreData.swift in Sources */,
 				AB3BD38A2B060EBE00BC3BD7 /* TrackersPackRepository.swift in Sources */,
 				ABC367892B152F56002164EB /* String+Extensions.swift in Sources */,
+				AB39A4732B30D52B007F6534 /* PinnedTrackersRepository.swift in Sources */,
 				AB3BD3552AF8D37800BC3BD7 /* SchedulerViewController.swift in Sources */,
 				ABC4D6732B0FB223002F341D /* TrackerCreatorVCLayout.swift in Sources */,
 				ABC3679A2B19FBB9002164EB /* TrackersRepositoryImplCoreData.swift in Sources */,
@@ -839,6 +858,7 @@
 				AB3BD3912B0642CC00BC3BD7 /* TrackerScreenModel.swift in Sources */,
 				ABBF3C082ADDCEA7005AAD3F /* SceneDelegate.swift in Sources */,
 				AB3BD3A92B07AE1C00BC3BD7 /* TrackerCell.swift in Sources */,
+				AB39A47C2B360598007F6534 /* TrackersPlaceholderState.swift in Sources */,
 				AB3BD3582AF8D8E200BC3BD7 /* SchedulerCell.swift in Sources */,
 				AB3BD33B2AEFB8A600BC3BD7 /* TrackerCreatorTitleCell.swift in Sources */,
 				ABC3679E2B1A1B39002164EB /* CoreDataMarshalling.swift in Sources */,

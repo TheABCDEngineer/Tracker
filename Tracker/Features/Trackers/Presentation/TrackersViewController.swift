@@ -23,8 +23,6 @@ final class TrackersViewController: UIViewController {
     
     private let placeholder = Placeholder()
     
-    private var trackersFieldData = [TrackersPackScreenModel]()
-    
     private var selectedTrackerIndexPath: IndexPath?
     
     private let filterDataSource = FilterCVDataSource()
@@ -35,7 +33,7 @@ final class TrackersViewController: UIViewController {
         configureTrackerCollectionView()
         configureFilterCollectionView()
         setObservers()
-        viewModel.updateData()
+        viewModel.onViewLoaded()
     }
     
     @objc
@@ -78,30 +76,46 @@ final class TrackersViewController: UIViewController {
         let controller = TrackerCreatorViewController()
         controller.setTrackerType(event)
         controller.setTrackerIdIfModify(modifyingTrackerID)
-        controller.onTrackerCreated { [weak self] in
+        controller.onTrackerCreated { [weak self] trackerID, categoryID, isModified in
             guard let self else { return }
-            self.viewModel.updateData()
+            
+            if isModified {
+                self.viewModel.onTrackerModified(trackerID: trackerID, categoryID: categoryID)
+            } else {
+                self.viewModel.onTrackerCreated(trackerID: trackerID, categoryID: categoryID)
+            }
         }
         self.present(controller, animated: true)
     }
         
     private func setObservers() {
-        viewModel.ObserveTrackersPacks { [weak self] data in
-            guard let self, let data else { return }
-            self.trackersFieldData = data
-            self.trackersCV.reloadData()
-  
-            placeholder.view.isHidden = !trackersFieldData.isEmpty
+        viewModel.observeUpdateTrackers { [weak self] options in
+            guard let self else { return }
+            placeholder.view.isHidden = viewModel.sectionsCount() != 0
+            
+            if options.isReload {
+                self.trackersCV.reloadData()
+                return
+            }
+            
+            if let indexPath = options.updatedIndexPath {
+                if let trackerModel = viewModel.object(for: indexPath) {
+                    let cell = trackersCV.cellForItem(at: indexPath) as? TrackerCell ?? TrackerCell()
+                    cell.setModel(trackerModel)
+                }
+                return
+            }
+            
+            self.trackersCV.performBatchUpdates {
+                self.trackersCV.deleteItems(at: options.deletedIndexPaths)
+                self.trackersCV.insertItems(at: options.insertedIndexPaths)
+            }
         }
         
-        viewModel.ObserveModifiedTracker { [weak self] trackerModel in
-            guard let self, let trackerModel, let index = selectedTrackerIndexPath else { return }
-
-            self.trackersFieldData[index.section].trackers[index.item] = trackerModel
- 
-            let cell = trackersCV.cellForItem(at: index) as? TrackerCell ?? TrackerCell()
-            cell.setModel(trackerModel)
-  
+        viewModel.observePlaceholderState { [weak self] state in
+            guard let self, let state else { return }
+            placeholder.image.image = state.image
+            placeholder.label.text = state.message
         }
     }
     
@@ -154,11 +168,8 @@ extension TrackersViewController: AlertPresenterProtocol {
 
 //MARK: - TrackersCVCellDelegate
 extension TrackersViewController: TrackersCVCellDelegate {
-    func onTrackerChecked(for indexPath: IndexPath) {
-        selectedTrackerIndexPath = indexPath
-        viewModel.onTrackerChecked(
-            tracker: trackersFieldData[indexPath.section].trackers[indexPath.item]
-        )
+    func onTrackerChecked(for id: UUID) {
+        viewModel.onRecordTracker(id: id)
     }
 }
 
@@ -182,21 +193,31 @@ extension TrackersViewController: FilterCellDelegate {
 //MARK: - UIContextMenuInteractionDelegate
 extension TrackersViewController: UIContextMenuInteractionDelegate {
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint
-    ) -> UIContextMenuConfiguration? {        
+    ) -> UIContextMenuConfiguration? {
         return ContextMenuConfigurator.setupMenu(
             alertPresenter: self,
+            pinAction: { [weak self] in
+                guard let self else { return }
+                guard let indexPath = self.selectedTrackerIndexPath else { return }
+                self.viewModel.onPinnedTracker(for: indexPath)
+            },
+            willPin: { [weak self] in
+                guard let self else { return false }
+                guard let indexPath = self.selectedTrackerIndexPath else { return false }
+                guard let trackerModel = viewModel.object(for: indexPath) else { return false }
+                return !trackerModel.isPinned
+            },
             editAction: { [weak self] in
                 guard let self else { return }
                 guard let indexPath = self.selectedTrackerIndexPath else { return }
-                let trackerId = self.trackersFieldData[indexPath.section].trackers[indexPath.item].id
-                self.createEvent(modifyingTrackerID: trackerId)
+                guard let trackerModel = viewModel.object(for: indexPath) else { return }
+                self.createEvent(modifyingTrackerID: trackerModel.id)
             },
             removeMessage: "Уверены что хотите удалить трекер?",
             removeAction: { [weak self] in
                 guard let self else { return }
                 guard let indexPath = self.selectedTrackerIndexPath else { return }
-                let trackerId = self.trackersFieldData[indexPath.section].trackers[indexPath.item].id
-                self.viewModel.onRemoveTracker(trackerID: trackerId)
+                self.viewModel.onRemoveTracker(for: indexPath)
             }
         )
     }
@@ -215,11 +236,11 @@ extension TrackersViewController: UICollectionViewDelegate {
 //MARK: - TrackersCollectionViewDataSource
 extension TrackersViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return trackersFieldData.count
+        viewModel.sectionsCount()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return trackersFieldData[section].trackers.count
+        viewModel.itemsCount(for: section)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -227,8 +248,10 @@ extension TrackersViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         cell.setDelegates(cellDelegate: self, contextMenuDelegate: self)
-        cell.setIndexPath(indexPath)
-        cell.setModel(trackersFieldData[indexPath.section].trackers[indexPath.item])
+        
+        if let model = viewModel.object(for: indexPath) {
+            cell.setModel(model)
+        }
         return cell
     }
     
@@ -241,8 +264,10 @@ extension TrackersViewController: UICollectionViewDataSource {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionTitleHeaderView.identifier, for: indexPath) as? SectionTitleHeaderView else { return UICollectionReusableView() }
         
         header.configureLablePosition(x: 12, y: 16)
-        header.label.text = trackersFieldData[indexPath.section].title
         
+        if let sectionTitle = viewModel.sectionTitle(for: indexPath) {
+            header.label.text = sectionTitle
+        }
         return header
     }
 }

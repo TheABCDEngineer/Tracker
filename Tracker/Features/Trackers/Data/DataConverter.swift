@@ -5,7 +5,8 @@ final class DataConverter {
         tracker: TrackerModel,
         daysCount: Int,
         isCompleted: Bool,
-        isAvailable: Bool
+        isAvailable: Bool,
+        isPinned: Bool
     ) -> TrackerScreenModel {
         return TrackerScreenModel(
             id: tracker.id,
@@ -14,7 +15,8 @@ final class DataConverter {
             color: tracker.color.toUIColor(),
             daysCount: daysCount,
             isCompleted: isCompleted,
-            isAvailable: isAvailable
+            isAvailable: isAvailable,
+            isPinned: isPinned
         )
     }
 }

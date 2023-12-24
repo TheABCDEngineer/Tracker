@@ -3,6 +3,8 @@ import UIKit
 final class ContextMenuConfigurator {
     static func setupMenu(
         alertPresenter: AlertPresenterProtocol,
+        pinAction: ( () -> Void )? = nil,
+        willPin: ( () -> Bool )? = nil,
         editAction: @escaping () -> Void,
         removeMessage: String,
         removeAction: @escaping () -> Void
@@ -10,7 +12,20 @@ final class ContextMenuConfigurator {
         return UIContextMenuConfiguration(
             identifier: nil,
             previewProvider: nil
-        ) { actions -> UIMenu? in
+        ) { _ -> UIMenu? in
+            
+            var actions = [UIAction]()
+            
+            if let pinAction, let willPin {
+                let _willPin = willPin()
+                let pin = UIAction(
+                    title: _willPin ? "Закрепить" : "Открепить",
+                    image: _willPin ? UIImage(systemName: "pin.fill") : UIImage(systemName: "pin.slash.fill")
+                ) { _ in
+                    pinAction()
+                }
+                actions.append(pin)
+            }
             
             let edit = UIAction(
                 title: "Редактировать",
@@ -18,6 +33,7 @@ final class ContextMenuConfigurator {
             ) { _ in
                 editAction()
             }
+            actions.append(edit)
 
             let remove = UIAction(
                 title: "Удалить",
@@ -31,8 +47,9 @@ final class ContextMenuConfigurator {
                     removeAction()
                 }
             }
+            actions.append(remove)
             
-            return UIMenu(title: "", children: [edit, remove])
+            return UIMenu(title: "", children: actions)
         }
     }
 }

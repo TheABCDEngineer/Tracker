@@ -48,7 +48,7 @@ final class CoreDataMarshalling {
         guard let datesData = dto.dates else { return nil }
         
         guard let trackerID = dto.trackerID,
-              let dates = try? JSONDecoder().decode(Set<Date>.self, from: datesData as Data) else { return nil }
+              let dates = try? JSONDecoder().decode(Set<Int>.self, from: datesData as Data) else { return nil }
         
         return TrackerRecord(trackerID: trackerID, dates: dates)
     }

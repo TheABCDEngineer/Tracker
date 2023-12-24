@@ -8,7 +8,7 @@ final class TrackerCreatorViewModel {
     
     private let categoryRepository: TrackerCategoryRepository
     
-    private var modifyingTrackerID: UUID?
+    private (set) var modifyingTrackerID: UUID?
     
     private (set) var trackerType: TrackerType = .event
     
@@ -29,6 +29,8 @@ final class TrackerCreatorViewModel {
     private let categoryCreated = ObservableData<String>()
     
     private let scheduleCreated = ObservableData<String>()
+    
+    private var identifyTracker: ( (UUID, UUID) -> Void )?
     
     init(
         trackersRepository: TrackersRepository,
@@ -98,12 +100,15 @@ final class TrackerCreatorViewModel {
     }
     
     func createTracker() {
+        guard let category else { return }
+        
         if let modifyingTrackerID {
             updateTracker(trackerID: modifyingTrackerID)
+            identifyTracker?(modifyingTrackerID, category.id)
             return
         }
         
-        guard let category, let color else { return }
+        guard let color else { return }
         guard let tracker = trackersRepository.createTracker(
             type: trackerType,
             title: title,
@@ -115,19 +120,7 @@ final class TrackerCreatorViewModel {
         packRepository.addTrackerToCategory(
             trackerID: tracker.id, categoryID: category.id
         )
-    }
-    
-//MARK: - Observers
-    func observeAllPropertiesDidEnter(_ completion: @escaping (ApplyButton.State?) -> Void) {
-        allPropertiesDidEnter.observe(completion)
-    }
-    
-    func observeCategoryCreated(_ completion: @escaping (String?) -> Void) {
-        categoryCreated.observe(completion)
-    }
-    
-    func observeScheduleCreated(_ completion: @escaping (String?) -> Void) {
-        scheduleCreated.observe(completion)
+        identifyTracker?(tracker.id, category.id)
     }
     
     func convertScheduleToString(_ schedule: Set<WeekDays>) -> String {
@@ -156,6 +149,23 @@ final class TrackerCreatorViewModel {
             }
         }
         return String(result.dropLast(2))
+    }
+    
+//MARK: - Observers
+    func observeAllPropertiesDidEnter(_ completion: @escaping (ApplyButton.State?) -> Void) {
+        allPropertiesDidEnter.observe(completion)
+    }
+    
+    func observeCategoryCreated(_ completion: @escaping (String?) -> Void) {
+        categoryCreated.observe(completion)
+    }
+    
+    func observeScheduleCreated(_ completion: @escaping (String?) -> Void) {
+        scheduleCreated.observe(completion)
+    }
+    
+    func observeTrackerIdetified(_ completion: @escaping (UUID, UUID) -> Void) {
+        identifyTracker = completion
     }
     
 //MARK: - Private

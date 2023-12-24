@@ -22,7 +22,7 @@ final class TrackerCreatorViewController: UIViewController {
     
     private var titleFieldIndexPath: IndexPath?
     
-    private var onTrackerCreated: ( () -> Void )?
+    private var onTrackerCreated: ( (UUID, UUID, Bool) -> Void )?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +35,7 @@ final class TrackerCreatorViewController: UIViewController {
         isModifyTracker = false
     }
     
-    func onTrackerCreated(_ completion: @escaping () -> Void) {
+    func onTrackerCreated(_ completion: @escaping (UUID, UUID, Bool) -> Void) {
         self.onTrackerCreated = completion
     }
     
@@ -64,6 +64,12 @@ final class TrackerCreatorViewController: UIViewController {
         viewModel.observeCategoryCreated { [weak self] categoryTitle in
             guard let self else { return }
             self.updateSublabelInSettingCell(for: categoryIndexPath, text: categoryTitle)
+        }
+        
+        viewModel.observeTrackerIdetified { [weak self] trackerID, categoryID in
+            guard let self else { return }
+            let didModified = viewModel.modifyingTrackerID != nil
+            self.onTrackerCreated?(trackerID, categoryID, didModified)
         }
     }
     
@@ -111,7 +117,6 @@ final class TrackerCreatorViewController: UIViewController {
     private func onApplyButtonClick() {
         viewModel.createTracker()
         dismiss(animated: true)
-        onTrackerCreated?()
     }
 }
 

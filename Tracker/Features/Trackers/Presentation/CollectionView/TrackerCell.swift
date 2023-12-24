@@ -3,7 +3,7 @@ import UIKit
 class TrackerCell: UICollectionViewCell {
     static let identifier = "TrackerCell"
     
-    private var indexPath: IndexPath?
+    private var id: UUID?
     
     private var cellDelegate: TrackersCVCellDelegate?
     
@@ -12,6 +12,8 @@ class TrackerCell: UICollectionViewCell {
     private let title = UILabel()
     
     private let emoji = UILabel()
+    
+    private let pinIcon = UIImageView(image: UIImage(systemName: "pin.fill"))
     
     private let daysCounter = UILabel()
     
@@ -39,11 +41,8 @@ class TrackerCell: UICollectionViewCell {
         )
     }
     
-    func setIndexPath(_ indexPath: IndexPath) {
-        self.indexPath = indexPath
-    }
-    
     func setModel(_ model: TrackerScreenModel) {
+        id = model.id
         trackerCard.backgroundColor = model.color
         
         checkButton.backgroundColor = model.isAvailable ? model.color : model.color.withAlphaComponent(0.3)
@@ -59,6 +58,8 @@ class TrackerCell: UICollectionViewCell {
         title.text = model.title
         emoji.text = model.emoji
         daysCounter.text = getDaysString(model.daysCount)
+        
+        pinIcon.isHidden = !model.isPinned
     }
     
     private func configureCell() {
@@ -132,6 +133,13 @@ class TrackerCell: UICollectionViewCell {
             trailing: AnchorOf(checkButton.leadingAnchor, -8),
             centerY: AnchorOf(checkButton.centerYAnchor)
         )
+        
+        pinIcon.tintColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1)
+        trackerCard.addSubView(
+            pinIcon,
+            trailing: AnchorOf(trackerCard.trailingAnchor, -12),
+            centerY: AnchorOf(emojiBackground.centerYAnchor)
+        )
     }
     
     private func getDaysString(_ days: Int) -> String {
@@ -158,7 +166,7 @@ class TrackerCell: UICollectionViewCell {
     
     @objc
     private func onCheckButtonClick() {
-        guard let indexPath else { return }
-        cellDelegate?.onTrackerChecked(for: indexPath)
+        guard let id else { return }
+        cellDelegate?.onTrackerChecked(for: id)
     }
 }

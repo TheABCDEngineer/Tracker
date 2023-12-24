@@ -8,4 +8,5 @@ struct TrackerScreenModel {
     let daysCount: Int
     let isCompleted: Bool
     let isAvailable: Bool
+    let isPinned: Bool
 }

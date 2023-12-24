@@ -24,16 +24,17 @@ final class TrackerRecordsRepositoryImplCoreData: TrackerRecordsRepository {
     }
     
     func saveRecord(for trackerID: UUID, date: Date) -> TrackerRecord {
+        let _date = DateFormatterObj.shared.convertToInt(date)
         if let trackerRecordCoreData = getTrackerRecordCoreDataByID(trackerID) {
             if let trackerRecord = CoreDataMarshalling.map(trackerRecordCoreData) {
                 var dates = trackerRecord.dates
-                dates.insert(date)
+                dates.insert(_date)
                 trackerRecordCoreData.dates = CoreDataMarshalling.encode(dates)
                 saveRecords()
                 return TrackerRecord(trackerID: trackerID, dates: dates)
             }
         }
-        let newTrackerRecord = TrackerRecord(trackerID: trackerID, dates: [date])
+        let newTrackerRecord = TrackerRecord(trackerID: trackerID, dates: [_date])
         createManagedObject(from: newTrackerRecord)
         saveRecords()
         return newTrackerRecord
@@ -44,7 +45,7 @@ final class TrackerRecordsRepositoryImplCoreData: TrackerRecordsRepository {
         guard let trackerRecord = CoreDataMarshalling.map(trackerRecordCoreData) else { return }
         
         var dates = trackerRecord.dates
-        dates.remove(date)
+        dates.remove(DateFormatterObj.shared.convertToInt(date))
         
         if dates.isEmpty {
             context.delete(trackerRecordCoreData)

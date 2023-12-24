@@ -10,16 +10,20 @@ final class TrackersDataProcessorImpl: TrackersDataProcessorProtocol {
     
     private let recordsRepository: TrackerRecordsRepository
     
+    private let pinnedTrackersRepository: PinnedTrackersRepository
+    
     init(
         trackersRepository: TrackersRepository,
         categoryRepository: TrackerCategoryRepository,
         packRepository: TrackersPackRepository,
-        recordsRepository: TrackerRecordsRepository
+        recordsRepository: TrackerRecordsRepository,
+        pinnedTrackersRepository: PinnedTrackersRepository
     ) {
         self.trackersRepository = trackersRepository
         self.packRepository = packRepository
         self.categoryRepository = categoryRepository
         self.recordsRepository = recordsRepository
+        self.pinnedTrackersRepository = pinnedTrackersRepository
     }
   
     func fetchAllTrackers() -> [TrackerModel] {
@@ -58,11 +62,9 @@ final class TrackersDataProcessorImpl: TrackersDataProcessorProtocol {
         guard let record = recordsRepository.getRecordByTrackerID(for: trackerID)
             else { return false }
         
-        for recordDate in record.dates {
-            if DateFormatterObj.shared.checkPairDatesOnEqual(recordDate, requiredDate) {
-                return true
-            }
-        }
+        let _requiredDate = DateFormatterObj.shared.convertToInt(requiredDate)
+        
+        for recordDate in record.dates where recordDate == _requiredDate { return true }
         return false
     }
     
@@ -90,6 +92,21 @@ final class TrackersDataProcessorImpl: TrackersDataProcessorProtocol {
         return packs
     }
     
+    func fetchPinnedTrackers() -> [TrackerModel] {
+        let pinnedTrackersID = pinnedTrackersRepository.loadPinnedTrackers()
+        if pinnedTrackersID.isEmpty { return [TrackerModel]() }
+        
+        let trackers = pinnedTrackersID.compactMap({
+            trackersRepository.getTrackerByID($0)
+        })
+        
+        return trackers
+    }
+    
+    func fetchPinnedStatus(trackerID: UUID) -> Bool {
+        return pinnedTrackersRepository.getPinnedStatus(trackerID: trackerID)
+    }
+    
     func fetchTrackersWhereSubTitles(
         from trackers: [TrackerModel],
         where subTitle: String
@@ -108,6 +125,11 @@ final class TrackersDataProcessorImpl: TrackersDataProcessorProtocol {
     
     func fetchTitleByCategoryID(_ id: UUID) -> String {
         return categoryRepository.getCategoryById(id: id)?.title ?? "Без названия"
+    }
+    
+    func fetchCategoryIDByTrackerID(_ id: UUID) -> UUID? {
+        guard let pack = packRepository.getPackByTrackerID(id) else { return nil }
+        return pack.categoryID
     }
     
     func fetchTrackerByID(_ id: UUID) -> TrackerModel? {
@@ -129,6 +151,14 @@ final class TrackersDataProcessorImpl: TrackersDataProcessorProtocol {
         recordsRepository.removeRecords(for: id)
         packRepository.removeTrackerFromCategory(trackerID: id)
         trackersRepository.removeTracker(id: id)
+    }
+    
+    func pinTracker(id: UUID) {
+        pinnedTrackersRepository.pin(trackerID: id)
+    }
+    
+    func unpinTracker(id: UUID) {
+        pinnedTrackersRepository.unpin(trackerID: id)
     }
  
  //MARK: - Private funcs

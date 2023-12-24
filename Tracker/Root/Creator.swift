@@ -61,13 +61,18 @@ final class Creator {
         return TrackerRecordsRepositoryImplCoreData(context: injectCoreDataContext())
     }
     
+    static func injectPinnedTrackersRepository() -> PinnedTrackersRepository {
+        PinnedTrackersRepositoryImplUserDef()
+    }
+    
 //MARK: - Services injections
     static func injectTrackersDataProcessor() -> TrackersDataProcessorProtocol {
         return TrackersDataProcessorImpl(
             trackersRepository: injectTrackersRepository(),
             categoryRepository: injectTrackerCategoryRepository(),
             packRepository: injectTrackersPackRepository(),
-            recordsRepository: injectTrackerRecordsRepository()
+            recordsRepository: injectTrackerRecordsRepository(),
+            pinnedTrackersRepository: injectPinnedTrackersRepository()
         )
     }
     
