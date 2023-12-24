@@ -15,6 +15,7 @@
 		AB39A4732B30D52B007F6534 /* PinnedTrackersRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB39A4722B30D52B007F6534 /* PinnedTrackersRepository.swift */; };
 		AB39A4752B30D629007F6534 /* PinnedTrackersRepositoryImplUserDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB39A4742B30D629007F6534 /* PinnedTrackersRepositoryImplUserDef.swift */; };
 		AB39A47C2B360598007F6534 /* TrackersPlaceholderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB39A47B2B360598007F6534 /* TrackersPlaceholderState.swift */; };
+		AB39A47E2B38AD45007F6534 /* TrackersPackData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB39A47D2B38AD45007F6534 /* TrackersPackData.swift */; };
 		AB3BD3132AED18C900BC3BD7 /* TrackerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BD3122AED18C900BC3BD7 /* TrackerType.swift */; };
 		AB3BD31C2AED8CA100BC3BD7 /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BD31B2AED8CA100BC3BD7 /* EmojiCell.swift */; };
 		AB3BD3232AED91A300BC3BD7 /* TrackerCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BD3222AED91A300BC3BD7 /* TrackerCreatorViewController.swift */; };
@@ -118,6 +119,7 @@
 		AB39A4722B30D52B007F6534 /* PinnedTrackersRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedTrackersRepository.swift; sourceTree = "<group>"; };
 		AB39A4742B30D629007F6534 /* PinnedTrackersRepositoryImplUserDef.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedTrackersRepositoryImplUserDef.swift; sourceTree = "<group>"; };
 		AB39A47B2B360598007F6534 /* TrackersPlaceholderState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersPlaceholderState.swift; sourceTree = "<group>"; };
+		AB39A47D2B38AD45007F6534 /* TrackersPackData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersPackData.swift; sourceTree = "<group>"; };
 		AB3BD3122AED18C900BC3BD7 /* TrackerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerType.swift; sourceTree = "<group>"; };
 		AB3BD31B2AED8CA100BC3BD7 /* EmojiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
 		AB3BD3222AED91A300BC3BD7 /* TrackerCreatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCreatorViewController.swift; sourceTree = "<group>"; };
@@ -542,6 +544,7 @@
 			isa = PBXGroup;
 			children = (
 				AB3BD37F2B05FE3900BC3BD7 /* TrackerRecord.swift */,
+				AB39A47D2B38AD45007F6534 /* TrackersPackData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -915,6 +918,7 @@
 				AB3BD34D2AF6DA6200BC3BD7 /* ApplyButtonState.swift in Sources */,
 				AB3BD3272AED9A6700BC3BD7 /* TrackerEmoji.swift in Sources */,
 				AB5485B62AE5B1DD001ED0B1 /* ObservableData.swift in Sources */,
+				AB39A47E2B38AD45007F6534 /* TrackersPackData.swift in Sources */,
 				ABC4D6612B0BFBFE002F341D /* FilterCellDelegate.swift in Sources */,
 				AB3BD39B2B065E5800BC3BD7 /* TrackersDataProcessorProtocol.swift in Sources */,
 				ABC4D6692B0E8F27002F341D /* TrackersDataProcessorImpl.swift in Sources */,

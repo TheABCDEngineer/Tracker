@@ -15,12 +15,6 @@ struct UpdateOptions {
     }
 }
 
-struct TrackersPackData {
-    let title: String
-    let categoryID: UUID?
-    var trackers: [TrackerModel]
-}
-
 final class TrackersViewModel {
      
     private let dataProcessor: TrackersDataProcessorProtocol
@@ -128,7 +122,7 @@ final class TrackersViewModel {
         if updatedPinnedStatus { dataProcessor.pinTracker(id: tracker.id) }
         if !updatedPinnedStatus { dataProcessor.unpinTracker(id: tracker.id) }
         
-        if presentedTrackerPacks[indexPath.section].trackers.isEmpty {
+        if presentedTrackerPacks[indexPath.section].trackers.isEmpty || dataProcessor.fetchPinnedTrackers().count == 1 {
             updateData()
             return
         }
@@ -227,6 +221,7 @@ final class TrackersViewModel {
         resultPacks.append(contentsOf: trackersPacks.map{
             providePackData(for: $0, from: trackers)
         })
+        resultPacks = resultPacks.compactMap{$0}.sorted()
         
         let pinnedTrackers = dataProcessor.fetchPinnedTrackers()
         if !pinnedTrackers.isEmpty {
