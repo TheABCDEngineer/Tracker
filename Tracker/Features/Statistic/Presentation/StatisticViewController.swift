@@ -13,7 +13,7 @@ final class StatisticViewController: UIViewController {
 
         let statisticLabel = UILabel()
         statisticLabel.backgroundColor = .clear
-        statisticLabel.text = "Статистика"
+        statisticLabel.text = localized("statistic")
         statisticLabel.textColor = .ypBlack
         statisticLabel.font = Font.ypBold34
         view.addSubView(
@@ -23,7 +23,7 @@ final class StatisticViewController: UIViewController {
         )
         
         placeholder.image.image = UIImage(named: "StatisticPlaceholder")
-        placeholder.label.text = "Анализировать пока нечего"
+        placeholder.label.text = localized("statistic.placeholder")
         view.addSubView(
             placeholder.view, width: 175, heigth: 125,
             centerX: AnchorOf(view.centerXAnchor),

@@ -57,7 +57,10 @@ class TrackerCell: UICollectionViewCell {
         
         title.text = model.title
         emoji.text = model.emoji
-        daysCounter.text = getDaysString(model.daysCount)
+        daysCounter.text = String.localizedStringWithFormat(
+            localized("DaysCount"),
+            model.daysCount
+        )
         
         pinIcon.isHidden = !model.isPinned
     }
@@ -141,29 +144,7 @@ class TrackerCell: UICollectionViewCell {
             centerY: AnchorOf(emojiBackground.centerYAnchor)
         )
     }
-    
-    private func getDaysString(_ days: Int) -> String {
-        var daysDeclension = "дней"
-        guard let lastTwoDigitNumder = days < 100 ? days : Int(String(days).suffix(2)) else {
-            return "\(days) \(daysDeclension)"
-        }
         
-        if lastTwoDigitNumder < 5 || lastTwoDigitNumder > 20 {
-            guard let lastDigit = Int(String(days).suffix(1)) else {
-                return "\(days) \(daysDeclension)"
-            }
-            switch lastDigit {
-            case 1:
-                daysDeclension = "день"
-            case 2, 3, 4:
-                daysDeclension = "дня"
-            default:
-               break
-            }
-        }
-        return "\(days) \(daysDeclension)"
-    }
-    
     @objc
     private func onCheckButtonClick() {
         guard let id else { return }

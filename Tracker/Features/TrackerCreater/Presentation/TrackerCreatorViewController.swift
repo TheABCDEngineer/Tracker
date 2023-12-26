@@ -169,9 +169,9 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
         case 0, 1, 4:
             return configureHeader(collectionView: collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)
         case 2:
-            return configureHeader(title: "Emoji", x: 6, y: 40, collectionView: collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)
+            return configureHeader(title: localized("emoji"), x: 6, y: 40, collectionView: collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)
         case 3:
-            return configureHeader(title: "Цвет", x: 6, y: 40, collectionView: collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)
+            return configureHeader(title: localized("color"), x: 6, y: 40, collectionView: collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)
         default:
             return UICollectionReusableView()
         }
@@ -192,12 +192,12 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
         var headerTitle = ""
         if isModifyTracker {
             headerTitle = viewModel.trackerType == .habit
-                ? "Редактирование привычки"
-                : "Редактирование нерегулярного события"
+                ? localized("edit habbit")
+                : localized("edit event")
         } else {
             headerTitle = viewModel.trackerType == .habit
-                ? "Новая привычка"
-                : "Новое нерегулярное событие"
+                ? localized("new habbit")
+                : localized("new event")
         }
         
         cell.eventLable.text = headerTitle
@@ -219,7 +219,7 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
         switch indexPath.item {
         case 0:
             categoryIndexPath = indexPath
-            cell.label.text = "Категория"
+            cell.label.text = localized("category")
             let cellType: SettingsMenuCellType = viewModel.trackerType == .event
                 ? .single
                 : .first
@@ -236,7 +236,7 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
             }
         case 1:
             scheduleIndexPath = indexPath
-            cell.label.text = "Расписание"
+            cell.label.text = localized("schedule")
             cell.initCell(.last)
             
             cell.addActionOnCellClick {
@@ -312,7 +312,7 @@ extension TrackerCreatorViewController: UICollectionViewDataSource {
         
         cell.setDelegate(self)
         
-        let applyButtonTitle = isModifyTracker ? "Сохранить" : "Создать"
+        let applyButtonTitle = isModifyTracker ? localized("save") : localized("create")
         applyButton.setTitle(applyButtonTitle, for: .normal)
         cell.setApplyButton(applyButton)
         

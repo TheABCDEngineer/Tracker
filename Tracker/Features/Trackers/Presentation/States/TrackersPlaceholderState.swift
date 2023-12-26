@@ -10,12 +10,12 @@ final class TrackersPlaceholder {
     static let noContent = State(
         id: "noContent",
         image: UIImage(named: "TrackerPlaceholder") ?? UIImage(),
-        message: "Что будем отслеживать?"
+        message: localized("trackers.noContent.placeholder")
     )
     
     static let emptyResults = State(
         id: "emptyResults",
         image: UIImage(named: "EmptyResultsPlaceholder") ?? UIImage(),
-        message: "Ничего не найдено"
+        message: localized("trackers.emptyResults.placeholder")
     )
 }

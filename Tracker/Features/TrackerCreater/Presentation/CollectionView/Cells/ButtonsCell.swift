@@ -41,7 +41,7 @@ final class ButtonsCell: UICollectionViewCell {
         cancelButton.layer.borderWidth = 2
         cancelButton.layer.borderColor = UIColor.ypRed.cgColor
         cancelButton.backgroundColor = .clear
-        cancelButton.setTitle("Отмена", for: .normal)
+        cancelButton.setTitle(localized("cancel"), for: .normal)
         cancelButton.titleLabel?.font = Font.ypMedium16
         cancelButton.titleLabel?.tintColor = .ypRed
         

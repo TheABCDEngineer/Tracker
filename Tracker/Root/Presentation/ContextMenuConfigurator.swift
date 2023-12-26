@@ -19,7 +19,7 @@ final class ContextMenuConfigurator {
             if let pinAction, let willPin {
                 let _willPin = willPin()
                 let pin = UIAction(
-                    title: _willPin ? "Закрепить" : "Открепить",
+                    title: _willPin ? localized("pin") : localized("unpin"),
                     image: _willPin ? UIImage(systemName: "pin.fill") : UIImage(systemName: "pin.slash.fill")
                 ) { _ in
                     pinAction()
@@ -28,7 +28,7 @@ final class ContextMenuConfigurator {
             }
             
             let edit = UIAction(
-                title: "Редактировать",
+                title: localized("edit"),
                 image: UIImage(systemName: "pencil")
             ) { _ in
                 editAction()
@@ -36,7 +36,7 @@ final class ContextMenuConfigurator {
             actions.append(edit)
 
             let remove = UIAction(
-                title: "Удалить",
+                title: localized("delete"),
                 image: UIImage(systemName: "trash.fill"),
                 attributes: .destructive
             ) { _ in

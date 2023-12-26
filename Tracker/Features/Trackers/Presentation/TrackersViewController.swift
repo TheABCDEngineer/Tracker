@@ -213,7 +213,7 @@ extension TrackersViewController: UIContextMenuInteractionDelegate {
                 guard let trackerModel = viewModel.object(for: indexPath) else { return }
                 self.createEvent(modifyingTrackerID: trackerModel.id)
             },
-            removeMessage: "Уверены что хотите удалить трекер?",
+            removeMessage: localized("delete tracker.confirmation"),
             removeAction: { [weak self] in
                 guard let self else { return }
                 guard let indexPath = self.selectedTrackerIndexPath else { return }

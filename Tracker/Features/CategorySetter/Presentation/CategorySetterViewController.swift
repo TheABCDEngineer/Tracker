@@ -161,7 +161,7 @@ extension CategorySetterViewController: UICollectionViewDataSource {
         }
         
         if kind == UICollectionView.elementKindSectionHeader {
-            element.label.text = "Категория"
+            element.label.text = localized("category")
         }
         
         return element
@@ -217,7 +217,7 @@ extension CategorySetterViewController: UIContextMenuInteractionDelegate {
                 guard let category = self.dataProvoder.object(at: indexPath) else { return }
                 self.launchCategoryCreator(category)
             },
-            removeMessage: "Эта категория точно не нужна?",
+            removeMessage: localized("delete category.confirmation"),
             removeAction: { [weak self] in
                 guard let self else { return }
                 guard let indexPath = self.selectedIndexPathForContextMenu else { return }
@@ -234,8 +234,8 @@ extension CategorySetterViewController: UIContextMenuInteractionDelegate {
                     let categoryTitle = self.dataProvoder.object(at: indexPath)?.title ?? ""
                     AlertController.showNotification(
                         alertPresenter: self,
-                        title: "Невозможно удалить категорию!",
-                        message: "Категория \(categoryTitle) содержит трекеры.\nЧтобы удалить эту категорию сначала необходимо переместить из неё все трекеры"
+                        title: localized("could not remove category"),
+                        message: String(format: localized("delete category.advice"), categoryTitle)
                     )
                 }
             }

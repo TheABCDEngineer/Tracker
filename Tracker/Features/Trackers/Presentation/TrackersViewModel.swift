@@ -226,7 +226,7 @@ final class TrackersViewModel {
         let pinnedTrackers = dataProcessor.fetchPinnedTrackers()
         if !pinnedTrackers.isEmpty {
             let pinnedTrackersPack = TrackersPackData(
-                title: "Закрепленные",
+                title: localized("pinned"),
                 categoryID: nil,
                 trackers: pinnedTrackers
             )

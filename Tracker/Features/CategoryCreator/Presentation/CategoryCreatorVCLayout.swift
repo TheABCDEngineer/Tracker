@@ -14,7 +14,7 @@ extension CategoryCreatorViewController {
         categoryField.backgroundColor = .clear
         categoryField.textColor = .ypBlack
         categoryField.font = Font.ypRegular17
-        categoryField.placeholder = "Введите название категории"
+        categoryField.placeholder = localized("categoryCreator.placeholder")
         
         let categoryFieldBackground = UIView()
         categoryFieldBackground.layer.cornerRadius = categoryField.layer.cornerRadius
@@ -24,7 +24,7 @@ extension CategoryCreatorViewController {
         label.backgroundColor = .clear
         label.font = Font.ypMedium16
         label.textColor = .ypBlack
-        label.text = pageTitle//"Новая категория"
+        label.text = pageTitle
         
         superView.addSubView(
             label,
@@ -48,7 +48,7 @@ extension CategoryCreatorViewController {
         )
         
         applyButton.layer.cornerRadius = 16
-        applyButton.setTitle("Готово", for: .normal)
+        applyButton.setTitle(localized("done"), for: .normal)
         applyButton.titleLabel?.font = Font.ypMedium16
         applyButton.tintColor = .ypWhite
         applyButton.backgroundColor = ApplyButton.inactive.color

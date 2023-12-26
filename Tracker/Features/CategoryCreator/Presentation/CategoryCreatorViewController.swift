@@ -21,8 +21,8 @@ class CategoryCreatorViewController: UIViewController {
         categoryField.text = moodifyingCategoryTitle
         
         let pageTitle = moodifyingCategoryTitle.isEmpty
-            ? "Новая категория"
-            : "Редактирование категории"
+            ? localized("new category")
+            : localized("edit category")
         
         self.view = setupLayout(
             for: self.view,

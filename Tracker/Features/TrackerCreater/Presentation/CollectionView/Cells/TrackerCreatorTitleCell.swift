@@ -59,7 +59,7 @@ extension TrackerCreatorTitleCell {
         titleField.backgroundColor = .clear
         titleField.textColor = .ypBlack
         titleField.font = Font.ypRegular17
-        titleField.placeholder = "Введите название трекера"
+        titleField.placeholder = localized("trackerCreator.title.placeholder")
         titleField.addTarget(nil,
             action: #selector(onCategoryFieldTextChange),
             for: .allEvents

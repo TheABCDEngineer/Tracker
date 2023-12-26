@@ -124,7 +124,7 @@ final class TrackersDataProcessorImpl: TrackersDataProcessorProtocol {
     }
     
     func fetchTitleByCategoryID(_ id: UUID) -> String {
-        return categoryRepository.getCategoryById(id: id)?.title ?? "Без названия"
+        return categoryRepository.getCategoryById(id: id)?.title ?? localized("untitled")
     }
     
     func fetchCategoryIDByTrackerID(_ id: UUID) -> UUID? {

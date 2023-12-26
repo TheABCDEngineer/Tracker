@@ -130,14 +130,14 @@ final class TrackerCreatorViewModel {
             && schedule.contains(.saturday)
             && schedule.contains(.sunday)
         {
-            return "Выходные дни"
+            return localized("hollidays")
         }
         
         if schedule.count == 5
             && !schedule.contains(.saturday)
             && !schedule.contains(.sunday)
         {
-            return "Будние дни"
+            return localized("weekdays")
         }
         
         let sortedSchedule = WeekDays.sort(schedule)
