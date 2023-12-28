@@ -35,11 +35,22 @@ final class TrackersViewController: UIViewController {
         setObservers()
         viewModel.onViewLoaded()
     }
+        
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        AnalyticsService.report(event: "Open", params: ["screen":"Main"])
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        AnalyticsService.report(event: "Close", params: ["screen":"Main"])
+        super.viewDidDisappear(animated)
+    }
     
     @objc
     private func addTrackerButtonClick() {
         searchingField.resignFirstResponder()
         eventBottomSheet.show()
+        AnalyticsService.report(event: "Click", params: ["screen":"Main", "item":"add_tracker"])
     }
     
     @objc
@@ -52,12 +63,14 @@ final class TrackersViewController: UIViewController {
     private func onCreateHabitButtonClick() {
         eventBottomSheet.hide()
         createEvent(event: .habit)
+        AnalyticsService.report(event: "Click", params: ["screen":"Main/tracker_type_selection", "item":"add_habbit"])
     }
     
     @objc
     private func onCreateUnregularEventButtonClick() {
         eventBottomSheet.hide()
         createEvent(event: .event)
+        AnalyticsService.report(event: "Click", params: ["screen":"Main/tracker_type_selection", "item":"add_event"])
     }
     
     @objc
@@ -170,6 +183,7 @@ extension TrackersViewController: AlertPresenterProtocol {
 extension TrackersViewController: TrackersCVCellDelegate {
     func onTrackerChecked(for id: UUID) {
         viewModel.onRecordTracker(id: id)
+        AnalyticsService.report(event: "click", params: ["screen":"Main", "item":"tracker"])
     }
 }
 
@@ -187,6 +201,7 @@ extension TrackersViewController: FilterCellDelegate {
         
         filterDataSource.selectedCellIndexPath = indexPath
         filterBottomSheet.hide()
+        AnalyticsService.report(event: "click", params: ["screen":"Main/Filters", "item":filter.description()])
     }
 }
 
@@ -212,12 +227,14 @@ extension TrackersViewController: UIContextMenuInteractionDelegate {
                 guard let indexPath = self.selectedTrackerIndexPath else { return }
                 guard let trackerModel = viewModel.object(for: indexPath) else { return }
                 self.createEvent(modifyingTrackerID: trackerModel.id)
+                AnalyticsService.report(event: "click", params: ["screen":"Main", "item":"edit"])
             },
             removeMessage: localized("delete tracker.confirmation"),
             removeAction: { [weak self] in
                 guard let self else { return }
                 guard let indexPath = self.selectedTrackerIndexPath else { return }
                 self.viewModel.onRemoveTracker(for: indexPath)
+                AnalyticsService.report(event: "click", params: ["screen":"Main", "item":"delete"])
             }
         )
     }
