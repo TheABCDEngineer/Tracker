@@ -12,18 +12,22 @@ final class TrackersDataProcessorImpl: TrackersDataProcessorProtocol {
     
     private let pinnedTrackersRepository: PinnedTrackersRepository
     
+    private let statisticRepository: StatisticRepository
+    
     init(
         trackersRepository: TrackersRepository,
         categoryRepository: TrackerCategoryRepository,
         packRepository: TrackersPackRepository,
         recordsRepository: TrackerRecordsRepository,
-        pinnedTrackersRepository: PinnedTrackersRepository
+        pinnedTrackersRepository: PinnedTrackersRepository,
+        statisticRepository: StatisticRepository
     ) {
         self.trackersRepository = trackersRepository
         self.packRepository = packRepository
         self.categoryRepository = categoryRepository
         self.recordsRepository = recordsRepository
         self.pinnedTrackersRepository = pinnedTrackersRepository
+        self.statisticRepository = statisticRepository
     }
   
     func fetchAllTrackers() -> [TrackerModel] {
@@ -138,11 +142,14 @@ final class TrackersDataProcessorImpl: TrackersDataProcessorProtocol {
     
     func addRecord(for trackerID: UUID, date: Date) -> Int {
         let record = recordsRepository.saveRecord(for: trackerID, date: date)
+        if checkDayOnAllTrackersCompleted(date) { statisticRepository.savePerfectDay(date) }
         return record.dates.count
     }
     
     func removeRecord(for trackerID: UUID, date: Date) -> Int {
         recordsRepository.removeRecord(for: trackerID, date: date)
+        statisticRepository.removePerfectDay(date)
+        
         let record = recordsRepository.getRecordByTrackerID(for: trackerID)
         return record?.dates.count ?? 0
     }
@@ -172,5 +179,17 @@ final class TrackersDataProcessorImpl: TrackersDataProcessorProtocol {
         if tracker.schedule.contains(requiredWeekDay) { return true }
 
         return false
+    }
+    
+    private func checkDayOnAllTrackersCompleted(_ day: Date) -> Bool {
+        let trackersOnDay = fetchTrackersForRequiredDate(where: day)
+        if trackersOnDay.isEmpty { return false }
+        
+        for tracker in trackersOnDay
+        where !fetchTrackerCompletionForDate(trackerID: tracker.id, where: day) {
+            return false
+        }
+        
+        return true
     }
 }

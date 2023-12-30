@@ -8,48 +8,44 @@ final class DateFormatterObj {
     
     private let calendar = Calendar.current
     
+    private var dateComponents = DateComponents()
+    
     func getWeekDayFromDate(_ date: Date) -> Int {
         let day = calendar.component(.weekday, from: date)
         return day > 1 ? day-2 : 6
     }
     
-//    func checkPairDatesOnEqual(_ date1: Date, _ date2: Date) -> Bool {
-//        let year1 = calendar.component(.year, from: date1)
-//        let month1 = calendar.component(.month, from: date1)
-//        let day1 = calendar.component(.day, from: date1)
-//        
-//        let year2 = calendar.component(.year, from: date2)
-//        let month2 = calendar.component(.month, from: date2)
-//        let day2 = calendar.component(.day, from: date2)
-//        
-//        if year1 != year2 { return false }
-//        if month1 != month2 { return false }
-//        if day1 != day2 { return false }
-//        
-//        return true
-//    }
-//    
-//    func checkFirstDateGreaterThenSecond(first date1: Date, second date2: Date) -> Bool {
-//        let year1 = calendar.component(.year, from: date1)
-//        let month1 = calendar.component(.month, from: date1)
-//        let day1 = calendar.component(.day, from: date1)
-//        
-//        let year2 = calendar.component(.year, from: date2)
-//        let month2 = calendar.component(.month, from: date2)
-//        let day2 = calendar.component(.day, from: date2)
-//        
-//        if year1 > year2 { return true }
-//        if month1 > month2 { return true }
-//        if day1 > day2 { return true }
-//        
-//        return false
-//    }
-    
     func convertToInt(_ date: Date) -> Int {
         let year = calendar.component(.year, from: date)
         let month = calendar.component(.month, from: date)
         let day = calendar.component(.day, from: date)
+        
+        let monthString = month < 10 ? "0\(month)" : String(month)
+        let dayString = day < 10 ? "0\(day)" : String(day)
     
-        return Int("\(year)\(month)\(day)") ?? 0
+        return Int(String(year) + monthString + dayString) ?? 0
+    }
+    
+    func convertToDate(_ dateAlias: Int) -> Date? {
+        guard let originalYear = Int(String(dateAlias).prefix(4)),
+              let originalMonth = Int(String(dateAlias).dropLast(2).suffix(2)),
+              let originalDay = Int(String(dateAlias).suffix(2))
+        else { return nil }
+        
+        dateComponents.year = originalYear
+        dateComponents.month = originalMonth
+        dateComponents.day = originalDay
+        
+        for timeZone in -12 ... 12 {
+            dateComponents.timeZone = .init(secondsFromGMT: timeZone)
+            guard let date = calendar.date(from: dateComponents) else { continue }
+            let day = calendar.component(.day, from: date)
+            if originalDay == day { return date }
+        }
+        return nil
+    }
+    
+    func daysBetween(from startDate: Date, to endDate: Date) -> Int? {
+        calendar.dateComponents([.day], from: startDate, to: endDate).day
     }
 }
