@@ -18,7 +18,7 @@ extension CategoryCreatorViewController {
         
         let categoryFieldBackground = UIView()
         categoryFieldBackground.layer.cornerRadius = categoryField.layer.cornerRadius
-        categoryFieldBackground.backgroundColor = .ypLightGray.withAlphaComponent(0.4)
+        categoryFieldBackground.backgroundColor = .ypSettingMenuCell
         
         let label = UILabel()
         label.backgroundColor = .clear

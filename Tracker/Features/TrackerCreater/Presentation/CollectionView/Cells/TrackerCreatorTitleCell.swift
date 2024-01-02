@@ -68,7 +68,7 @@ extension TrackerCreatorTitleCell {
         
         let titleFieldBackground = UIView()
         titleFieldBackground.layer.cornerRadius = titleField.layer.cornerRadius
-        titleFieldBackground.backgroundColor = .ypLightGray.withAlphaComponent(0.4)
+        titleFieldBackground.backgroundColor = .ypSettingMenuCell
        
         contentView.addSubView(
             eventLable,

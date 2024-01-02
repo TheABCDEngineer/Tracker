@@ -112,7 +112,7 @@ extension TrackersViewController {
         filterButton.layer.cornerRadius = 16
         filterButton.backgroundColor = .ypBlue
         filterButton.setTitle(localized("filters"), for: .normal)
-        filterButton.tintColor = .ypWhite
+        filterButton.tintColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1)
         filterButton.titleLabel?.font = Font.ypRegular17
         
         superView.addSubView(
