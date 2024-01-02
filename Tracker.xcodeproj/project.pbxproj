@@ -91,6 +91,9 @@
 		ABAC5BF72B40B21B00C42770 /* StatisticServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAC5BF62B40B21B00C42770 /* StatisticServiceProtocol.swift */; };
 		ABAC5BF92B40B44A00C42770 /* StatisticServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAC5BF82B40B44A00C42770 /* StatisticServiceImpl.swift */; };
 		ABAC5BFC2B40C2E100C42770 /* StatisticScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAC5BFB2B40C2E100C42770 /* StatisticScreenModel.swift */; };
+		ABAC5C162B445C7D00C42770 /* InlineSnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = ABAC5C152B445C7D00C42770 /* InlineSnapshotTesting */; };
+		ABAC5C182B445C7D00C42770 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = ABAC5C172B445C7D00C42770 /* SnapshotTesting */; };
+		ABAC5C202B445CB100C42770 /* TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAC5C1F2B445CB100C42770 /* TrackerTests.swift */; };
 		ABBF3C062ADDCEA7005AAD3F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBF3C052ADDCEA7005AAD3F /* AppDelegate.swift */; };
 		ABBF3C082ADDCEA7005AAD3F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBF3C072ADDCEA7005AAD3F /* SceneDelegate.swift */; };
 		ABBF3C0F2ADDCEA8005AAD3F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ABBF3C0E2ADDCEA8005AAD3F /* Assets.xcassets */; };
@@ -121,6 +124,16 @@
 		ABC4D6792B129950002F341D /* ContextMenuConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC4D6782B129950002F341D /* ContextMenuConfigurator.swift */; };
 		DE33793E8D8DD381EA4BC1D2 /* Pods_Tracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D212262307AB88CCFE061D2B /* Pods_Tracker.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		ABAC5C212B445CB100C42770 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ABBF3BFA2ADDCEA7005AAD3F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ABBF3C012ADDCEA7005AAD3F;
+			remoteInfo = Tracker;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		AB1CBEB22B1F288C001C3300 /* TrackerRecordsRepositoryImplCoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecordsRepositoryImplCoreData.swift; sourceTree = "<group>"; };
@@ -209,6 +222,8 @@
 		ABAC5BF62B40B21B00C42770 /* StatisticServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticServiceProtocol.swift; sourceTree = "<group>"; };
 		ABAC5BF82B40B44A00C42770 /* StatisticServiceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticServiceImpl.swift; sourceTree = "<group>"; };
 		ABAC5BFB2B40C2E100C42770 /* StatisticScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticScreenModel.swift; sourceTree = "<group>"; };
+		ABAC5C1D2B445CB100C42770 /* TrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		ABAC5C1F2B445CB100C42770 /* TrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTests.swift; sourceTree = "<group>"; };
 		ABBF3C022ADDCEA7005AAD3F /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABBF3C052ADDCEA7005AAD3F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ABBF3C072ADDCEA7005AAD3F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -245,10 +260,19 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		ABAC5C1A2B445CB100C42770 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ABBF3BFF2ADDCEA7005AAD3F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABAC5C182B445C7D00C42770 /* SnapshotTesting in Frameworks */,
+				ABAC5C162B445C7D00C42770 /* InlineSnapshotTesting in Frameworks */,
 				DE33793E8D8DD381EA4BC1D2 /* Pods_Tracker.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -633,10 +657,19 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		ABAC5C1E2B445CB100C42770 /* TrackerTests */ = {
+			isa = PBXGroup;
+			children = (
+				ABAC5C1F2B445CB100C42770 /* TrackerTests.swift */,
+			);
+			path = TrackerTests;
+			sourceTree = "<group>";
+		};
 		ABBF3BF92ADDCEA7005AAD3F = {
 			isa = PBXGroup;
 			children = (
 				ABBF3C042ADDCEA7005AAD3F /* Tracker */,
+				ABAC5C1E2B445CB100C42770 /* TrackerTests */,
 				ABBF3C032ADDCEA7005AAD3F /* Products */,
 				2B39353453BF9083A2D497DD /* Pods */,
 				E919226E6D636E4366E91106 /* Frameworks */,
@@ -647,6 +680,7 @@
 			isa = PBXGroup;
 			children = (
 				ABBF3C022ADDCEA7005AAD3F /* Tracker.app */,
+				ABAC5C1D2B445CB100C42770 /* TrackerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -846,6 +880,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		ABAC5C1C2B445CB100C42770 /* TrackerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ABAC5C232B445CB100C42770 /* Build configuration list for PBXNativeTarget "TrackerTests" */;
+			buildPhases = (
+				ABAC5C192B445CB100C42770 /* Sources */,
+				ABAC5C1A2B445CB100C42770 /* Frameworks */,
+				ABAC5C1B2B445CB100C42770 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ABAC5C222B445CB100C42770 /* PBXTargetDependency */,
+			);
+			name = TrackerTests;
+			productName = TrackerTests;
+			productReference = ABAC5C1D2B445CB100C42770 /* TrackerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		ABBF3C012ADDCEA7005AAD3F /* Tracker */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = ABBF3C162ADDCEA8005AAD3F /* Build configuration list for PBXNativeTarget "Tracker" */;
@@ -861,6 +913,10 @@
 			dependencies = (
 			);
 			name = Tracker;
+			packageProductDependencies = (
+				ABAC5C152B445C7D00C42770 /* InlineSnapshotTesting */,
+				ABAC5C172B445C7D00C42770 /* SnapshotTesting */,
+			);
 			productName = Tracker;
 			productReference = ABBF3C022ADDCEA7005AAD3F /* Tracker.app */;
 			productType = "com.apple.product-type.application";
@@ -875,6 +931,10 @@
 				LastSwiftUpdateCheck = 1430;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					ABAC5C1C2B445CB100C42770 = {
+						CreatedOnToolsVersion = 14.3.1;
+						TestTargetID = ABBF3C012ADDCEA7005AAD3F;
+					};
 					ABBF3C012ADDCEA7005AAD3F = {
 						CreatedOnToolsVersion = 14.3.1;
 					};
@@ -890,16 +950,27 @@
 				ru,
 			);
 			mainGroup = ABBF3BF92ADDCEA7005AAD3F;
+			packageReferences = (
+				ABAC5C142B445C7D00C42770 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+			);
 			productRefGroup = ABBF3C032ADDCEA7005AAD3F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				ABBF3C012ADDCEA7005AAD3F /* Tracker */,
+				ABAC5C1C2B445CB100C42770 /* TrackerTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		ABAC5C1B2B445CB100C42770 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ABBF3C002ADDCEA7005AAD3F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -957,6 +1028,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		ABAC5C192B445CB100C42770 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ABAC5C202B445CB100C42770 /* TrackerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ABBF3BFE2ADDCEA7005AAD3F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1073,6 +1152,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		ABAC5C222B445CB100C42770 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ABBF3C012ADDCEA7005AAD3F /* Tracker */;
+			targetProxy = ABAC5C212B445CB100C42770 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		AB5DCA7F2B3B3EC400D55AE8 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
@@ -1103,6 +1190,48 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		ABAC5C242B445CB100C42770 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 558TDNW6Z7;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.TheABCDEngineer.TrackerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tracker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Tracker";
+			};
+			name = Debug;
+		};
+		ABAC5C252B445CB100C42770 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 558TDNW6Z7;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.TheABCDEngineer.TrackerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tracker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Tracker";
+			};
+			name = Release;
+		};
 		ABBF3C142ADDCEA8005AAD3F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1288,6 +1417,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		ABAC5C232B445CB100C42770 /* Build configuration list for PBXNativeTarget "TrackerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ABAC5C242B445CB100C42770 /* Debug */,
+				ABAC5C252B445CB100C42770 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		ABBF3BFD2ADDCEA7005AAD3F /* Build configuration list for PBXProject "Tracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1307,6 +1445,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		ABAC5C142B445C7D00C42770 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = exactVersion;
+				version = 1.15.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		ABAC5C152B445C7D00C42770 /* InlineSnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ABAC5C142B445C7D00C42770 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = InlineSnapshotTesting;
+		};
+		ABAC5C172B445C7D00C42770 /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ABAC5C142B445C7D00C42770 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		ABC3678B2B19E0D4002164EB /* Library.xcdatamodeld */ = {
