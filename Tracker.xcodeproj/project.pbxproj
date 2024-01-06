@@ -82,7 +82,6 @@
 		AB5485C72AED1440001ED0B1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB5485C62AED1440001ED0B1 /* Main.storyboard */; };
 		AB5DCA7D2B3B3EC400D55AE8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB5DCA7F2B3B3EC400D55AE8 /* Localizable.strings */; };
 		ABAC5BDD2B3B6B4200C42770 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = ABAC5BDF2B3B6B4200C42770 /* Localizable.stringsdict */; };
-		ABAC5BE22B3DE15400C42770 /* YandexMetricaApiKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAC5BE12B3DE15400C42770 /* YandexMetricaApiKey.swift */; };
 		ABAC5BE42B3DE7E600C42770 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAC5BE32B3DE7E600C42770 /* AnalyticsService.swift */; };
 		ABAC5BE82B3EDF3900C42770 /* StatisticCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAC5BE72B3EDF3800C42770 /* StatisticCell.swift */; };
 		ABAC5BEA2B3EE74B00C42770 /* StatisticViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAC5BE92B3EE74B00C42770 /* StatisticViewModel.swift */; };
@@ -213,7 +212,6 @@
 		ABAC5BDA2B3B459B00C42770 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		ABAC5BDE2B3B6B4200C42770 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ru; path = ru.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		ABAC5BE02B3B924300C42770 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
-		ABAC5BE12B3DE15400C42770 /* YandexMetricaApiKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMetricaApiKey.swift; sourceTree = "<group>"; };
 		ABAC5BE32B3DE7E600C42770 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		ABAC5BE72B3EDF3800C42770 /* StatisticCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticCell.swift; sourceTree = "<group>"; };
 		ABAC5BE92B3EE74B00C42770 /* StatisticViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticViewModel.swift; sourceTree = "<group>"; };
@@ -710,7 +708,6 @@
 				AB5485B42AE5B175001ED0B1 /* Data */,
 				ABBF3C1C2ADE9BC8005AAD3F /* Presentation */,
 				AB5485A52AE45A86001ED0B1 /* Creator.swift */,
-				ABAC5BE12B3DE15400C42770 /* YandexMetricaApiKey.swift */,
 				ABAC5BE32B3DE7E600C42770 /* AnalyticsService.swift */,
 			);
 			path = Root;
@@ -1092,7 +1089,6 @@
 				ABC4D6652B0D09C4002F341D /* FilterCVFlowLayout.swift in Sources */,
 				ABC4D65F2B0BF908002F341D /* FilterState.swift in Sources */,
 				AB3BD37C2B01492D00BC3BD7 /* CategoryCreatorViewModel.swift in Sources */,
-				ABAC5BE22B3DE15400C42770 /* YandexMetricaApiKey.swift in Sources */,
 				AB5485A62AE45A86001ED0B1 /* Creator.swift in Sources */,
 				ABC4D66B2B0E9EA0002F341D /* TrackersViewModel.swift in Sources */,
 				AB3BD35D2AF8DF0C00BC3BD7 /* SchedulerCellsDelegate.swift in Sources */,
