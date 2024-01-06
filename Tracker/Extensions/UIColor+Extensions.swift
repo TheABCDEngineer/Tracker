@@ -11,4 +11,5 @@ extension UIColor {
     static var ypTabBarBorder: UIColor {UIColor(named: "TabBarBorder") ?? UIColor.systemBackground}
     static var ypSearhingField: UIColor {UIColor(named: "SearchingField") ?? UIColor.gray}
     static var ypBottomSheet: UIColor {UIColor(named: "BottomSheet") ?? UIColor.white}
+    static var ypSettingMenuCell: UIColor {UIColor(named: "SettingMenuCell") ?? UIColor.lightGray}
 }

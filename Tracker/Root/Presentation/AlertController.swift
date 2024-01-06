@@ -12,10 +12,10 @@ final class AlertController {
             preferredStyle: .actionSheet
         )
          
-        alert.addAction(UIAlertAction(title: "Удалить", style: .destructive) { _ in
+        alert.addAction(UIAlertAction(title: localized("delete"), style: .destructive) { _ in
             completion()
         })
-        alert.addAction(UIAlertAction(title: "Отменить", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: localized("cancel"), style: .cancel, handler: nil))
          
         alertPresenter.present(alert: alert, animated: true)
     }
@@ -32,7 +32,7 @@ final class AlertController {
             preferredStyle: .alert
         )
          
-        alert.addAction(UIAlertAction(title: "ОК", style: .default) { _ in
+        alert.addAction(UIAlertAction(title: localized("ok"), style: .default) { _ in
             completion?()
         })
          

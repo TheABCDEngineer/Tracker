@@ -9,13 +9,13 @@ enum FilterState: Int, CaseIterable {
     func description() -> String {
         switch self {
         case .allTrackers:
-            return "Все трекеры"
+            return localized("filter.allTrackers")
         case .todayTrackers:
-            return "Трекеры на сегодня"
+            return localized("filter.todayTrackers")
         case .completedTrackers:
-            return "Завершенные"
+            return localized("filter.completedTrackers")
         case .uncompletedTrackers:
-            return "Не завершенные"
+            return localized("filter.uncompletedTrackers")
         }
     }
 }

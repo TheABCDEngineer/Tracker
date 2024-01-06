@@ -1,5 +1,5 @@
 import Foundation
 
 protocol TrackersCVCellDelegate {
-    func onTrackerChecked(for indexPath: IndexPath)
+    func onTrackerChecked(for id: UUID)
 }

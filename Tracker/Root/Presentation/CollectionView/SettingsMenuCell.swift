@@ -23,7 +23,7 @@ class SettingsMenuCell: UICollectionViewCell {
         )
         
         contextView.layer.cornerRadius = 16
-        contextView.backgroundColor = .ypLightGray.withAlphaComponent(0.4)
+        contextView.backgroundColor = .ypSettingMenuCell
         
         label.font = Font.ypRegular17
         label.textColor = .ypBlack

@@ -11,25 +11,25 @@ enum WeekDays: Int, CaseIterable, Codable {
     
     func description() -> String {
         switch self {
-        case .monday: return "Понедельник"
-        case .tuesday: return "Вторник"
-        case .wednesday: return "Среда"
-        case .thursday: return "Четверг"
-        case .friday: return "Пятница"
-        case .saturday: return "Суббота"
-        case .sunday: return "Воскресенье"
+        case .monday: return localized("monday")
+        case .tuesday: return localized("tuesday")
+        case .wednesday: return localized("wednesday")
+        case .thursday: return localized("thursday")
+        case .friday: return localized("friday")
+        case .saturday: return localized("saturday")
+        case .sunday: return localized("sunday")
         }
     }
     
     func shortDescription() -> String {
         switch self {
-        case .monday: return "Пн"
-        case .tuesday: return "Вт"
-        case .wednesday: return "Ср"
-        case .thursday: return "Чт"
-        case .friday: return "Пт"
-        case .saturday: return "Сб"
-        case .sunday: return "Вс"
+        case .monday: return localized("monday.short")
+        case .tuesday: return localized("tuesday.short")
+        case .wednesday: return localized("wednesday.short")
+        case .thursday: return localized("thursday.short")
+        case .friday: return localized("friday.short")
+        case .saturday: return localized("saturday.short")
+        case .sunday: return localized("sunday.short")
         }
     }
     

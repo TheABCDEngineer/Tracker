@@ -118,7 +118,7 @@ extension SchedulerViewController: UICollectionViewDataSource {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleSupplementaryView.identifier, for: indexPath) as? TitleSupplementaryView else {
             return UICollectionReusableView()
         }
-        header.label.text = "Расписание"
+        header.label.text = localized("schedule")
      
         return header
     }

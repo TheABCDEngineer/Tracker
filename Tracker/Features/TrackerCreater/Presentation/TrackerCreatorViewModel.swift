@@ -8,7 +8,7 @@ final class TrackerCreatorViewModel {
     
     private let categoryRepository: TrackerCategoryRepository
     
-    private var modifyingTrackerID: UUID?
+    private (set) var modifyingTrackerID: UUID?
     
     private (set) var trackerType: TrackerType = .event
     
@@ -29,6 +29,8 @@ final class TrackerCreatorViewModel {
     private let categoryCreated = ObservableData<String>()
     
     private let scheduleCreated = ObservableData<String>()
+    
+    private var identifyTracker: ( (UUID, UUID) -> Void )?
     
     init(
         trackersRepository: TrackersRepository,
@@ -98,12 +100,15 @@ final class TrackerCreatorViewModel {
     }
     
     func createTracker() {
+        guard let category else { return }
+        
         if let modifyingTrackerID {
             updateTracker(trackerID: modifyingTrackerID)
+            identifyTracker?(modifyingTrackerID, category.id)
             return
         }
         
-        guard let category, let color else { return }
+        guard let color else { return }
         guard let tracker = trackersRepository.createTracker(
             type: trackerType,
             title: title,
@@ -115,6 +120,35 @@ final class TrackerCreatorViewModel {
         packRepository.addTrackerToCategory(
             trackerID: tracker.id, categoryID: category.id
         )
+        identifyTracker?(tracker.id, category.id)
+    }
+    
+    func convertScheduleToString(_ schedule: Set<WeekDays>) -> String {
+        if schedule.isEmpty { return "" }
+        
+        if schedule.count == 2
+            && schedule.contains(.saturday)
+            && schedule.contains(.sunday)
+        {
+            return localized("hollidays")
+        }
+        
+        if schedule.count == 5
+            && !schedule.contains(.saturday)
+            && !schedule.contains(.sunday)
+        {
+            return localized("weekdays")
+        }
+        
+        let sortedSchedule = WeekDays.sort(schedule)
+        var result = ""
+        
+        for i in 0 ... WeekDays.allCases.count-1 {
+            if let day = sortedSchedule[i] {
+                result += "\(day.shortDescription()), "
+            }
+        }
+        return String(result.dropLast(2))
     }
     
 //MARK: - Observers
@@ -130,32 +164,8 @@ final class TrackerCreatorViewModel {
         scheduleCreated.observe(completion)
     }
     
-    func convertScheduleToString(_ schedule: Set<WeekDays>) -> String {
-        if schedule.isEmpty { return "" }
-        
-        if schedule.count == 2
-            && schedule.contains(.saturday)
-            && schedule.contains(.sunday)
-        {
-            return "Выходные дни"
-        }
-        
-        if schedule.count == 5
-            && !schedule.contains(.saturday)
-            && !schedule.contains(.sunday)
-        {
-            return "Будние дни"
-        }
-        
-        let sortedSchedule = WeekDays.sort(schedule)
-        var result = ""
-        
-        for i in 0 ... WeekDays.allCases.count-1 {
-            if let day = sortedSchedule[i] {
-                result += "\(day.shortDescription()), "
-            }
-        }
-        return String(result.dropLast(2))
+    func observeTrackerIdetified(_ completion: @escaping (UUID, UUID) -> Void) {
+        identifyTracker = completion
     }
     
 //MARK: - Private

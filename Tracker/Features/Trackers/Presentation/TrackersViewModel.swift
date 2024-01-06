@@ -1,33 +1,47 @@
 import Foundation
 
+struct UpdateOptions {
+    let isReload: Bool
+    let updatedIndexPath: IndexPath?
+    let insertedIndexPaths: [IndexPath]
+    let deletedIndexPaths: [IndexPath]
+    
+    init(isReload: Bool = false, updatedIndexPath: IndexPath? = nil, insertedIndexPaths: [IndexPath] = [IndexPath](), deletedIndexPaths: [IndexPath] = [IndexPath]()
+    ) {
+        self.isReload = isReload
+        self.updatedIndexPath = updatedIndexPath
+        self.insertedIndexPaths = insertedIndexPaths
+        self.deletedIndexPaths = deletedIndexPaths
+    }
+}
+
 final class TrackersViewModel {
      
     private let dataProcessor: TrackersDataProcessorProtocol
     
-    private var currentDate = Date()
+    private var userDate = Date()
     
     private var currentFilter: FilterState = .todayTrackers
     
     private var currentRequiredTrackerSubTitle = ""
     
-    private let trackersPacksData = ObservableData<[TrackersPackScreenModel]>()
+    private var presentedTrackerPacks = [TrackersPackData]()
+   
+    private var updateTrackers: ( (UpdateOptions) -> Void )?
     
-    private let modifiedTracker = ObservableData<TrackerScreenModel>()
+    private var placeholderState = ObservableData<TrackersPlaceholder.State>()
     
-    init(
-        dataProcessor: TrackersDataProcessorProtocol
-    ) {
+    init(dataProcessor: TrackersDataProcessorProtocol) {
         self.dataProcessor = dataProcessor
     }
     
-    func updateData() {
-        trackersPacksData.postValue(
-            provideScreenData()
-        )
+    func onViewLoaded() {
+        setPlaceholderState()
+        updateData()
     }
     
     func setUserDate(_ date: Date) {
-        self.currentDate = date
+        self.userDate = date
         updateData()
     }
     
@@ -41,61 +55,185 @@ final class TrackersViewModel {
         updateData()
     }
     
-    func onTrackerChecked(tracker: TrackerScreenModel) {
-        let updatedCompletedStatus = !tracker.isCompleted
+    func onTrackerCreated(trackerID: UUID, categoryID: UUID) {
+        updatePlaceholderState(TrackersPlaceholder.emptyResults)
+        if presentedTrackerPacks.isEmpty {
+            updateData()
+            return
+        }
+        guard let newTracker = dataProcessor.fetchTrackerByID(trackerID) else { return }
+        let presentedTrackers = provideTrackersByFilter()
+        
+        var isСontains = false
+        for tracker in presentedTrackers where tracker.id == trackerID { isСontains = true }
+        if !isСontains { return }
+        
+        var insertedIndexPath: IndexPath?
+    
+        for packIndex in 0 ... presentedTrackerPacks.count - 1 where presentedTrackerPacks[packIndex].categoryID == categoryID {
+            presentedTrackerPacks[packIndex].trackers.append(newTracker)
+            insertedIndexPath = IndexPath(
+                item: presentedTrackerPacks[packIndex].trackers.count - 1,
+                section: packIndex
+            )
+            break
+        }
+        guard let insertedIndexPath else {
+            updateData()
+            return
+        }
+        updateTrackers?(UpdateOptions(insertedIndexPaths: [insertedIndexPath]))
+    }
+    
+    func onTrackerModified(trackerID: UUID, categoryID: UUID) {
+        guard let tracker = dataProcessor.fetchTrackerByID(trackerID),
+              let indexPath = provideIdexPath(id: trackerID) else { return }
+        
+        presentedTrackerPacks[indexPath.section].trackers[indexPath.item] = tracker
+        updateTrackers?(UpdateOptions(insertedIndexPaths: [indexPath]))
+    }
+    
+    func onRecordTracker(id: UUID) {
+        let updatedCompletedStatus = !dataProcessor.fetchTrackerCompletionForDate(
+                trackerID: id,
+                where: userDate
+            )
 
-        let updatedCompletedCount = updatedCompletedStatus
-            ? dataProcessor.addRecord(for: tracker.id, date: currentDate)
-            : dataProcessor.removeRecord(for: tracker.id, date: currentDate)
+        let _ = updatedCompletedStatus
+            ? dataProcessor.addRecord(for: id, date: userDate)
+            : dataProcessor.removeRecord(for: id, date: userDate)
         
         if currentFilter == .completedTrackers || currentFilter == .uncompletedTrackers {
             updateData()
             return
         }
         
-        modifiedTracker.postValue(
-            TrackerScreenModel(
-                id: tracker.id,
-                title: tracker.title,
-                emoji: tracker.emoji,
-                color: tracker.color,
-                daysCount: updatedCompletedCount,
-                isCompleted: updatedCompletedStatus,
-                isAvailable: tracker.isAvailable
-            )
-        )
+        guard let trackerIndexPath = provideIdexPath(id: id) else {
+            updateData()
+            return
+        }
+        updateTrackers?(UpdateOptions(updatedIndexPath: trackerIndexPath))
     }
     
-    func onRemoveTracker(trackerID: UUID) {
-        dataProcessor.removeTracker(id: trackerID)
-        updateData()
+    func onPinnedTracker(for indexPath: IndexPath) {
+        let tracker = presentedTrackerPacks[indexPath.section].trackers.remove(at: indexPath.item)
+        
+        let updatedPinnedStatus = !dataProcessor.fetchPinnedStatus(trackerID: tracker.id)
+        if updatedPinnedStatus { dataProcessor.pinTracker(id: tracker.id) }
+        if !updatedPinnedStatus { dataProcessor.unpinTracker(id: tracker.id) }
+        
+        if presentedTrackerPacks[indexPath.section].trackers.isEmpty || dataProcessor.fetchPinnedTrackers().count == 1 {
+            updateData()
+            return
+        }
+        
+        var insertedIndexPath: IndexPath?
+        
+        if updatedPinnedStatus {
+            presentedTrackerPacks[0].trackers.append(tracker)
+            
+            insertedIndexPath = IndexPath(
+                item: presentedTrackerPacks[0].trackers.count - 1,
+                section: 0
+            )
+        }
+        if !updatedPinnedStatus {
+            if let ownCategoryID = dataProcessor.fetchCategoryIDByTrackerID(tracker.id) {
+                for packIndex in 0 ... presentedTrackerPacks.count - 1 where presentedTrackerPacks[packIndex].categoryID == ownCategoryID {
+                    presentedTrackerPacks[packIndex].trackers.append(tracker)
+                    insertedIndexPath = IndexPath(
+                        item: presentedTrackerPacks[packIndex].trackers.count - 1,
+                        section: packIndex
+                    )
+                    break
+                }
+            }
+        }
+        
+        guard let insertedIndexPath else {
+            updateData()
+            return
+        }
+        
+        updateTrackers?(UpdateOptions(
+            insertedIndexPaths: [insertedIndexPath],
+            deletedIndexPaths: [indexPath]
+        ))
+    }
+    
+    func onRemoveTracker(for indexPath: IndexPath) {
+        let tracker = presentedTrackerPacks[indexPath.section].trackers.remove(at: indexPath.item)
+        dataProcessor.removeTracker(id: tracker.id)
+        
+        if presentedTrackerPacks[indexPath.section].trackers.isEmpty {
+            updateData()
+            return
+        }
+        
+        updateTrackers?(UpdateOptions(deletedIndexPaths: [indexPath]))
+        setPlaceholderState()
+    }
+    
+//MARK: - ScreenDataSource aka Fetch Result Controller
+    func sectionsCount() -> Int {
+        presentedTrackerPacks.count
+    }
+    
+    func itemsCount(for section: Int) -> Int {
+        if section < 0 || section > presentedTrackerPacks.count - 1 { return 0 }
+        return presentedTrackerPacks[section].trackers.count
+    }
+    
+    func sectionTitle(for indexPath: IndexPath) -> String? {
+        if indexPath.section < 0 || indexPath.section > presentedTrackerPacks.count - 1 { return nil }
+        return presentedTrackerPacks[indexPath.section].title
+    }
+    
+    func object(for indexPath: IndexPath) -> TrackerScreenModel? {
+        if indexPath.section < 0 || indexPath.section > presentedTrackerPacks.count - 1 { return nil }
+        
+        let presentedTrackerPack = presentedTrackerPacks[indexPath.section]
+        if indexPath.item < 0 || indexPath.item > presentedTrackerPack.trackers.count - 1 { return nil }
+        
+        return provideTrackerScreenModel(for: presentedTrackerPack.trackers[indexPath.item])
     }
     
 //MARK: - Observers
-    func ObserveTrackersPacks(_ completion: @escaping ([TrackersPackScreenModel]?) -> Void) {
-        trackersPacksData.observe(completion)
+    func observeUpdateTrackers(_ completion: @escaping (UpdateOptions) -> Void) {
+        updateTrackers = completion
     }
     
-    func ObserveModifiedTracker(_ completion: @escaping (TrackerScreenModel?) -> Void) {
-        modifiedTracker.observe(completion)
+    func observePlaceholderState(_ completion: @escaping (TrackersPlaceholder.State?) -> Void) {
+        placeholderState.observe(completion)
     }
     
 //MARK: - private funcs
-    private func provideScreenData() -> [TrackersPackScreenModel] {
-        var resultPackScreenModels = [TrackersPackScreenModel]()
+    private func updateData() {
+        presentedTrackerPacks = providePresentedPacks()
+        updateTrackers?(UpdateOptions(isReload: true))
+    }
+    
+    private func providePresentedPacks() -> [TrackersPackData] {
+        var resultPacks = [TrackersPackData?]()
         let trackers = provideTrackersByFilter()
-
         let trackersPacks = dataProcessor.fetchPacksForTrackers(for: trackers)
+                
+        resultPacks.append(contentsOf: trackersPacks.map{
+            providePackData(for: $0, from: trackers)
+        })
+        resultPacks = resultPacks.compactMap{$0}.sorted()
         
-        for trackersPack in trackersPacks {
-            resultPackScreenModels.append(
-                providePackScreenModel(
-                    for: trackersPack,
-                    from: trackers
-                )
+        let pinnedTrackers = dataProcessor.fetchPinnedTrackers()
+        if !pinnedTrackers.isEmpty {
+            let pinnedTrackersPack = TrackersPackData(
+                title: localized("pinned"),
+                categoryID: nil,
+                trackers: pinnedTrackers
             )
+            resultPacks.insert(pinnedTrackersPack, at: 0)
         }
-        return resultPackScreenModels
+        
+        return resultPacks.compactMap{$0}
     }
     
     private func provideTrackersByFilter() -> [TrackerModel] {
@@ -105,15 +243,15 @@ final class TrackersViewModel {
         case .allTrackers:
             trackers = dataProcessor.fetchAllTrackers()
         case .todayTrackers:
-            trackers = dataProcessor.fetchTrackersForRequiredDate(where: currentDate)
+            trackers = dataProcessor.fetchTrackersForRequiredDate(where: userDate)
         case .completedTrackers:
             trackers = dataProcessor.fetchTrackersOnRequiredDateOfCompletedState(
-                requiredDate: currentDate,
+                requiredDate: userDate,
                 isCompleted: true
             )
         case .uncompletedTrackers:
             trackers = dataProcessor.fetchTrackersOnRequiredDateOfCompletedState(
-                requiredDate: currentDate,
+                requiredDate: userDate,
                 isCompleted: false
             )
         }
@@ -126,39 +264,70 @@ final class TrackersViewModel {
         )
     }
     
-    private func providePackScreenModel(
+    private func providePackData(
         for trackersPack: TrackersPack,
         from trackers: [TrackerModel]
-    ) -> TrackersPackScreenModel {
-        var trackerScreenModels = [TrackerScreenModel]()
+    ) -> TrackersPackData? {
+        var presentedTracker = [TrackerModel]()
         
-        if !trackersPack.trackerIDList.isEmpty || !trackers.isEmpty {
-            for trackerIDInPack in trackersPack.trackerIDList {
-                for tracker in trackers {
-                    if trackerIDInPack == tracker.id {
-                        trackerScreenModels.append(
-                            DataConverter.map(
-                                tracker: tracker,
-                                daysCount: dataProcessor.fetchTrackerCompletionCount(
-                                    trackerID: tracker.id
-                                ),
-                                isCompleted: dataProcessor.fetchTrackerCompletionForDate(
-                                    trackerID: tracker.id,
-                                    where: currentDate
-                                ),
-                                isAvailable: !DateFormatterObj.shared.checkFirstDateGreaterThenSecond(
-                                    first: currentDate,
-                                    second: Date()
-                                )
-                            )
-                        )
-                    }
+        if trackersPack.trackerIDList.isEmpty || trackers.isEmpty { return nil }
+            
+        for trackerIDInPack in trackersPack.trackerIDList {
+            for tracker in trackers where trackerIDInPack == tracker.id {
+                if !dataProcessor.fetchPinnedStatus(trackerID: tracker.id) {
+                    presentedTracker.append(tracker)
                 }
             }
         }
-        return TrackersPackScreenModel(
+        
+        if presentedTracker.isEmpty { return nil }
+        
+        return TrackersPackData(
             title: dataProcessor.fetchTitleByCategoryID(trackersPack.categoryID),
-            trackers: trackerScreenModels
+            categoryID: trackersPack.categoryID,
+            trackers: presentedTracker
         )
+    }
+    
+    private func provideTrackerScreenModel(for tracker: TrackerModel) -> TrackerScreenModel {
+        DataConverter.map(
+            tracker: tracker,
+            daysCount: dataProcessor.fetchTrackerCompletionCount(
+                trackerID: tracker.id
+            ),
+            isCompleted: dataProcessor.fetchTrackerCompletionForDate(
+                trackerID: tracker.id,
+                where: userDate
+            ),
+            isAvailable: DateFormatterObj.shared.convertToInt(userDate) <= DateFormatterObj.shared.convertToInt(Date()),
+            isPinned: dataProcessor.fetchPinnedStatus(trackerID: tracker.id)
+        )
+    }
+    
+    private func provideIdexPath(id: UUID) -> IndexPath? {
+        if presentedTrackerPacks.isEmpty { return nil }
+     
+        for packIndex in 0 ... presentedTrackerPacks.count - 1 {
+            if presentedTrackerPacks[packIndex].trackers.isEmpty { continue }
+            for trackerIndex in 0 ... presentedTrackerPacks[packIndex].trackers.count - 1 where presentedTrackerPacks[packIndex].trackers[trackerIndex].id == id {
+                return IndexPath(item: trackerIndex, section: packIndex)
+            }
+        }
+        return nil
+    }
+    
+    private func setPlaceholderState() {
+        switch dataProcessor.fetchAllTrackers().isEmpty {
+        case true: updatePlaceholderState(TrackersPlaceholder.noContent)
+        case false: updatePlaceholderState(TrackersPlaceholder.emptyResults)
+        }
+    }
+    
+    private func updatePlaceholderState(_ requiredState: TrackersPlaceholder.State) {
+        guard let curentState = placeholderState.value else {
+            placeholderState.postValue(requiredState)
+            return
+        }
+        if curentState.id != requiredState.id { placeholderState.postValue(requiredState) }
     }
 }

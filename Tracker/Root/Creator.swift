@@ -40,6 +40,12 @@ final class Creator {
         )
     }
     
+    static func injectStatisticViewModel() -> StatisticViewModel {
+        StatisticViewModel(
+            statisticService: injectStatisticService()
+        )
+    }
+    
 //MARK: - Repositories injections
     static func injectOnboardingRepository() -> OnboardingRepository {
         return OnboardingRepositoryImplUserDefaults()
@@ -61,13 +67,23 @@ final class Creator {
         return TrackerRecordsRepositoryImplCoreData(context: injectCoreDataContext())
     }
     
+    static func injectPinnedTrackersRepository() -> PinnedTrackersRepository {
+        PinnedTrackersRepositoryImplUserDef()
+    }
+    
+    static func injectStatisticRepository() -> StatisticRepository {
+        StatisticRepositoryImplUserDef()
+    }
+    
 //MARK: - Services injections
     static func injectTrackersDataProcessor() -> TrackersDataProcessorProtocol {
         return TrackersDataProcessorImpl(
             trackersRepository: injectTrackersRepository(),
             categoryRepository: injectTrackerCategoryRepository(),
             packRepository: injectTrackersPackRepository(),
-            recordsRepository: injectTrackerRecordsRepository()
+            recordsRepository: injectTrackerRecordsRepository(),
+            pinnedTrackersRepository: injectPinnedTrackersRepository(),
+            statisticRepository: injectStatisticRepository()
         )
     }
     
@@ -76,6 +92,13 @@ final class Creator {
             context: injectCoreDataContext(),
             categoryRepository: injectTrackerCategoryRepository(),
             trackersPackRepository: injectTrackersPackRepository()
+        )
+    }
+    
+    static func injectStatisticService() -> StatisticServiceProtocol {
+        StatisticServiceImpl(
+            statisticRepository: injectStatisticRepository(),
+            recordsRepository: injectTrackerRecordsRepository()
         )
     }
     
@@ -93,4 +116,15 @@ final class Creator {
             }
         }
     }
+}
+
+//MARK: - Global funcs
+func localized(_ key: String, tableName: String? = nil, bundle: Bundle = Bundle.main, value: String = "", comment: String = "") -> String {
+    NSLocalizedString(
+        key,
+        tableName: tableName,
+        bundle: bundle,
+        value: value,
+        comment: comment
+    )
 }

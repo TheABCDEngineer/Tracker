@@ -35,7 +35,7 @@ class SchedulerButtonsCell: UICollectionViewCell {
         guard let applyButton else { return }
         
         applyButton.layer.cornerRadius = 16
-        applyButton.setTitle("Создать", for: .normal)
+        applyButton.setTitle(localized("done"), for: .normal)
         applyButton.titleLabel?.font = Font.ypMedium16
         applyButton.tintColor = .ypWhite
         
