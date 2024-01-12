@@ -22,7 +22,7 @@ extension CategorySetterViewController {
         categoryCollection.showsVerticalScrollIndicator = false
         
         placeholder.image.image = UIImage(named: "TrackerPlaceholder")
-        placeholder.label.text = "Привычки и события можно\nобъединить по смыслу"
+        placeholder.label.text = localized("categorySetter.placeholder")
         superView.addSubView(
             placeholder.view, width: 175, heigth: 125,
             centerX: AnchorOf(superView.centerXAnchor),
@@ -31,7 +31,7 @@ extension CategorySetterViewController {
         
         addCategoryButton.layer.cornerRadius = 16
         addCategoryButton.backgroundColor = .ypBlack
-        addCategoryButton.setTitle("Добавить категорию", for: .normal)
+        addCategoryButton.setTitle(localized("add category"), for: .normal)
         addCategoryButton.tintColor = .ypWhite
         addCategoryButton.titleLabel?.font = Font.ypMedium16
         superView.addSubView(

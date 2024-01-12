@@ -19,14 +19,14 @@ final class TabBarController: UITabBarController {
         let trackersListViewController = TrackersViewController()
         trackersListViewController.inaccessibleViews.append(self)
         trackersListViewController.tabBarItem = UITabBarItem(
-            title: "Трекеры",
+            title: localized("trackers"),
             image: UIImage(named: "TrackersInactive"),
             selectedImage: UIImage(named: "TrackersActive")
         )
         
         let statisticViewController = StatisticViewController()
         statisticViewController.tabBarItem = UITabBarItem(
-            title: "Статистика",
+            title: localized("statistic"),
             image: UIImage(named: "StatisticInactive"),
             selectedImage: UIImage(named: "StatisticActive")
         )

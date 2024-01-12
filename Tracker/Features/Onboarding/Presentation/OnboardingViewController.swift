@@ -95,7 +95,7 @@ extension OnboardingViewController {
             target: nil,
             action: #selector(self.onButtonClick)
         )
-        button.setTitle("Вот это технологии!", for: .normal)
+        button.setTitle(localized("onboarding.skip"), for: .normal)
         button.tintColor = .white
         button.backgroundColor = .black
         button.layer.cornerRadius = 16

@@ -37,7 +37,7 @@ extension TrackersViewController {
         
         let trackerLable = UILabel()
         trackerLable.backgroundColor = .clear
-        trackerLable.text = "Трекеры"
+        trackerLable.text = localized("trackers")
         trackerLable.textColor = .ypBlack
         trackerLable.font = Font.ypBold34
         superView.addSubView(
@@ -46,7 +46,7 @@ extension TrackersViewController {
             leading: AnchorOf(superView.leadingAnchor, 16)
         )
         
-        searchingField.placeholder = "Поиск"
+        searchingField.placeholder = localized("searching")
         searchingField.textColor = .ypBlack
         searchingField.backgroundColor = .ypSearhingField
         searchingField.font = Font.ypRegular17
@@ -73,7 +73,7 @@ extension TrackersViewController {
         
         let createTrackerLable = UILabel()
         createTrackerLable.backgroundColor = .clear
-        createTrackerLable.text = "Создание трекера"
+        createTrackerLable.text = localized("tracker creation")
         createTrackerLable.textColor = .ypBlack
         createTrackerLable.font = Font.ypMedium16
         
@@ -85,7 +85,7 @@ extension TrackersViewController {
         
         createHabitButton.layer.cornerRadius = 16
         createHabitButton.backgroundColor = .ypBlack
-        createHabitButton.setTitle("Привычка", for: .normal)
+        createHabitButton.setTitle(localized("habbit"), for: .normal)
         createHabitButton.tintColor = .ypWhite
         createHabitButton.titleLabel?.font = Font.ypMedium16
         
@@ -98,7 +98,7 @@ extension TrackersViewController {
      
         createEventButton.layer.cornerRadius = 16
         createEventButton.backgroundColor = .ypBlack
-        createEventButton.setTitle("Нерегулярное событие", for: .normal)
+        createEventButton.setTitle(localized("event"), for: .normal)
         createEventButton.tintColor = .ypWhite
         createEventButton.titleLabel?.font = Font.ypMedium16
         
@@ -111,8 +111,8 @@ extension TrackersViewController {
         
         filterButton.layer.cornerRadius = 16
         filterButton.backgroundColor = .ypBlue
-        filterButton.setTitle("Фильтры", for: .normal)
-        filterButton.tintColor = .ypWhite
+        filterButton.setTitle(localized("filters"), for: .normal)
+        filterButton.tintColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1)
         filterButton.titleLabel?.font = Font.ypRegular17
         
         superView.addSubView(
@@ -127,7 +127,7 @@ extension TrackersViewController {
         
         let filterLable = UILabel()
         filterLable.backgroundColor = .clear
-        filterLable.text = "Фильтры"
+        filterLable.text = localized("filters")
         filterLable.textColor = .ypBlack
         filterLable.font = Font.ypMedium16
         
@@ -147,7 +147,7 @@ extension TrackersViewController {
         )
         
         placeholder.image.image = UIImage(named: "TrackerPlaceholder")
-        placeholder.label.text = "Что будем отслеживать?"
+        placeholder.label.text = localized("trackers.noContent.placeholder")
         superView.addSubView(
             placeholder.view, width: 175, heigth: 125,
             centerX: AnchorOf(superView.centerXAnchor),
